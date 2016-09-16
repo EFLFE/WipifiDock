@@ -1,0 +1,19 @@
+﻿<Page x:Class="WipifiDock.MainPage1"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WipifiDock"
+      mc:Ignorable="d" 
+      WindowHeight="320" WindowWidth="480"
+      Title="MainPage1" d:DesignWidth="480" d:DesignHeight="320">
+
+    <Grid>
+        <Button x:Name="createProject" Click="createProject_Click" Content="Create new project" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="201"/>
+        <Button x:Name="openProject" Click="openProject_Click" Content="Open selected project" Margin="216,0,0,10" Height="22" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="246"/>
+        <TextBlock x:Name="textBlock" Margin="10,10,0,0" TextWrapping="Wrap" Text="Projects" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Left" Width="201"/>
+        <ListBox x:Name="projectListBox" Margin="10,36,0,37" ScrollViewer.VerticalScrollBarVisibility="Visible" HorizontalAlignment="Left" Width="201"/>
+        <TextBlock x:Name="desc" Margin="215,36,10,37" TextWrapping="Wrap"/>
+        <TextBlock x:Name="textBlock_Copy" Margin="216,10,0,0" TextWrapping="Wrap" Text="Information" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Left" Width="246"/>
+    </Grid>
+</Page>
