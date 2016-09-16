@@ -12,9 +12,7 @@ namespace WipifiDock
 {
     public partial class MainWindow : Window
     {
-        private WebBrowser webBrowser;
-        private TextBox mdTextBox;
-        private DataLabel dataLabel;
+        private WebTab selectedWebTab;
 
         public MainWindow()
         {
@@ -28,12 +26,7 @@ namespace WipifiDock
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            navigateFile("index");
-        }
-
-        private void navigateFile(string fileName)
-        {
-            webBrowser?.Navigate($"file:///{Environment.CurrentDirectory}/{fileName}.html");
+            addWebItem();
         }
 
         private void convertMDtoHTML()
@@ -51,106 +44,110 @@ namespace WipifiDock
         {
             if (e.Key == Key.Enter)
             {
-                // navigate
+                selectedWebTab.navigateFile(urlTextBox.Text);
             }
         }
 
         private void backButton_Click(object sender, RoutedEventArgs e)
         {
-            if (webBrowser != null && webBrowser.CanGoBack)
-            {
-                webBrowser.GoBack();
-            }
+            selectedWebTab?.GoBack();
         }
 
-        private void frontButton_Click(object sender, RoutedEventArgs e)
+        private void forwardButton_Click(object sender, RoutedEventArgs e)
         {
-            if (webBrowser != null && webBrowser.CanGoForward)
-            {
-                webBrowser.GoForward();
-            }
+            selectedWebTab?.GoForward();
         }
 
         private void updateButton_Click(object sender, RoutedEventArgs e)
         {
-            if (webBrowser != null)
-            {
-                webBrowser.Refresh();
-            }
+            selectedWebTab?.Refresh();
+            updateEditButtons();
         }
 
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
-
+            selectedWebTab?.EnableEditMode();
+            updateEditButtons();
         }
 
         private void toHtmlButton_Click(object sender, RoutedEventArgs e)
         {
-
+            selectedWebTab?.DisableEditMode();
+            updateEditButtons();
         }
 
         private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (!IsLoaded)
+                return;
+
             if (tabControl.SelectedIndex == tabControl.Items.Count - 1)
             {
-                // add tab
-                (tabControl.SelectedItem as TabItem).IsEnabled = false;
-
-                var _tab = new TabItem();
-                var _grid = new Grid();
-
-                var _dataLabel = new Label();
-                _dataLabel.Content = new DataLabel();
-
-                _grid.Children.Add(new WebBrowser());
-                _grid.Children.Add(new TextBox());
-                _grid.Children.Add(_dataLabel);
-
-                _tab.Header = new TextBlock()
-                {
-                    Text = "New item " + tabControl.Items.Count
-                };
-
-                _tab.Content = _grid;
-
-                tabControl.Items.Insert(tabControl.Items.Count - 1, _tab);
-                tabControl.SelectedIndex = tabControl.Items.Count - 2;
-
-                ThreadPool.QueueUserWorkItem(new WaitCallback((_) =>
-                {
-                    // костыль, ибо я без понятия
-                    // почему при первом добавлении таба
-                    // он добавляет сразу два
-                    Thread.Sleep(99);
-                    Dispatcher.Invoke(() => { (tabControl.Items[tabControl.Items.Count - 1] as TabItem).IsEnabled = true; });
-                }
-                ));
+                addWebItem();
                 return;
             }
 
-            // get
-            var item = tabControl.SelectedItem as TabItem;
-            var grid = item.Content as Grid;
-
-            webBrowser = grid.Children[0] as WebBrowser;
-            mdTextBox = grid.Children[1] as TextBox;
-            dataLabel = grid.Children[2] as DataLabel;
-
-            if (webBrowser == null)
-            {
-                throw new Exception("Not found WebBrowser and TextBox control in tab.");
-            }
-            if (mdTextBox == null)
-            {
-                throw new Exception("Not found TextBox control in tab.");
-            }
-            if (dataLabel == null)
-            {
-                throw new Exception("Not found DataLabel control in tab.");
-            }
-
-            // set
-            urlTextBox.Text = dataLabel.Uri;
+            selectedWebTab = ((tabControl.SelectedItem as TabItem).Content as Grid).Children[0] as WebTab;
+            updateEditButtons();
         }
+
+        private void addWebItem()
+        {
+            (tabControl.SelectedItem as TabItem).IsEnabled = false;
+
+            var _tab = new TabItem();
+            var _grid = new Grid();
+            var _webTab = new WebTab(_tab);
+            _webTab.OnNavigated += _webTab_OnNavigated;
+
+            _grid.Children.Add(_webTab);
+            _tab.Content = _grid;
+
+            _tab.Header = new TextBlock()
+            {
+                Text = "blank"
+            };
+
+            tabControl.Items.Insert(tabControl.Items.Count - 1, _tab);
+            tabControl.SelectedIndex = tabControl.Items.Count - 2;
+
+            ThreadPool.QueueUserWorkItem(new WaitCallback((_) =>
+            {
+                // костыль, ибо я без понятия
+                // почему при первом добавлении таба
+                // он добавляет сразу два
+                Thread.Sleep(99);
+                Dispatcher.Invoke(() => { (tabControl.Items[tabControl.Items.Count - 1] as TabItem).IsEnabled = true; });
+            }
+            ));
+        }
+
+        private void _webTab_OnNavigated(string title)
+        {
+            updateEditButtons();
+        }
+
+        private void updateEditButtons()
+        {
+            if (selectedWebTab == null || !selectedWebTab.Navigated)
+            {
+                editButton.IsEnabled = false;
+                toHtmlButton.IsEnabled = false;
+            }
+            else
+            {
+                if (selectedWebTab.EditMode)
+                {
+                    editButton.IsEnabled = false;
+                    toHtmlButton.IsEnabled = true;
+                }
+                else
+                {
+                    editButton.IsEnabled = true;
+                    toHtmlButton.IsEnabled = false;
+                }
+            }
+        }
+
     }
 }

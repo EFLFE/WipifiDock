@@ -12,11 +12,27 @@
             <StackPanel Orientation="Horizontal">
 
                 <Button x:Name="editButton" Click="editButton_Click" HorizontalAlignment="Left" Width="32" Height="32" VerticalAlignment="Top">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                            <GradientStop Color="#FF00C5FF" Offset="0"/>
+                            <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
+                            <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
+                            <GradientStop Color="#FFC2F0C0" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
                     <StackPanel>
                         <Image Source="Resources/edit.png" />
                     </StackPanel>
                 </Button>
                 <Button x:Name="toHtmlButton" Click="toHtmlButton_Click" HorizontalAlignment="Left" Width="32" Height="32"  VerticalAlignment="Top">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                            <GradientStop Color="#FF0CFF00" Offset="0"/>
+                            <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
+                            <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
+                            <GradientStop Color="#FFC2F0C0" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
                     <StackPanel>
                         <Image Source="Resources/tohtml.png" />
                     </StackPanel>
@@ -31,7 +47,7 @@
                 <Image Source="Resources/back.png" />
             </StackPanel>
         </Button>
-        <Button x:Name="frontButton" Click="frontButton_Click" HorizontalAlignment="Left" Height="23" Margin="23,32,0,0" VerticalAlignment="Top" Width="23">
+        <Button x:Name="frontButton" Click="forwardButton_Click" HorizontalAlignment="Left" Height="23" Margin="23,32,0,0" VerticalAlignment="Top" Width="23">
             <StackPanel>
                 <Image Source="Resources/front.png" />
             </StackPanel>
@@ -43,13 +59,14 @@
         </Button>
 
         <TabControl x:Name="tabControl" Margin="0,55,0,0" SelectionChanged="tabControl_SelectionChanged">
-            <TabItem x:Name="indexTab" Header="index html page">
+            <!--
+            <TabItem Header="blank">
                 <Grid>
-                    <WebBrowser/>
-                    <TextBox Visibility="Hidden"/>
+                    <local:WebTab />
                 </Grid>
             </TabItem>
-            <TabItem x:Name="addTabItem" Header="+" FontWeight="Bold"></TabItem>
+            -->
+            <TabItem x:Name="addTabItem" Header="+" FontWeight="Bold" FontFamily="Consolas" FontSize="14"></TabItem>
         </TabControl>
 
     </Grid>
