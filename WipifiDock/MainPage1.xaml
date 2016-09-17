@@ -9,11 +9,11 @@
       Title="MainPage1" d:DesignWidth="480" d:DesignHeight="320">
 
     <Grid>
-        <Button x:Name="createProject" Click="createProject_Click" Content="Create new project" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="201"/>
-        <Button x:Name="openProject" Click="openProject_Click" Content="Open selected project" Margin="216,0,0,10" Height="22" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="246"/>
-        <TextBlock x:Name="textBlock" Margin="10,10,0,0" TextWrapping="Wrap" Text="Projects" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Left" Width="201"/>
+        <Button x:Name="createProject" Click="createProject_Click" Content="Создать новый проект" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="201"/>
+        <Button x:Name="openProject" Click="openProject_Click" Content="Открыть выбранный проект" Margin="216,0,10,10" Height="22" VerticalAlignment="Bottom"/>
+        <TextBlock x:Name="textBlock" Margin="10,10,0,0" TextWrapping="Wrap" Text="Проекты" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Left" Width="201"/>
         <ListBox x:Name="projectListBox" Margin="10,36,0,37" ScrollViewer.VerticalScrollBarVisibility="Visible" HorizontalAlignment="Left" Width="201"/>
-        <TextBlock x:Name="desc" Margin="215,36,10,37" TextWrapping="Wrap"/>
-        <TextBlock x:Name="textBlock_Copy" Margin="216,10,0,0" TextWrapping="Wrap" Text="Information" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Left" Width="246"/>
+        <TextBlock x:Name="desc" Margin="215,36,10,169" TextWrapping="Wrap"/>
+        <TextBlock x:Name="textBlock_Copy" Margin="216,10,0,0" TextWrapping="Wrap" Text="Информация" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Left" Width="246"/>
     </Grid>
 </Page>

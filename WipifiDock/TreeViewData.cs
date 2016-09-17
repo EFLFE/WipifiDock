@@ -5,10 +5,12 @@ namespace WipifiDock
 {
     namespace TreeViewData
     {
+        /// <summary> TreeView каталог. </summary>
         public class TreeViewDataFolder
         {
             public string Name { get; set; }
 
+            /// <summary> Файлы каталога. </summary>
             public ObservableCollection<TreeViewDataFile> Members { get; set; }
 
             public TreeViewDataFolder(string name)
@@ -18,6 +20,7 @@ namespace WipifiDock
             }
         }
 
+        /// <summary> TreeView файл. </summary>
         public class TreeViewDataFile
         {
             public string Name { get; set; }

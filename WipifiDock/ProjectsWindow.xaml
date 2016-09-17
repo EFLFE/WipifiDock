@@ -7,7 +7,12 @@
         xmlns:q="clr-namespace:WipifiDock.TreeViewData"
         mc:Ignorable="d"
         Loaded="Window_Loaded"
-        Title="MainWindow" Height="347.5" Width="505.5" Background="White" WindowStartupLocation="CenterScreen" MinWidth="600" MinHeight="400" Foreground="Black" Icon="Resources/icon1.png">
+        Title="WipifiDock: "
+        Height="347.5" Width="505.5" MinWidth="600" MinHeight="400"
+        Background="White"
+        WindowStartupLocation="CenterScreen"
+        Foreground="Black"
+        Icon="Resources/icon1.png">
     <Grid>
         <ToolBar x:Name="gridPanel" IsEnabled="False" Height="32" VerticalAlignment="Top" Margin="1,0,-1,0">
 

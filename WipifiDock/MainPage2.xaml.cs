@@ -9,9 +9,13 @@ namespace WipifiDock
     {
         public delegate void DelOnCreateNewProject(string name);
 
+        /// <summary> Событие для перехода на MainPage1. </summary>
         public event EventHandler NavigateToPage1;
+
+        /// <summary> Событие создания нового проекта. </summary>
         public event DelOnCreateNewProject OnCreateNewProject;
 
+        // костыли
         private bool autoAddNameToPath = true;
         private bool onlock;
 
@@ -24,6 +28,7 @@ namespace WipifiDock
             projectName.TextChanged += ProjectName_TextChanged;
         }
 
+        // автозаполнение к директории проекта
         private void ProjectDirPath_TextChanged(object sender, TextChangedEventArgs e)
         {
             autoAddNameToPath = onlock;
@@ -39,6 +44,7 @@ namespace WipifiDock
             }
         }
 
+        // создать проект
         private void projectCreate_Click(object sender, RoutedEventArgs e)
         {
             if (projectName.Text.Length > 0 && projectDirPath.Text.Length > 3)
@@ -51,6 +57,7 @@ namespace WipifiDock
             }
         }
 
+        // отмена
         private void projectCancel_Click(object sender, RoutedEventArgs e)
         {
             NavigateToPage1?.Invoke(sender, e);

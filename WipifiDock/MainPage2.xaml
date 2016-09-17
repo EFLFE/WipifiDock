@@ -9,15 +9,15 @@
       Title="MainPage2" d:DesignWidth="480" d:DesignHeight="320">
 
     <Grid>
-        <Button x:Name="projectCreate" Click="projectCreate_Click" Content="Create" HorizontalAlignment="Left" Margin="10,0,0,10" Width="75" Height="22" VerticalAlignment="Bottom"/>
-        <Button x:Name="projectCancel" Click="projectCancel_Click" Content="Cancel" Margin="0,0,10,10" Height="22" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75"/>
+        <Button x:Name="projectCreate" Click="projectCreate_Click" Content="Создать" HorizontalAlignment="Left" Margin="10,0,0,10" Width="75" Height="22" VerticalAlignment="Bottom"/>
+        <Button x:Name="projectCancel" Click="projectCancel_Click" Content="Отмена" Margin="0,0,10,10" Height="22" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75"/>
         <TextBox x:Name="projectName" Height="23" Margin="107,10,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBox x:Name="projectDesc" Margin="107,38,10,97" TextWrapping="Wrap"/>
         <TextBox x:Name="projectAuthor" Margin="107,0,10,69" TextWrapping="Wrap" Height="23" VerticalAlignment="Bottom"/>
         <TextBox x:Name="projectDirPath" Margin="107,0,10,41" TextWrapping="Wrap" Height="23" VerticalAlignment="Bottom"/>
-        <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="10,13,0,0" TextWrapping="Wrap" Text="Project name:" VerticalAlignment="Top" FontWeight="Bold"/>
-        <TextBlock x:Name="textBlock1_Copy" HorizontalAlignment="Left" Margin="10,41,0,0" TextWrapping="Wrap" Text="Description:" VerticalAlignment="Top"/>
-        <TextBlock x:Name="textBlock1_Copy1" HorizontalAlignment="Left" Margin="10,0,0,73" TextWrapping="Wrap" Text="Author:" VerticalAlignment="Bottom"/>
-        <TextBlock x:Name="textBlock1_Copy2" HorizontalAlignment="Left" Margin="10,0,0,45" TextWrapping="Wrap" Text="Project dir Path:" VerticalAlignment="Bottom" FontWeight="Bold"/>
+        <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="10,13,0,0" TextWrapping="Wrap" Text="Имя проекта:" VerticalAlignment="Top" FontWeight="Bold" Width="91"/>
+        <TextBlock x:Name="textBlock1_Copy" HorizontalAlignment="Left" Margin="10,41,0,0" TextWrapping="Wrap" Text="Описание:" VerticalAlignment="Top" Width="91"/>
+        <TextBlock x:Name="textBlock1_Copy1" HorizontalAlignment="Left" Margin="10,0,0,73" TextWrapping="Wrap" Text="Автор:" VerticalAlignment="Bottom" Width="91"/>
+        <TextBlock x:Name="textBlock1_Copy2" HorizontalAlignment="Left" Margin="10,0,0,45" TextWrapping="Wrap" Text="Путь к проекту:" VerticalAlignment="Bottom" FontWeight="Bold"/>
     </Grid>
 </Page>

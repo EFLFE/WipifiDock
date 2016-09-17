@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WipifiDock"
         mc:Ignorable="d"
         Loaded="Window_Loaded"
-        Title="ProjectsWindow"
+        Title="WipifiDock: Проекты"
         Height="360" Width="520" MinWidth="520" MinHeight="360"
         WindowStartupLocation="CenterScreen" Icon="Resources/icon1.png">
 

@@ -12,6 +12,7 @@ namespace WipifiDock
         private MainPage1 page1;
         private MainPage2 page2;
 
+        // animation
         private bool                        _allowDirectNavigation = false;
         private NavigatingCancelEventArgs   _navArgs = null;
         private Duration                    _duration = new Duration(TimeSpan.FromSeconds(0.2));
@@ -52,6 +53,7 @@ namespace WipifiDock
             frame.Navigate(page2);
         }
 
+        // page animation
         private void frame_Navigating(object sender, NavigatingCancelEventArgs e)
         {
             if (Content != null && !_allowDirectNavigation)

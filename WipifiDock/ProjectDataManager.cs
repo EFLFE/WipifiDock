@@ -7,6 +7,7 @@ using System.Text;
 
 namespace WipifiDock
 {
+    /// <summary> Наш личный менеджер по проектам. </summary>
     public static class ProjectDataManager
     {
         /* [project]
@@ -22,23 +23,44 @@ namespace WipifiDock
 
         private static string selectedProjectName;
 
+        /// <summary> Имя проекта методом SelectProjectName был выбран. </summary>
         public static bool ProjectProfileWasSelected => selectedProjectName != null && selectedProjectName.Length > 0;
 
+        // проекты [имя, данные]
         private static Dictionary<string, ProjectData> projects = new Dictionary<string, ProjectData>();
 
+        /// <summary> Получить данные по проекту (без проверки). </summary>
+        /// <param name="name"> Имя проекта. </param>
+        /// <returns> Данные по проекту. </returns>
+        /// <exception cref="KeyNotFoundException"> Возможно.. </exception>
         public static ProjectData GetProjectData(string name)
         {
             return projects[name];
         }
 
+        /// <summary> Создать профиль. </summary>
+        /// <param name="name"> Имя проекта. </param>
+        /// <param name="path"> Путь. </param>
+        /// <param name="desc"> Описание. </param>
+        /// <param name="author"> Автор. </param>
+        /// <returns> Профиль был создан. </returns>
         public static bool CreateProfile(string name, string path, string desc, string author)
         {
             try
             {
+                if (Directory.Exists(path))
+                {
+                    var rere = MessageBox.Show("Каталог уже существует. Продолжить?", "Внимание", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    if (rere == MessageBoxResult.No || rere == MessageBoxResult.None)
+                    {
+                        return false;
+                    }
+                }
+
                 var dir = Directory.CreateDirectory(path);
                 if (dir == null || !dir.Exists)
                 {
-                    throw new Exception("Failed to create a new directory \"" + path + "\"!");
+                    throw new Exception("Не удалось создать каталог \"" + path + "\"!");
                 }
 
                 // write
@@ -65,7 +87,7 @@ namespace WipifiDock
 
                 if (projects.ContainsKey(name))
                 {
-                    throw new Exception($"Project by name \"{name}\" are contains.");
+                    throw new Exception($"Проект \"{name}\" уже существует.");
                 }
                 projects.Add(name, new ProjectData(name, path, desc, author));
 
@@ -73,11 +95,13 @@ namespace WipifiDock
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Add new project error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, "Ошибка создания проекта.", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
         }
 
+        /// <summary> Загрузить и полчить список проектов. </summary>
+        /// <returns> ДАнные проектов. </returns>
         public static ProjectData[] LoadProjectConfig()
         {
             if (File.Exists(CONF_FILE))
@@ -100,7 +124,7 @@ namespace WipifiDock
 
                                 if (projects.ContainsKey(name))
                                 {
-                                    throw new Exception($"Project by name \"{name}\" are contains.");
+                                    throw new Exception($"Проект \"{name}\" уже существует.");
                                 }
                                 projects.Add(name, new ProjectData(name, path, desc, author));
                             }
@@ -111,13 +135,16 @@ namespace WipifiDock
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Load config file error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка при загрузке конфигурации.", MessageBoxButton.OK, MessageBoxImage.Error);
                     return null;
                 }
             }
             return null;
         }
 
+        /// <summary> Выбрать проект для дальнейшей работы. </summary>
+        /// <param name="name"> Имя проекта. </param>
+        /// <returns> Проект найден и выбран. </returns>
         public static bool SelectProjectName(string name)
         {
             if (projects.ContainsKey(name))
@@ -127,11 +154,14 @@ namespace WipifiDock
             }
             else
             {
-                MessageBox.Show($"Project by name \"{name}\" are contains.", "Config warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show($"Проект \"{name}\" уже существует.", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
         }
 
+        /// <summary> Получить данные по выбранному проекту. </summary>
+        /// <returns> Данные проекта. </returns>
+        /// <exception cref="KeyNotFoundException"> Возможно.. </exception>
         public static ProjectData GetSelectedProjectData()
         {
             return projects[selectedProjectName];

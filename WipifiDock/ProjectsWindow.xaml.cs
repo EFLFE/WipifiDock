@@ -11,6 +11,7 @@ using System.Collections.Generic;
 
 namespace WipifiDock
 {
+    /// <summary> Окно самого проекта. </summary>
     public partial class ProjectsWindow : Window
     {
         private ProjectData projectData;
@@ -23,6 +24,7 @@ namespace WipifiDock
             treeView.SelectedItemChanged += TreeView_SelectedItemChanged;
         }
 
+        // при выборе элемента в TreeView, открыть выбранный элемент
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             object item = treeView.SelectedItem;
@@ -37,7 +39,7 @@ namespace WipifiDock
                     {
                         addWebItem();
                     }
-                    selectedWebTab.navigateFile(path, true);
+                    selectedWebTab.NavigateToFile(path, true);
                 }
             }
         }
@@ -54,7 +56,7 @@ namespace WipifiDock
                     var path = tt.Path + "\\" + tt.Name;
 
                     addWebItem();
-                    selectedWebTab.navigateFile(path, true);
+                    selectedWebTab.NavigateToFile(path, true);
                 }
             }
         }
@@ -67,6 +69,7 @@ namespace WipifiDock
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             projectData = ProjectDataManager.GetSelectedProjectData();
+            Title += projectData.Name;
             //selectedWebTab.navigateFile("MainPage.html");
 
             // load tree
@@ -113,7 +116,7 @@ namespace WipifiDock
         {
             if (e.Key == Key.Enter)
             {
-                selectedWebTab.navigateFile(urlTextBox.Text, false);
+                selectedWebTab.NavigateToFile(urlTextBox.Text, false);
             }
         }
 
