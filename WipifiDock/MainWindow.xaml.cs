@@ -9,6 +9,7 @@ namespace WipifiDock
 {
     public partial class MainWindow : Window
     {
+        private MainPage0 page0;
         private MainPage1 page1;
         private MainPage2 page2;
 
@@ -21,8 +22,12 @@ namespace WipifiDock
         {
             InitializeComponent();
 
+            page0 = new MainPage0();
             page1 = new MainPage1();
             page2 = new MainPage2();
+
+            page0.GotoPage1 += Page0_GotoPage1;
+            page0.OnExit += Page0_OnExit;
 
             page1.NavigateToPage2 += Page1_NavigateToPage2;
             page1.ProjectWasSelected += Page1_ProjectWasSelected;
@@ -31,6 +36,22 @@ namespace WipifiDock
             page2.OnCreateNewProject += Page2_OnCreateNewProject;
 
             frame.NavigationUIVisibility = NavigationUIVisibility.Hidden;
+            frame.Navigating += frame_Navigating;
+        }
+
+        private void Page0_OnExit(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void Page0_GotoPage1(object sender, EventArgs e)
+        {
+            frame.Navigate(page1);
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            frame.Navigate(page0);
         }
 
         private void Page1_ProjectWasSelected(object sender, EventArgs e)
@@ -56,6 +77,12 @@ namespace WipifiDock
         // page animation
         private void frame_Navigating(object sender, NavigatingCancelEventArgs e)
         {
+            if (e.Uri != null)
+            {
+                e.Cancel = true;
+                return;
+            }
+
             if (Content != null && !_allowDirectNavigation)
             {
                 e.Cancel = true;
@@ -102,11 +129,6 @@ namespace WipifiDock
                     animation0.Duration = _duration;
                     frame.BeginAnimation(OpacityProperty, animation0);
                 });
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            frame.Navigate(page1);
         }
     }
 }

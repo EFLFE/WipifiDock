@@ -5,8 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WipifiDock"
       mc:Ignorable="d" 
-      WindowHeight="320" WindowWidth="480"
-      Title="MainPage2" d:DesignWidth="480" d:DesignHeight="320">
+      WindowHeight="320" WindowWidth="480" d:DesignWidth="480" d:DesignHeight="320">
 
     <Grid>
         <Button x:Name="projectCreate" Click="projectCreate_Click" Content="Создать" HorizontalAlignment="Left" Margin="10,0,0,10" Width="75" Height="22" VerticalAlignment="Bottom"/>

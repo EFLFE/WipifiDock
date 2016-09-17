@@ -5,6 +5,8 @@ namespace WipifiDock
 {
     public partial class App : Application
     {
+        public const string VERSION = "1.0.0";
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
