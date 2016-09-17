@@ -10,7 +10,11 @@ namespace WipifiDock
 
         private static StringBuilder sb = new StringBuilder();
 
-        private static void loadBlank(string title, string[] head, string[] body)
+        /// <summary> Сгенерировать HTML из шаблона с добавлением кода. </summary>
+        /// <param name="title"> Текст заголовка страницы. </param>
+        /// <param name="head"> Вставочный код блок HEAD. </param>
+        /// <param name="body"> Вставочный код блок BODY. </param>
+        private static void createBlank(string title, string[] head, string[] body)
         {
             sb.Clear();
             string[] txt = File.ReadAllLines(BLANK_FILE);
@@ -47,9 +51,12 @@ namespace WipifiDock
             }
         }
 
+        /// <summary> Сгенерировать HTML для просмотра изображения. </summary>
+        /// <param name="imagePath"> Полный путь к файлу изображения. </param>
+        /// <returns> HTML код. </returns>
         public static string ViewImage(string imagePath)
         {
-            loadBlank(
+            createBlank(
                 Path.GetFileName(imagePath),
                 null,
                 new string[]

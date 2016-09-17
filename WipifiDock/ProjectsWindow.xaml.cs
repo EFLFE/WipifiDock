@@ -20,20 +20,10 @@ namespace WipifiDock
         {
             InitializeComponent();
             treeView.MouseDoubleClick += TreeView_MouseDoubleClick;
-            treeView.MouseDown += TreeView_MouseDown;
+            treeView.SelectedItemChanged += TreeView_SelectedItemChanged;
         }
 
-        private void TreeView_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.MiddleButton == MouseButtonState.Pressed)
-            {
-                treeView.Focus();
-                addWebItem();
-                TreeView_MouseDoubleClick(sender, e);
-            }
-        }
-
-        private void TreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             object item = treeView.SelectedItem;
             if (item != null)
@@ -47,6 +37,23 @@ namespace WipifiDock
                     {
                         addWebItem();
                     }
+                    selectedWebTab.navigateFile(path, true);
+                }
+            }
+        }
+
+        // open new tab and load selected tree item (middle?)
+        private void TreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            object item = treeView.SelectedItem;
+            if (item != null)
+            {
+                if (item is TreeViewData.TreeViewDataFile)
+                {
+                    var tt = item as TreeViewData.TreeViewDataFile;
+                    var path = tt.Path + "\\" + tt.Name;
+
+                    addWebItem();
                     selectedWebTab.navigateFile(path, true);
                 }
             }
