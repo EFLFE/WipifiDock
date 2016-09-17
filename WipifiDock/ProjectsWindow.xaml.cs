@@ -7,16 +7,49 @@ using System.Windows.Input;
 using CommonMark;
 using System.Windows.Media;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace WipifiDock
 {
     public partial class ProjectsWindow : Window
     {
+        private ProjectData projectData;
         private WebTab selectedWebTab;
 
         public ProjectsWindow()
         {
             InitializeComponent();
+            treeView.MouseDoubleClick += TreeView_MouseDoubleClick;
+            treeView.MouseDown += TreeView_MouseDown;
+        }
+
+        private void TreeView_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.MiddleButton == MouseButtonState.Pressed)
+            {
+                treeView.Focus();
+                addWebItem();
+                TreeView_MouseDoubleClick(sender, e);
+            }
+        }
+
+        private void TreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            object item = treeView.SelectedItem;
+            if (item != null)
+            {
+                if (item is TreeViewData.TreeViewDataFile)
+                {
+                    var tt = item as TreeViewData.TreeViewDataFile;
+                    var path = tt.Path + "\\" + tt.Name;
+
+                    if (tabControl.Items.Count == 1)
+                    {
+                        addWebItem();
+                    }
+                    selectedWebTab.navigateFile(path, true);
+                }
+            }
         }
 
         private void exitmenu_Click(object sender, RoutedEventArgs e)
@@ -26,8 +59,36 @@ namespace WipifiDock
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            addWebItem();
-            selectedWebTab.navigateFile("MainPage.html");
+            projectData = ProjectDataManager.GetSelectedProjectData();
+            //selectedWebTab.navigateFile("MainPage.html");
+
+            // load tree
+            int i, j;
+            string[] rootFiles = Directory.GetFiles(projectData.Path,"*.*", SearchOption.TopDirectoryOnly);
+            string[] dirs = Directory.GetDirectories(projectData.Path, "*", SearchOption.AllDirectories);
+
+            // root files
+            for (i = 0; i < rootFiles.Length; i++)
+            {
+                treeView.Items.Add(
+                    new TreeViewData.TreeViewDataFile(Path.GetFileName(rootFiles[i]),
+                        Environment.CurrentDirectory));
+            }
+
+            for (i = 0; i < dirs.Length; i++)
+            {
+                var indir = new TreeViewData.TreeViewDataFolder(dirs[i].Remove(0, projectData.Path.Length + 1));
+                var dif = Directory.GetFiles(dirs[i], "*.*", SearchOption.TopDirectoryOnly);
+
+                for (j = 0; j < dif.Length; j++)
+                {
+                    indir.Members.Add(
+                        new TreeViewData.TreeViewDataFile(Path.GetFileName(dif[j]),
+                            dirs[i]));
+                }
+
+                treeView.Items.Add(indir);
+            }
         }
 
         private void convertMDtoHTML()
@@ -45,7 +106,7 @@ namespace WipifiDock
         {
             if (e.Key == Key.Enter)
             {
-                selectedWebTab.navigateFile(urlTextBox.Text);
+                selectedWebTab.navigateFile(urlTextBox.Text, false);
             }
         }
 
@@ -94,7 +155,7 @@ namespace WipifiDock
 
         private void addWebItem()
         {
-            (tabControl.SelectedItem as TabItem).IsEnabled = false;
+            (tabControl.Items[tabControl.Items.Count - 1] as TabItem).IsEnabled = false;
 
             var _tab = new TabItem();
             var _grid = new Grid();

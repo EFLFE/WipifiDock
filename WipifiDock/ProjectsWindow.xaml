@@ -4,44 +4,39 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WipifiDock"
+        xmlns:q="clr-namespace:WipifiDock.TreeViewData"
         mc:Ignorable="d"
         Loaded="Window_Loaded"
         Title="MainWindow" Height="347.5" Width="505.5" Background="White" WindowStartupLocation="CenterScreen" MinWidth="600" MinHeight="400" Foreground="Black" Icon="Resources/icon1.png">
     <Grid>
-        <Grid x:Name="gridPanel" IsEnabled="false" Height="32" VerticalAlignment="Top" Background="#FFCBCBCB">
-            <StackPanel Orientation="Horizontal">
+        <ToolBar x:Name="gridPanel" IsEnabled="False" Height="32" VerticalAlignment="Top" Margin="1,0,-1,0">
 
-                <Button x:Name="editButton" Click="editButton_Click" HorizontalAlignment="Left" Width="32" Height="32" VerticalAlignment="Top">
-                    <Button.Background>
-                        <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-                            <GradientStop Color="#FF00C5FF" Offset="0"/>
-                            <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
-                            <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
-                            <GradientStop Color="#FFC2F0C0" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Button.Background>
-                    <StackPanel>
-                        <Image Source="Resources/edit.png" />
-                    </StackPanel>
-                </Button>
-                <Button x:Name="toHtmlButton" Click="toHtmlButton_Click" HorizontalAlignment="Left" Width="32" Height="32"  VerticalAlignment="Top">
-                    <Button.Background>
-                        <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-                            <GradientStop Color="#FF0CFF00" Offset="0"/>
-                            <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
-                            <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
-                            <GradientStop Color="#FFC2F0C0" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Button.Background>
-                    <StackPanel>
-                        <Image Source="Resources/tohtml.png" />
-                    </StackPanel>
-                </Button>
+            <Button x:Name="editButton" Click="editButton_Click" Width="32" Height="32">
+                <Button.Background>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#FF00C5FF"/>
+                        <GradientStop Color="White" Offset="1"/>
+                    </RadialGradientBrush>
+                </Button.Background>
+                <StackPanel>
+                    <Image Source="Resources/edit.png" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="toHtmlButton" Click="toHtmlButton_Click" Width="32" Height="32">
+                <Button.Background>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#FF0CFF00" Offset="0"/>
+                        <GradientStop Color="White" Offset="1"/>
+                    </RadialGradientBrush>
+                </Button.Background>
+                <StackPanel>
+                    <Image Source="Resources/tohtml.png" />
+                </StackPanel>
+            </Button>
 
-                <Grid Width="16"></Grid>
+            <Grid Width="16"></Grid>
 
-            </StackPanel>
-        </Grid>
+        </ToolBar>
 
         <TextBox x:Name="urlTextBox" IsEnabled="false" KeyDown="urlTextBox_KeyDown" Height="23" Margin="69,32,0,0" TextWrapping="Wrap" Text="index.html" VerticalAlignment="Top" FontFamily="Consolas" FontSize="14"/>
         <Button x:Name="backButton" Click="backButton_Click" HorizontalAlignment="Left" Height="23" Margin="0,32,0,0" VerticalAlignment="Top" Width="23">
@@ -59,17 +54,45 @@
                 <Image Source="Resources/update.png" />
             </StackPanel>
         </Button>
+        <Grid Margin="1,55,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="160*"/>
+                <ColumnDefinition Width="431*"/>
+            </Grid.ColumnDefinitions>
 
-        <TabControl x:Name="tabControl" Margin="0,55,0,0" SelectionChanged="tabControl_SelectionChanged">
-            <!--
-            <TabItem Header="blank">
-                <Grid>
-                    <local:WebTab />
-                </Grid>
-            </TabItem>
-            -->
-            <TabItem x:Name="addTabItem" Header="+" FontWeight="Bold" FontFamily="Consolas" FontSize="14"></TabItem>
-        </TabControl>
+            <GridSplitter Grid.Row="0" Width="4"
+                      VerticalAlignment="Stretch" HorizontalAlignment="Right" ResizeDirection="Columns" Background="#FFC3C3C3"/>
+
+            <TabControl x:Name="tabControl" SelectionChanged="tabControl_SelectionChanged" Grid.Column="1">
+                <TabItem x:Name="addTabItem" Header="+" FontWeight="Bold" FontFamily="Consolas" FontSize="14"/>
+            </TabControl>
+
+            <TreeView x:Name="treeView" Margin="0,0,4,0">
+                <TreeView.Resources>
+                    <HierarchicalDataTemplate DataType="{x:Type q:TreeViewDataFolder}" ItemsSource="{Binding Members}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Resources/volume32.png" Margin="0,0,5,0" Width="16" Height="16" />
+                            <TextBlock Text="{Binding Name}" />
+                            <TextBlock Text=" (" Foreground="DarkGray" />
+                            <TextBlock Text="{Binding Members.Count}" Foreground="DarkGray" />
+                            <TextBlock Text=")" Foreground="DarkGray" />
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+
+                    <DataTemplate DataType="{x:Type q:TreeViewDataFile}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Name}" />
+                            <!--
+                            <TextBlock Text=" (" Foreground="Green" />
+                            <TextBlock Text="{Binding Age}" Foreground="Green" />
+                            <TextBlock Text=" years)" Foreground="Green" />
+                            -->
+                        </StackPanel>
+                    </DataTemplate>
+                </TreeView.Resources>
+            </TreeView>
+            
+        </Grid>
 
     </Grid>
 </Window>

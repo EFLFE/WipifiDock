@@ -23,6 +23,10 @@ namespace WipifiDock
             {
                 proj.ShowDialog();
             }
+            else
+            {
+                proj.Close();
+            }
         }
     }
 }

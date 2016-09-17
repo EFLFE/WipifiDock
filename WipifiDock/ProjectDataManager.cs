@@ -132,5 +132,10 @@ namespace WipifiDock
             }
         }
 
+        public static ProjectData GetSelectedProjectData()
+        {
+            return projects[selectedProjectName];
+        }
+
     }
 }

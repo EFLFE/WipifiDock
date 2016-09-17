@@ -35,9 +35,16 @@ namespace WipifiDock
             OnNavigated?.Invoke(title);
         }
 
-        public void navigateFile(string fileName)
+        public void navigateFile(string filePath, bool isImage)
         {
-            webBrowser.Navigate($"file:///{Environment.CurrentDirectory}/{fileName}");
+            if (isImage)
+            {
+                webBrowser.NavigateToString(BlankGenerator.ViewImage(filePath));
+            }
+            else
+            {
+                webBrowser.Navigate($"file:///{Environment.CurrentDirectory}/{filePath}");
+            }
         }
 
         public void GoBack()

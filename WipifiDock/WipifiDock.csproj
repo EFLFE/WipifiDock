@@ -88,6 +88,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BlankGenerator.cs" />
     <Compile Include="MainPage1.xaml.cs">
       <DependentUpon>MainPage1.xaml</DependentUpon>
     </Compile>
@@ -99,6 +100,7 @@
     </Compile>
     <Compile Include="ProjectData.cs" />
     <Compile Include="ProjectDataManager.cs" />
+    <Compile Include="TreeViewData.cs" />
     <Compile Include="WebTab.xaml.cs">
       <DependentUpon>WebTab.xaml</DependentUpon>
     </Compile>
@@ -166,6 +168,7 @@
     <Content Include="Blanks\MainBlank.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\volume32.png" />
     <SplashScreen Include="SplashScreen.png" />
     <Resource Include="Resources\icon1.png" />
     <Resource Include="Resources\edit.png" />
