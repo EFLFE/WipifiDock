@@ -7,7 +7,7 @@ namespace WipifiDock
     /// <summary> Project list. </summary>
     public partial class MainPage1 : Page
     {
-        public event EventHandler NavigateToPage2;
+        public event EventHandler NavigateToPage2, ProjectWasSelected;
 
         public MainPage1()
         {
@@ -44,7 +44,11 @@ namespace WipifiDock
 
         private void openProject_Click(object sender, RoutedEventArgs e)
         {
-
+            var pi = projectListBox.SelectedItem as string;
+            if (pi != null && ProjectDataManager.SelectProjectName(pi))
+            {
+                ProjectWasSelected(sender, e);
+            }
         }
     }
 }

@@ -20,6 +20,10 @@ namespace WipifiDock
         private const string CONF_FILE = "wipifi.cfg";
         private const string PROJECT_LABEL = "[project]";
 
+        private static string selectedProjectName;
+
+        public static bool ProjectProfileWasSelected => selectedProjectName != null && selectedProjectName.Length > 0;
+
         private static Dictionary<string, ProjectData> projects = new Dictionary<string, ProjectData>();
 
         public static ProjectData GetProjectData(string name)
@@ -40,6 +44,8 @@ namespace WipifiDock
                 // write
                 using (var stream = File.Open(CONF_FILE, FileMode.OpenOrCreate, FileAccess.Write))
                 {
+                    // я знаю, что есть класс, который записывает текст одним методом
+                    // но я забыл как он называется
                     var en = new UTF8Encoding(true);
                     byte[] w1 = en.GetBytes(PROJECT_LABEL + Environment.NewLine);
                     byte[] w2 = en.GetBytes(name + Environment.NewLine);
@@ -110,6 +116,20 @@ namespace WipifiDock
                 }
             }
             return null;
+        }
+
+        public static bool SelectProjectName(string name)
+        {
+            if (projects.ContainsKey(name))
+            {
+                selectedProjectName = name;
+                return true;
+            }
+            else
+            {
+                MessageBox.Show($"Project by name \"{name}\" are contains.", "Config warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
         }
 
     }

@@ -8,10 +8,21 @@ using System.Windows;
 
 namespace WipifiDock
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            var main = new MainWindow();
+            var proj = new ProjectsWindow();
+
+            main.ShowDialog();
+
+            if (ProjectDataManager.ProjectProfileWasSelected)
+            {
+                proj.ShowDialog();
+            }
+        }
     }
 }

@@ -7,7 +7,7 @@ using System.Windows.Threading;
 
 namespace WipifiDock
 {
-    public partial class ProjectsWindow : Window
+    public partial class MainWindow : Window
     {
         private MainPage1 page1;
         private MainPage2 page2;
@@ -16,17 +16,25 @@ namespace WipifiDock
         private NavigatingCancelEventArgs   _navArgs = null;
         private Duration                    _duration = new Duration(TimeSpan.FromSeconds(0.2));
 
-        public ProjectsWindow()
+        public MainWindow()
         {
             InitializeComponent();
 
             page1 = new MainPage1();
             page2 = new MainPage2();
+
             page1.NavigateToPage2 += Page1_NavigateToPage2;
+            page1.ProjectWasSelected += Page1_ProjectWasSelected;
+
             page2.NavigateToPage1 += Page2_NavigateToPage1;
             page2.OnCreateNewProject += Page2_OnCreateNewProject;
 
             frame.NavigationUIVisibility = NavigationUIVisibility.Hidden;
+        }
+
+        private void Page1_ProjectWasSelected(object sender, EventArgs e)
+        {
+            Close();
         }
 
         private void Page2_OnCreateNewProject(string name)

@@ -10,11 +10,11 @@ using System.Threading;
 
 namespace WipifiDock
 {
-    public partial class MainWindow : Window
+    public partial class ProjectsWindow : Window
     {
         private WebTab selectedWebTab;
 
-        public MainWindow()
+        public ProjectsWindow()
         {
             InitializeComponent();
         }
