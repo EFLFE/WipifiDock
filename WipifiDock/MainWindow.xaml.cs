@@ -71,6 +71,11 @@ namespace WipifiDock
 
         private void Page1_NavigateToPage2(object sender, EventArgs e)
         {
+            if (sender is string[])
+            {
+                var args = sender as string[];
+                page2.SetMainData(args[0], args[1]);
+            }
             frame.Navigate(page2);
         }
 

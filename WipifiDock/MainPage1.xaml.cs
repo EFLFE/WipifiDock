@@ -49,7 +49,7 @@ namespace WipifiDock
         private void ProjectListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string name = projectListBox.SelectedItem as string;
-            if (name == null)
+            if (name == null || name.Length == 0)
             {
                 projectName.Text = "Проект: ";
                 projectDesc.Text = "Описание:\n";
@@ -92,10 +92,19 @@ namespace WipifiDock
             }
         }
 
-#warning TODO: delete project
         private void openExistProject_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Не реализован.");
+            var ofd = new System.Windows.Forms.FolderBrowserDialog()
+            {
+                Description = "Выберите каталог с проектом"
+            };
+            var re = ofd.ShowDialog();
+            if (re == System.Windows.Forms.DialogResult.OK)
+            {
+                var path = ofd.SelectedPath;
+                var name = path.Remove(0, path.LastIndexOf('\\') + 1);
+                NavigateToPage2?.Invoke(new string[2] { name, path }, e);
+            }
         }
     }
 }

@@ -44,11 +44,11 @@ namespace WipifiDock
         /// <param name="desc"> Описание. </param>
         /// <param name="author"> Автор. </param>
         /// <returns> Профиль был создан. </returns>
-        public static bool CreateProfile(string name, string path, string desc, string author)
+        public static bool CreateProfile(string name, string path, string desc, string author, bool ignoreExistsDirectory)
         {
             try
             {
-                if (Directory.Exists(path))
+                if (Directory.Exists(path) && !ignoreExistsDirectory)
                 {
                     var rere = MessageBox.Show("Каталог уже существует. Продолжить?",
                         "Внимание", MessageBoxButton.YesNo, MessageBoxImage.Warning);
@@ -59,10 +59,13 @@ namespace WipifiDock
                     }
                 }
 
-                var dir = Directory.CreateDirectory(path);
-                if (dir == null || !dir.Exists)
+                if (!Directory.Exists(path))
                 {
-                    throw new Exception("Не удалось создать каталог \"" + path + "\"!");
+                    var dir = Directory.CreateDirectory(path);
+                    if (dir == null || !dir.Exists)
+                    {
+                        throw new Exception("Не удалось создать каталог \"" + path + "\"!");
+                    }
                 }
 
                 // write
@@ -185,15 +188,26 @@ namespace WipifiDock
                         var msr = MessageBox.Show(
                             $"После подтверждения данного сообщения, все данные проекта {selectedProject.Name} будут удалены.\n\n"
                             + "Все файлы и каталоги будут удалены из следующего каталога:\n" + selectedProject.Path
-                            + "\n\nЭто действие невозможно отменить. Удаленные файлы возврату не подлежат.\n\nВы согласны с данными условиями?",
+                            + "\n\nПродолжить удаление?",
                             $"Внимание! Вы собираетесь удалить проект {selectedProject.Name}",
                             MessageBoxButton.YesNo,
                             MessageBoxImage.Warning);
 
                         if (msr == MessageBoxResult.Yes)
                         {
-                            // well...
-                            Directory.Delete(selectedProject.Path, true); // ОПАСНОСТЬ!
+                            // удалить каталог
+                            //Directory.Delete(selectedProject.Path, true); // ОПАСНОСТЬ!
+                            Microsoft.VisualBasic.FileIO.FileSystem.DeleteDirectory(
+                                selectedProject.Path,
+                                Microsoft.VisualBasic.FileIO.UIOption.AllDialogs,
+                                Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin);
+
+                            if (Directory.Exists(selectedProject.Path))
+                            {
+                                MessageBox.Show($"Каталог \"{selectedProject.Path}\" не был удален.", "Сбой");
+                                return false;
+                            }
+
                             deleteProjectData(selectedProject.Name);
                             MessageBox.Show($"Все данные в каталоге \"{selectedProject.Path}\" были удалены.", "Готово");
                             return true;

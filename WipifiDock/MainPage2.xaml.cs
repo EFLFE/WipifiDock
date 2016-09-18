@@ -18,6 +18,7 @@ namespace WipifiDock
         // костыли
         private bool autoAddNameToPath = true;
         private bool onlock;
+        private bool ignoreExistsDirectory;
 
         public MainPage2()
         {
@@ -49,10 +50,12 @@ namespace WipifiDock
         {
             if (projectName.Text.Length > 0 && projectDirPath.Text.Length > 3)
             {
-                if (ProjectDataManager.CreateProfile(projectName.Text, projectDirPath.Text, projectDesc.Text, projectAuthor.Text))
+                if (ProjectDataManager.CreateProfile(
+                    projectName.Text, projectDirPath.Text, projectDesc.Text, projectAuthor.Text, ignoreExistsDirectory))
                 {
                     OnCreateNewProject.Invoke(projectName.Text);
                     NavigateToPage1?.Invoke(sender, e);
+                    reset();
                 }
             }
         }
@@ -60,11 +63,30 @@ namespace WipifiDock
         // отмена
         private void projectCancel_Click(object sender, RoutedEventArgs e)
         {
-            projectName.Text = string.Empty;
-            projectDirPath.Text = string.Empty;
-            projectDesc.Text = string.Empty;
-            projectAuthor.Text = string.Empty;
+            reset();
             NavigateToPage1?.Invoke(sender, e);
+        }
+
+        /// <summary> Задать начальные значения. </summary>
+        /// <param name="name"> Имени. </param>
+        /// <param name="path"> Каталога. </param>
+        public void SetMainData(string name, string path)
+        {
+            projectName.Text = name;
+            projectDirPath.Text = path;
+            ignoreExistsDirectory = true;
+            projectDirPath.IsEnabled = false;
+        }
+
+        private void reset()
+        {
+            projectName.Text = string.Empty;
+            projectDesc.Text = string.Empty;
+            projectDirPath.Text = string.Empty;
+            projectAuthor.Text = string.Empty;
+            onlock = false;
+            ignoreExistsDirectory = false;
+            projectDirPath.IsEnabled = true;
         }
     }
 }
