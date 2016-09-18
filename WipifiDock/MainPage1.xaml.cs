@@ -72,7 +72,7 @@ namespace WipifiDock
 
         private void deleteSelectedProject_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: delete project
+#warning TODO: delete project
             MessageBox.Show("Не реализован.");
         }
     }

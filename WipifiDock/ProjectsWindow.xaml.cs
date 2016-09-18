@@ -1,13 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.IO;
+﻿using System.IO;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using CommonMark;
-using System.Windows.Media;
-using System.Threading;
-using System.Collections.Generic;
 
 namespace WipifiDock
 {
@@ -83,15 +79,55 @@ namespace WipifiDock
             // root files
             for (i = 0; i < rootFiles.Length; i++)
             {
-                treeView.Items.Add(new TreeViewData.TreeViewDataFile(
+                var treeFile = new TreeViewData.TreeViewDataFile(
                     Path.GetFileName(rootFiles[i]),
-                    projectData.Path));
+                    projectData.Path);
+
+                treeView.Items.Add(treeFile);
             }
+            // root dirs
             for (i = 0; i < rootDirs.Length; i++)
             {
-                treeView.Items.Add(new TreeViewData.TreeViewDataFolder(
+                var treeFolder = new TreeViewData.TreeViewDataFolder(
                     Path.GetFileName(rootDirs[i]),
-                    projectData.Path));
+                    projectData.Path);
+
+                treeFolder.Expanded += TreeFolder_Expanded;
+
+                treeView.Items.Add(treeFolder);
+            }
+        }
+
+        private void TreeFolder_Expanded(object sender, RoutedEventArgs e)
+        {
+            var item = (TreeViewData.TreeViewDataFolder)sender;
+            if (item != null && item.Items.Count < 2 && item.Items[0] == null)
+            {
+                item.Items.Clear();
+                // == ~COPY~ ==
+                int i;
+                string path = $"{item.Path}\\{item.FolderName}";
+                string[] files = Directory.GetFiles(path,"*.*", SearchOption.TopDirectoryOnly);
+                string[] dirs = Directory.GetDirectories(path, "*", SearchOption.TopDirectoryOnly);
+                
+                for (i = 0; i < files.Length; i++)
+                {
+                    var treeFile = new TreeViewData.TreeViewDataFile(
+                        Path.GetFileName(files[i]),
+                        path);
+
+                    item.Items.Add(treeFile);
+                }
+                for (i = 0; i < dirs.Length; i++)
+                {
+                    var treeFolder = new TreeViewData.TreeViewDataFolder(
+                        Path.GetFileName(dirs[i]),
+                        path);
+
+                    treeFolder.Expanded += TreeFolder_Expanded;
+
+                    item.Items.Add(treeFolder);
+                }
             }
         }
 
@@ -215,18 +251,22 @@ namespace WipifiDock
             }
         }
 
+#warning TODO: addFolder_Click
         private void addFolder_Click(object sender, RoutedEventArgs e)
         {
         }
 
+#warning TODO: addDock_Click
         private void addDock_Click(object sender, RoutedEventArgs e)
         {
         }
 
+#warning TODO: deleteDock_Click
         private void deleteDock_Click(object sender, RoutedEventArgs e)
         {
         }
 
+#warning TODO: deleteFolder_Click
         private void deleteFolder_Click(object sender, RoutedEventArgs e)
         {
         }
@@ -253,7 +293,7 @@ namespace WipifiDock
             }
         }
 
-        // save
+#warning TODO: saveProject_Click
         private void saveProject_Click(object sender, RoutedEventArgs e)
         {
         }

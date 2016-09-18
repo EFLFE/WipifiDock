@@ -127,7 +127,11 @@
 
                                         <Image Source="Resources/miniFolder.png" Width="16" Height="16" />
                                         <!-- Как это работает?! -->
-                                        <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type q:TreeViewDataFolder}}, Path=FolderName}" />
+                                        <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
+                                            AncestorType={x:Type q:TreeViewDataFolder}}, Path=FolderName}" />
+                                        
+                                        <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
+                                            AncestorType={x:Type q:TreeViewDataFolder}}, Path=GetItemCountString}" Foreground="Gray"/>
 
                                     </StackPanel>
                                 </DataTemplate>
