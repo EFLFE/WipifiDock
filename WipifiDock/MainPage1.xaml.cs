@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -13,6 +14,8 @@ namespace WipifiDock
 
         /// <summary> Событие создания нового проекта. </summary>
         public event EventHandler ProjectWasSelected;
+
+        private ProjectData selectedProject;
 
         public MainPage1()
         {
@@ -46,12 +49,23 @@ namespace WipifiDock
         private void ProjectListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string name = projectListBox.SelectedItem as string;
-            var proj = ProjectDataManager.GetProjectData(name);
+            if (name == null)
+            {
+                projectName.Text = "Проект: ";
+                projectDesc.Text = "Описание:\n";
+                projectPathAndAuthor.Text = "Автор:\nКаталог:";
+                openProject.IsEnabled = false;
+                deleteSelectedProject.IsEnabled = false;
+                return;
+            }
+            selectedProject = ProjectDataManager.GetProjectData(name);
 
-            //desc.Text = $"Имя: {proj.Name}\nОписание: {proj.Desc}\nПуть: {proj.Path}\nАвтор: {proj.Author}";
-            projectName.Text = "Проект: " + proj.Name;
-            projectDesc.Text = "Описание:\n" + proj.Desc;
-            projectPathAndAuthor.Text = $"Автор: {proj.Author}\nКаталог: {proj.Path}";
+            projectName.Text = "Проект: " + selectedProject.Name;
+            projectDesc.Text = "Описание:\n" + selectedProject.Desc;
+            projectPathAndAuthor.Text = $"Автор: {selectedProject.Author}\nКаталог: {selectedProject.Path}";
+
+            openProject.IsEnabled = true;
+            deleteSelectedProject.IsEnabled = true;
         }
 
         // после создания проекта перейти на MainPage2
@@ -72,7 +86,15 @@ namespace WipifiDock
 
         private void deleteSelectedProject_Click(object sender, RoutedEventArgs e)
         {
+            if (projectListBox.SelectedIndex != -1 && ProjectDataManager.RemoveProjectData(selectedProject.Name))
+            {
+                projectListBox.Items.RemoveAt(projectListBox.SelectedIndex);
+            }
+        }
+
 #warning TODO: delete project
+        private void openExistProject_Click(object sender, RoutedEventArgs e)
+        {
             MessageBox.Show("Не реализован.");
         }
     }

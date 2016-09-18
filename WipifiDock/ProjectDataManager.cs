@@ -50,7 +50,9 @@ namespace WipifiDock
             {
                 if (Directory.Exists(path))
                 {
-                    var rere = MessageBox.Show("Каталог уже существует. Продолжить?", "Внимание", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    var rere = MessageBox.Show("Каталог уже существует. Продолжить?",
+                        "Внимание", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
                     if (rere == MessageBoxResult.No || rere == MessageBoxResult.None)
                     {
                         return false;
@@ -165,6 +167,102 @@ namespace WipifiDock
         public static ProjectData GetSelectedProjectData()
         {
             return projects[selectedProjectName];
+        }
+
+        /// <summary> Удалить проект. </summary>
+        /// <param name="name"> Имя проекта. </param>
+        /// <returns> Был удалён. </returns>
+        public static bool RemoveProjectData(string name)
+        {
+            try
+            {
+                if (projects.ContainsKey(name))
+                {
+                    ProjectData selectedProject = projects[name];
+
+                    if (Directory.Exists(selectedProject.Path))
+                    {
+                        var msr = MessageBox.Show(
+                            $"После подтверждения данного сообщения, все данные проекта {selectedProject.Name} будут удалены.\n\n"
+                            + "Все файлы и каталоги будут удалены из следующего каталога:\n" + selectedProject.Path
+                            + "\n\nЭто действие невозможно отменить. Удаленные файлы возврату не подлежат.\n\nВы согласны с данными условиями?",
+                            $"Внимание! Вы собираетесь удалить проект {selectedProject.Name}",
+                            MessageBoxButton.YesNo,
+                            MessageBoxImage.Warning);
+
+                        if (msr == MessageBoxResult.Yes)
+                        {
+                            // well...
+                            Directory.Delete(selectedProject.Path, true); // ОПАСНОСТЬ!
+                            deleteProjectData(selectedProject.Name);
+                            MessageBox.Show($"Все данные в каталоге \"{selectedProject.Path}\" были удалены.", "Готово");
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        deleteProjectData(selectedProject.Name);
+                        MessageBox.Show($"Каталог \"{selectedProject.Path}\" не найден.\n\nИнформация о проекте была удалена.", "Готово");
+                        return true;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show($"Проект \"{name}\" не был найден.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            return false;
+        }
+
+        private static void deleteProjectData(string name)
+        {
+            // без расчёта на очень большой конфиг файл
+            var txt = File.ReadAllLines(CONF_FILE);
+            int i;
+
+            for (i = 0; i < txt.Length; i++)
+            {
+                // 6 lines
+                // PROJECT_LABEL
+                // name
+                // path
+                // desc
+                // author
+                // \n
+
+                if (txt[i].Equals(PROJECT_LABEL, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (txt[i + 1].Equals(name, StringComparison.OrdinalIgnoreCase))
+                    {
+                        // попался!
+                        txt[i] = null;
+                        txt[i + 1] = null;
+                        txt[i + 2] = null;
+                        txt[i + 3] = null;
+                        txt[i + 4] = null;
+                        txt[i + 5] = null;
+                        break;
+                    }
+                }
+            }
+            // write
+            var en = new UTF8Encoding(true);
+
+            using (var stream = File.Open(CONF_FILE, FileMode.Create, FileAccess.Write))
+            {
+                for (i = 0; i < txt.Length; i++)
+                {
+                    if (txt[i] != null)
+                    {
+                        byte[] w = en.GetBytes(txt[i] + Environment.NewLine);
+                        stream.Write(w, 0, w.Length);
+                    }
+                }
+            }
         }
 
     }
