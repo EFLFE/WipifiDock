@@ -134,6 +134,77 @@ namespace WipifiDock
             }
         }
 
+        // collapse/expand treeView
+        private void collapse_Click(object sender, RoutedEventArgs e)
+        {
+            setTreeViewExpand(treeView.Items, false);
+            if (safeRecursion != -2) safeRecursion = 0;
+        }
+
+        private void expand_Click(object sender, RoutedEventArgs e)
+        {
+            setTreeViewExpand(treeView.Items, true);
+            if (safeRecursion != -2) safeRecursion = 0;
+        }
+
+        // по теории, этого быть не должно, но я всё же перестрахуюсь
+        // (-1 стоп, -2 игнорировать)
+        private static int safeRecursion;
+
+        private void setTreeViewExpand(ItemCollection treeViewItems, bool isExpanded)
+        {
+            if (safeRecursion != -2)
+            {
+                if (safeRecursion == -1)
+                {
+                    return;
+                }
+                if (safeRecursion++ > 399)
+                {
+                    var kek = MessageBox.Show(
+                        "Обнаружен предел рекурсии, или слишком много каталогов для открытия. Игнорировать данное сообщение и продолжить?",
+                        "Предел рекурсии/каталогов",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Warning);
+
+                    safeRecursion = kek == MessageBoxResult.Yes ? -2 : -1;
+                    if (kek == MessageBoxResult.No)
+                        return;
+                }
+            }
+
+            foreach (var item in treeViewItems)
+            {
+                var _folder = item as TreeViewData.TreeViewDataFolder;
+                if (_folder != null)
+                {
+                    if (isExpanded)
+                    {
+                        // IsExpanded не меняется в ручную в форме
+                        //if (!_folder.IsExpanded)
+                        {
+                            _folder.IsExpanded = true;
+                            if (!_folder.IsEmpty)
+                            {
+                                // рекурсия
+                                setTreeViewExpand(_folder.Items, true);
+                            }
+                        }
+                    }
+                    else //if (_folder.IsExpanded)
+                    {
+                        _folder.IsExpanded = false;
+                        if (!_folder.IsEmpty)
+                        {
+                            // рекурсия
+                            setTreeViewExpand(_folder.Items, false);
+                        }
+                    }
+                }
+            }
+            safeRecursion--;
+        }
+
         private void convertMDtoHTML()
         {
             using (var reader = new StreamReader("source.md"))
@@ -276,76 +347,6 @@ namespace WipifiDock
         private void deleteFolder_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Не реализован.");
-        }
-
-        // collapse/expand treeView
-        private void collapse_Click(object sender, RoutedEventArgs e)
-        {
-            setTreeViewExpand(treeView.Items, false);
-            if (safeRecursion != -2) safeRecursion = 0;
-        }
-
-        private void expand_Click(object sender, RoutedEventArgs e)
-        {
-            setTreeViewExpand(treeView.Items, true);
-            if (safeRecursion != -2) safeRecursion = 0;
-        }
-
-        // по теории, этого быть не должно, но я всё же перестрахуюсь
-        // (-1 стоп, -2 игнорировать)
-        private static int safeRecursion;
-
-        private void setTreeViewExpand(ItemCollection treeViewItems, bool isExpanded)
-        {
-            if (safeRecursion != -2)
-            {
-                if (safeRecursion == -1)
-                {
-                    return;
-                }
-                if (safeRecursion++ > 399)
-                {
-                    var kek = MessageBox.Show(
-                        "Обнаружен предел рекурсии, или слишком много каталогов для открытия. Игнорировать данное сообщение и продолжить?",
-                        "Предел рекурсии/каталогов",
-                        MessageBoxButton.YesNo,
-                        MessageBoxImage.Warning);
-
-                    safeRecursion = kek == MessageBoxResult.Yes ? -2 : -1;
-                    if (kek == MessageBoxResult.No)
-                        return;
-                }
-            }
-
-            foreach (var item in treeViewItems)
-            {
-                var _folder = item as TreeViewData.TreeViewDataFolder;
-                if (_folder != null)
-                {
-                    if (isExpanded)
-                    {
-                        if (!_folder.IsExpanded)
-                        {
-                            _folder.IsExpanded = true;
-                            if (!_folder.IsEmpty)
-                            {
-                                // рекурсия
-                                setTreeViewExpand(_folder.Items, true);
-                            }
-                        }
-                    }
-                    else if (_folder.IsExpanded)
-                    {
-                        _folder.IsExpanded = false;
-                        if (!_folder.IsEmpty)
-                        {
-                            // рекурсия
-                            setTreeViewExpand(_folder.Items, false);
-                        }
-                    }
-                }
-            }
-            safeRecursion--;
         }
 
 #warning TODO: saveProject_Click

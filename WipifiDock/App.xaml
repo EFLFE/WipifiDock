@@ -5,6 +5,33 @@
              >
              <!-- StartupUri="MainWindow.xaml" -->
     <Application.Resources>
-         
+
+        <BitmapImage x:Key="icon1" UriSource="Resources/icon1.png" />
+        <BitmapImage x:Key="logo" UriSource="Resources/logo.png" />
+
+        <BitmapImage x:Key="back" UriSource="Resources/Browse/back.png" />
+        <BitmapImage x:Key="front" UriSource="Resources/Browse/front.png" />
+        <BitmapImage x:Key="update" UriSource="Resources/Browse/update.png" />
+        
+        <BitmapImage x:Key="miniFolder" UriSource="Resources/TreeIcons/miniFolder.png" />
+        <BitmapImage x:Key="htmlFile" UriSource="Resources/TreeIcons/htmlFile.png" />
+        <BitmapImage x:Key="imageFile" UriSource="Resources/TreeIcons/imageFile.png" />
+        <BitmapImage x:Key="mdFile" UriSource="Resources/TreeIcons/mdFile.png" />
+        <BitmapImage x:Key="miniProjFile" UriSource="Resources/TreeIcons/miniProjFile.png" />
+        <BitmapImage x:Key="unknownFile" UriSource="Resources/TreeIcons/unknownFile.png" />
+
+        <BitmapImage x:Key="addDock" UriSource="Resources/Tools/addDock.png" />
+        <BitmapImage x:Key="addFolder" UriSource="Resources/Tools/addFolder.png" />
+        <BitmapImage x:Key="collapse" UriSource="Resources/Tools/collapse.png" />
+        <BitmapImage x:Key="config" UriSource="Resources/Tools/config.png" />
+        <BitmapImage x:Key="delete" UriSource="Resources/Tools/delete.png" />
+        <BitmapImage x:Key="edit" UriSource="Resources/Tools/edit.png" />
+        <BitmapImage x:Key="expand" UriSource="Resources/Tools/expand.png" />
+        <BitmapImage x:Key="openProjectFolder" UriSource="Resources/Tools/openProjectFolder.png" />
+        <BitmapImage x:Key="projectToWeb" UriSource="Resources/Tools/projectToWeb.png" />
+        <BitmapImage x:Key="removeFolder" UriSource="Resources/Tools/removeFolder.png" />
+        <BitmapImage x:Key="save" UriSource="Resources/Tools/save.png" />
+        <BitmapImage x:Key="tohtml" UriSource="Resources/Tools/tohtml.png" />
+        
     </Application.Resources>
 </Application>

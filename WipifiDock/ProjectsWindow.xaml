@@ -20,12 +20,12 @@
 
             <Button x:Name="editButton" Click="editButton_Click" Width="32" Height="32" ToolTip="Режим редактирования">
                 <StackPanel>
-                    <Image Source="Resources/edit.png" />
+                    <Image Source="Resources/Tools/edit.png" />
                 </StackPanel>
             </Button>
             <Button x:Name="toHtmlButton" Click="toHtmlButton_Click" Width="32" Height="32" ToolTip="Режим HTML">
                 <StackPanel>
-                    <Image Source="Resources/tohtml.png" />
+                    <Image Source="Resources/Tools/tohtml.png" />
                 </StackPanel>
             </Button>
 
@@ -33,12 +33,12 @@
 
             <Button x:Name="addDock" Click="addDock_Click" Width="20" Height="32" ToolTip="Добавить документ">
                 <StackPanel>
-                    <Image Source="Resources/addDock.png" />
+                    <Image Source="Resources/Tools/addDock.png" />
                 </StackPanel>
             </Button>
             <Button x:Name="addFolder" Click="addFolder_Click" Width="20" Height="32" ToolTip="Добавить каталог">
                 <StackPanel>
-                    <Image Source="Resources/addFolder.png" />
+                    <Image Source="Resources/Tools/addFolder.png" />
                 </StackPanel>
             </Button>
 
@@ -46,12 +46,12 @@
 
             <Button x:Name="deleteDock" Click="deleteDock_Click"  Width="20" Height="32" ToolTip="Удалить выбранный файл">
                 <StackPanel>
-                    <Image Source="Resources/delete.png" />
+                    <Image Source="Resources/Tools/delete.png" />
                 </StackPanel>
             </Button>
             <Button x:Name="deleteFolder" Click="deleteFolder_Click" Width="20" Height="32" ToolTip="Удалить выбранный каталог">
                 <StackPanel>
-                    <Image Source="Resources/removeFolder.png" />
+                    <Image Source="Resources/Tools/removeFolder.png" />
                 </StackPanel>
             </Button>
 
@@ -59,12 +59,12 @@
 
             <Button x:Name="collapse" Click="collapse_Click" Width="32" Height="32" ToolTip="Свернуть все каталоги">
                 <StackPanel>
-                    <Image Source="Resources/collapse.png" />
+                    <Image Source="Resources/Tools/collapse.png" />
                 </StackPanel>
             </Button>
             <Button x:Name="expand" Click="expand_Click" Width="32" Height="32" ToolTip="Развернуть все каталоги">
                 <StackPanel>
-                    <Image Source="Resources/expand.png" />
+                    <Image Source="Resources/Tools/expand.png" />
                 </StackPanel>
             </Button>
 
@@ -72,12 +72,12 @@
 
             <Button x:Name="saveProject" Click="saveProject_Click" Width="32" Height="32" IsEnabled="False">
                 <StackPanel>
-                    <Image Source="Resources/save.png" />
+                    <Image Source="Resources/Tools/save.png" />
                 </StackPanel>
             </Button>
             <Button x:Name="openProjectFolder" Click="openProjectFolder_Click" Width="20" Height="32" ToolTip="Открыть каталог проекта">
                 <StackPanel>
-                    <Image Source="Resources/openProjectFolder.png" />
+                    <Image Source="Resources/Tools/openProjectFolder.png" />
                 </StackPanel>
             </Button>
 
@@ -88,17 +88,17 @@
         <TextBox x:Name="urlTextBox" IsEnabled="false" KeyDown="urlTextBox_KeyDown" Height="23" Margin="69,32,0,0" TextWrapping="Wrap" Text="index.html" VerticalAlignment="Top" FontFamily="Consolas" FontSize="14"/>
         <Button x:Name="backButton" Click="backButton_Click" HorizontalAlignment="Left" Height="23" Margin="0,32,0,0" VerticalAlignment="Top" Width="23">
             <StackPanel>
-                <Image Source="Resources/back.png" />
+                <Image Source="Resources/Browse/back.png" />
             </StackPanel>
         </Button>
         <Button x:Name="frontButton" Click="forwardButton_Click" HorizontalAlignment="Left" Height="23" Margin="23,32,0,0" VerticalAlignment="Top" Width="23">
             <StackPanel>
-                <Image Source="Resources/front.png" />
+                <Image Source="Resources/Browse/front.png" />
             </StackPanel>
         </Button>
         <Button x:Name="updateButton" Click="updateButton_Click" HorizontalAlignment="Left" Height="23" Margin="46,32,0,0" VerticalAlignment="Top" Width="23">
             <StackPanel>
-                <Image Source="Resources/update.png" />
+                <Image Source="Resources/Browse/update.png" />
             </StackPanel>
         </Button>
         <!--#endregion-->
@@ -125,8 +125,10 @@
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
 
-                                        <Image Source="Resources/miniFolder.png" Width="16" Height="16" />
-                                        <!-- Как это работает?! -->
+                                        <!-- Как этот Binding работает?! -->
+                                        <Image Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
+                                            AncestorType={x:Type q:TreeViewDataFolder}}, Path=GetImage}" Width="16" Height="16" />
+                                        
                                         <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
                                             AncestorType={x:Type q:TreeViewDataFolder}}, Path=FolderName}" />
                                         
@@ -145,6 +147,9 @@
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
 
+                                        <Image Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
+                                            AncestorType={x:Type q:TreeViewDataFile}}, Path=GetImage}" Width="16" Height="16" />
+                                        
                                         <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
                                             AncestorType={x:Type q:TreeViewDataFile}}, Path=FileName}" />
 
