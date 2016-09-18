@@ -18,12 +18,12 @@
         <!--#region ToolBar-->
         <ToolBar x:Name="gridPanel" Height="32" VerticalAlignment="Top" Margin="1,0,-1,0">
 
-            <Button x:Name="editButton" Click="editButton_Click" Width="32" Height="32">
+            <Button x:Name="editButton" Click="editButton_Click" Width="32" Height="32" ToolTip="Режим редактирования">
                 <StackPanel>
                     <Image Source="Resources/edit.png" />
                 </StackPanel>
             </Button>
-            <Button x:Name="toHtmlButton" Click="toHtmlButton_Click" Width="32" Height="32">
+            <Button x:Name="toHtmlButton" Click="toHtmlButton_Click" Width="32" Height="32" ToolTip="Режим HTML">
                 <StackPanel>
                     <Image Source="Resources/tohtml.png" />
                 </StackPanel>
@@ -31,12 +31,12 @@
 
             <Grid Width="16"></Grid>
 
-            <Button x:Name="addDock" Click="addDock_Click" Width="20" Height="32">
+            <Button x:Name="addDock" Click="addDock_Click" Width="20" Height="32" ToolTip="Добавить документ">
                 <StackPanel>
                     <Image Source="Resources/addDock.png" />
                 </StackPanel>
             </Button>
-            <Button x:Name="addFolder" Click="addFolder_Click" Width="20" Height="32">
+            <Button x:Name="addFolder" Click="addFolder_Click" Width="20" Height="32" ToolTip="Добавить каталог">
                 <StackPanel>
                     <Image Source="Resources/addFolder.png" />
                 </StackPanel>
@@ -44,12 +44,12 @@
 
             <Grid Width="8"></Grid>
 
-            <Button x:Name="deleteDock" Click="deleteDock_Click"  Width="20" Height="32">
+            <Button x:Name="deleteDock" Click="deleteDock_Click"  Width="20" Height="32" ToolTip="Удалить выбранный файл">
                 <StackPanel>
                     <Image Source="Resources/delete.png" />
                 </StackPanel>
             </Button>
-            <Button x:Name="deleteFolder" Click="deleteFolder_Click" Width="20" Height="32">
+            <Button x:Name="deleteFolder" Click="deleteFolder_Click" Width="20" Height="32" ToolTip="Удалить выбранный каталог">
                 <StackPanel>
                     <Image Source="Resources/removeFolder.png" />
                 </StackPanel>
@@ -57,12 +57,12 @@
 
             <Grid Width="16"></Grid>
 
-            <Button x:Name="collapse" Click="collapse_Click" Width="32" Height="32">
+            <Button x:Name="collapse" Click="collapse_Click" Width="32" Height="32" ToolTip="Свернуть все каталоги">
                 <StackPanel>
                     <Image Source="Resources/collapse.png" />
                 </StackPanel>
             </Button>
-            <Button x:Name="expand" Click="expand_Click" Width="32" Height="32">
+            <Button x:Name="expand" Click="expand_Click" Width="32" Height="32" ToolTip="Развернуть все каталоги">
                 <StackPanel>
                     <Image Source="Resources/expand.png" />
                 </StackPanel>
@@ -70,12 +70,12 @@
 
             <Grid Width="16"></Grid>
 
-            <Button x:Name="saveProject" Click="saveProject_Click" Width="32" Height="32">
+            <Button x:Name="saveProject" Click="saveProject_Click" Width="32" Height="32" IsEnabled="False">
                 <StackPanel>
                     <Image Source="Resources/save.png" />
                 </StackPanel>
             </Button>
-            <Button x:Name="openProjectFolder" Click="openProjectFolder_Click" Width="20" Height="32">
+            <Button x:Name="openProjectFolder" Click="openProjectFolder_Click" Width="20" Height="32" ToolTip="Открыть каталог проекта">
                 <StackPanel>
                     <Image Source="Resources/openProjectFolder.png" />
                 </StackPanel>
