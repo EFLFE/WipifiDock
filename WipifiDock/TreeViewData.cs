@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Windows.Controls;
 
 namespace WipifiDock
@@ -7,30 +6,29 @@ namespace WipifiDock
     namespace TreeViewData
     {
         /// <summary> TreeView каталог. </summary>
-        public sealed class TreeViewDataFolder
+        public sealed class TreeViewDataFolder : TreeViewItem
         {
             public string FolderName { get; set; }
 
-            /// <summary> Файлы каталога. </summary>
-            public ObservableCollection<TreeViewDataFile> Members { get; set; }
+            public string Path { get; set; }
 
-            public TreeViewDataFolder(string name) : base()
+            public TreeViewDataFolder(string folderName, string path)
             {
-                FolderName = name;
-                Members = new ObservableCollection<TreeViewDataFile>();
+                FolderName = folderName;
+                Path = path;
             }
         }
 
         /// <summary> TreeView файл. </summary>
-        public sealed class TreeViewDataFile
+        public sealed class TreeViewDataFile : TreeViewItem
         {
-            public string Name { get; set; }
+            public string FileName { get; set; }
 
-            public string Path;
+            public string Path { get; set; }
 
-            public TreeViewDataFile(string name, string path)
+            public TreeViewDataFile(string filename, string path)
             {
-                Name = name;
+                FileName = filename;
                 Path = path;
             }
         }

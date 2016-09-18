@@ -14,6 +14,8 @@
         Foreground="Black"
         Icon="Resources/icon1.png">
     <Grid>
+
+        <!--#region ToolBar-->
         <ToolBar x:Name="gridPanel" Height="32" VerticalAlignment="Top" Margin="1,0,-1,0">
 
             <Button x:Name="editButton" Click="editButton_Click" Width="32" Height="32">
@@ -80,9 +82,9 @@
             </Button>
 
         </ToolBar>
+        <!--#endregion-->
 
-        <!--===========================-->
-
+        <!--#region Browse Buttons-->
         <TextBox x:Name="urlTextBox" IsEnabled="false" KeyDown="urlTextBox_KeyDown" Height="23" Margin="69,32,0,0" TextWrapping="Wrap" Text="index.html" VerticalAlignment="Top" FontFamily="Consolas" FontSize="14"/>
         <Button x:Name="backButton" Click="backButton_Click" HorizontalAlignment="Left" Height="23" Margin="0,32,0,0" VerticalAlignment="Top" Width="23">
             <StackPanel>
@@ -99,6 +101,8 @@
                 <Image Source="Resources/update.png" />
             </StackPanel>
         </Button>
+        <!--#endregion-->
+
         <Grid Margin="1,55,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="160*"/>
@@ -114,26 +118,38 @@
 
             <TreeView x:Name="treeView" Margin="0,0,4,0">
                 <TreeView.Resources>
-                    <HierarchicalDataTemplate DataType="{x:Type q:TreeViewDataFolder}" ItemsSource="{Binding Members}">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="Resources/miniFolder.png" Margin="0,0,5,0" Width="16" Height="16" />
-                            <TextBlock Text="{Binding FolderName}" />
-                            <TextBlock Text=" (" Foreground="DarkGray" />
-                            <TextBlock Text="{Binding Members.Count}" Foreground="DarkGray" />
-                            <TextBlock Text=")" Foreground="DarkGray" />
-                        </StackPanel>
-                    </HierarchicalDataTemplate>
+                    <!-- Folders -->
+                    <Style TargetType="{x:Type q:TreeViewDataFolder}">
+                        <Setter Property="HeaderTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
 
-                    <DataTemplate DataType="{x:Type q:TreeViewDataFile}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Name}" />
-                            <!--
-                            <TextBlock Text=" (" Foreground="Green" />
-                            <TextBlock Text="{Binding Age}" Foreground="Green" />
-                            <TextBlock Text=" years)" Foreground="Green" />
-                            -->
-                        </StackPanel>
-                    </DataTemplate>
+                                        <Image Source="Resources/miniFolder.png" Width="16" Height="16" />
+                                        <!-- Как это работает?! -->
+                                        <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type q:TreeViewDataFolder}}, Path=FolderName}" />
+
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                    <!-- Files -->
+                    <Style TargetType="{x:Type q:TreeViewDataFile}">
+                        <Setter Property="HeaderTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+
+                                        <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
+                                            AncestorType={x:Type q:TreeViewDataFile}}, Path=FileName}" />
+
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
                 </TreeView.Resources>
             </TreeView>
 

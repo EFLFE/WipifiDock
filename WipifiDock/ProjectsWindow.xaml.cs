@@ -90,12 +90,13 @@ namespace WipifiDock
 
             for (i = 0; i < dirs.Length; i++)
             {
-                var indir = new TreeViewData.TreeViewDataFolder(dirs[i].Remove(0, projectData.Path.Length + 1));
+                var indir = new TreeViewData.TreeViewDataFolder(dirs[i].Remove(0, projectData.Path.Length + 1), dirs[i]);
                 var dif = Directory.GetFiles(dirs[i], "*.*", SearchOption.TopDirectoryOnly);
 
+                // add files in'dir
                 for (j = 0; j < dif.Length; j++)
                 {
-                    indir.Members.Add(
+                    indir.Items.Add(
                         new TreeViewData.TreeViewDataFile(Path.GetFileName(dif[j]),
                             dirs[i]));
                 }
@@ -243,10 +244,23 @@ namespace WipifiDock
         // collapse/expand treeView
         private void collapse_Click(object sender, RoutedEventArgs e)
         {
+            setTreeViewExpand(false);
         }
 
         private void expand_Click(object sender, RoutedEventArgs e)
         {
+            setTreeViewExpand(true);
+        }
+
+        private void setTreeViewExpand(bool isExpanded)
+        {
+            foreach (var item in treeView.Items)
+            {
+                if (item is TreeViewData.TreeViewDataFolder)
+                {
+                    (item as TreeViewData.TreeViewDataFolder).IsExpanded = isExpanded;
+                }
+            }
         }
 
         // save
