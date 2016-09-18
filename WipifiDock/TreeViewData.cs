@@ -19,7 +19,15 @@ namespace WipifiDock
             {
                 get
                 {
-                    return Items.Count < 2 && Items[0] == null ? $" ({initial})" : $" ({Items.Count})";
+                    return IsEmpty ? $" ({initial})" : $" ({Items.Count})";
+                }
+            }
+
+            public bool IsEmpty
+            {
+                get
+                {
+                    return Items.Count == 0 || (Items.Count == 1 && Items[0] == null);
                 }
             }
 
@@ -28,8 +36,8 @@ namespace WipifiDock
                 FolderName = folderName;
                 Path = path;
                 Items.Add(null); // для возможности развернуть
-                initial = Directory.GetDirectories($"{path}\\{folderName}", "*", SearchOption.TopDirectoryOnly).Length;
-                initial += Directory.GetFiles($"{path}\\{folderName}", "*.*", SearchOption.TopDirectoryOnly).Length;
+                initial = Directory.GetDirectories($"{path}\\{folderName}", "*", SearchOption.TopDirectoryOnly).Length
+                        + Directory.GetFiles($"{path}\\{folderName}", "*.*", SearchOption.TopDirectoryOnly).Length;
             }
         }
 

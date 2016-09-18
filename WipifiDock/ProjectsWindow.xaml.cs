@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Linq;
+using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -98,10 +100,11 @@ namespace WipifiDock
             }
         }
 
+        // load expanded tree
         private void TreeFolder_Expanded(object sender, RoutedEventArgs e)
         {
             var item = (TreeViewData.TreeViewDataFolder)sender;
-            if (item != null && item.Items.Count < 2 && item.Items[0] == null)
+            if (item.Items.Count == 0 || (item.Items.Count == 1 && item.Items[0] == null))
             {
                 item.Items.Clear();
                 // == ~COPY~ ==
@@ -109,7 +112,7 @@ namespace WipifiDock
                 string path = $"{item.Path}\\{item.FolderName}";
                 string[] files = Directory.GetFiles(path,"*.*", SearchOption.TopDirectoryOnly);
                 string[] dirs = Directory.GetDirectories(path, "*", SearchOption.TopDirectoryOnly);
-                
+
                 for (i = 0; i < files.Length; i++)
                 {
                     var treeFile = new TreeViewData.TreeViewDataFile(
@@ -254,48 +257,101 @@ namespace WipifiDock
 #warning TODO: addFolder_Click
         private void addFolder_Click(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show("Не реализован.");
         }
 
 #warning TODO: addDock_Click
         private void addDock_Click(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show("Не реализован.");
         }
 
 #warning TODO: deleteDock_Click
         private void deleteDock_Click(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show("Не реализован.");
         }
 
 #warning TODO: deleteFolder_Click
         private void deleteFolder_Click(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show("Не реализован.");
         }
 
         // collapse/expand treeView
         private void collapse_Click(object sender, RoutedEventArgs e)
         {
-            setTreeViewExpand(false);
+            setTreeViewExpand(treeView.Items, false);
+            if (safeRecursion != -2) safeRecursion = 0;
         }
 
         private void expand_Click(object sender, RoutedEventArgs e)
         {
-            setTreeViewExpand(true);
+            setTreeViewExpand(treeView.Items, true);
+            if (safeRecursion != -2) safeRecursion = 0;
         }
 
-        private void setTreeViewExpand(bool isExpanded)
+        // по теории, этого быть не должно, но я всё же перестрахуюсь
+        // (-1 стоп, -2 игнорировать)
+        private static int safeRecursion;
+
+        private void setTreeViewExpand(ItemCollection treeViewItems, bool isExpanded)
         {
-            foreach (var item in treeView.Items)
+            if (safeRecursion != -2)
             {
-                if (item is TreeViewData.TreeViewDataFolder)
+                if (safeRecursion == -1)
                 {
-                    (item as TreeViewData.TreeViewDataFolder).IsExpanded = isExpanded;
+                    return;
+                }
+                if (safeRecursion++ > 399)
+                {
+                    var kek = MessageBox.Show(
+                        "Обнаружен предел рекурсии, или слишком много каталогов для открытия. Игнорировать данное сообщение и продолжить?",
+                        "Предел рекурсии/каталогов",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Warning);
+
+                    safeRecursion = kek == MessageBoxResult.Yes ? -2 : -1;
+                    if (kek == MessageBoxResult.No)
+                        return;
                 }
             }
+
+            foreach (var item in treeViewItems)
+            {
+                var _folder = item as TreeViewData.TreeViewDataFolder;
+                if (_folder != null)
+                {
+                    if (isExpanded)
+                    {
+                        if (!_folder.IsExpanded)
+                        {
+                            _folder.IsExpanded = true;
+                            if (!_folder.IsEmpty)
+                            {
+                                // рекурсия
+                                setTreeViewExpand(_folder.Items, true);
+                            }
+                        }
+                    }
+                    else if (_folder.IsExpanded)
+                    {
+                        _folder.IsExpanded = false;
+                        if (!_folder.IsEmpty)
+                        {
+                            // рекурсия
+                            setTreeViewExpand(_folder.Items, false);
+                        }
+                    }
+                }
+            }
+            safeRecursion--;
         }
 
 #warning TODO: saveProject_Click
         private void saveProject_Click(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show("Не реализован.");
         }
 
         // open project dir
