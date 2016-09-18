@@ -35,9 +35,20 @@
         </TextBlock>
 
         <TextBlock x:Name="vText" Margin="10,106,306,0" TextWrapping="Wrap" Text="V: " VerticalAlignment="Top" FontWeight="Bold"
-                   FontFamily="Segoe Script" FontSize="18"/>
+                   FontFamily="Segoe Script" FontSize="18" Foreground="#FF606060"/>
         <TextBlock Margin="0,106,10,0" TextWrapping="Wrap" Text="By EFLFE" VerticalAlignment="Top" FontWeight="Bold"
             FontFamily="Segoe Script" FontSize="18" HorizontalAlignment="Right" Width="96"/>
+        <TextBlock Margin="0,106,10,0" TextWrapping="Wrap" Text="By EFLFE" VerticalAlignment="Top" FontWeight="Bold"
+            FontFamily="Segoe Script" FontSize="18" HorizontalAlignment="Right" Width="96" RenderTransformOrigin="0.5,0.5" Foreground="#3F000000">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="1.1" ScaleY="1.1"/>
+                    <SkewTransform AngleX="10" AngleY="2"/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </TextBlock.RenderTransform>
+        </TextBlock>
 
         <Line x:Name="line1" X1="10" Y1="190" X2="200" Y2="190" VerticalAlignment="Top" Stroke="Black"/>
         <Line x:Name="line2" X1="10" Y1="260" X2="200" Y2="260" VerticalAlignment="Top" Stroke="Black"/>
@@ -49,8 +60,8 @@
                 <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                     <GradientStop Color="#FFF3F3F3" Offset="0"/>
                     <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
-                    <GradientStop Color="#FF8585FF" Offset="0.5"/>
-                    <GradientStop Color="#FFCDCDCD" Offset="1"/>
+                    <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
+                    <GradientStop Color="#FF8477FF" Offset="1"/>
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
@@ -59,8 +70,8 @@
                 <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                     <GradientStop Color="#FFF3F3F3" Offset="0"/>
                     <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
-                    <GradientStop Color="#FFC4D172" Offset="0.5"/>
-                    <GradientStop Color="#FFCDCDCD" Offset="1"/>
+                    <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
+                    <GradientStop Color="#FFEFFF8C" Offset="1"/>
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
@@ -69,8 +80,8 @@
                 <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                     <GradientStop Color="#FFF3F3F3" Offset="0"/>
                     <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
-                    <GradientStop Color="#FFD36060" Offset="0.5"/>
-                    <GradientStop Color="#FFCDCDCD" Offset="1"/>
+                    <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
+                    <GradientStop Color="#FFFF7E7E" Offset="1"/>
                 </LinearGradientBrush>
             </Button.Background>
         </Button>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace WipifiDock
 {
@@ -16,6 +17,11 @@ namespace WipifiDock
         public MainPage1()
         {
             InitializeComponent();
+
+            projectName.Background = Brushes.Transparent;
+            projectDesc.Background = Brushes.Transparent;
+            projectPathAndAuthor.Background = Brushes.Transparent;
+
             projectListBox.SelectionChanged += ProjectListBox_SelectionChanged;
 
             // загрузить и заполнить список проектов
@@ -42,7 +48,10 @@ namespace WipifiDock
             string name = projectListBox.SelectedItem as string;
             var proj = ProjectDataManager.GetProjectData(name);
 
-            desc.Text = $"Имя: {proj.Name}\nОписание: {proj.Desc}\nПуть: {proj.Path}\nАвтор: {proj.Author}";
+            //desc.Text = $"Имя: {proj.Name}\nОписание: {proj.Desc}\nПуть: {proj.Path}\nАвтор: {proj.Author}";
+            projectName.Text = "Проект: " + proj.Name;
+            projectDesc.Text = "Описание:\n" + proj.Desc;
+            projectPathAndAuthor.Text = $"Автор: {proj.Author}\nКаталог: {proj.Path}";
         }
 
         // после создания проекта перейти на MainPage2
@@ -59,6 +68,12 @@ namespace WipifiDock
             {
                 ProjectWasSelected(sender, e);
             }
+        }
+
+        private void deleteSelectedProject_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO: delete project
+            MessageBox.Show("Не реализован.");
         }
     }
 }

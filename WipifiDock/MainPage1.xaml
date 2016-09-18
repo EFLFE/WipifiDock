@@ -8,11 +8,43 @@
       WindowHeight="320" WindowWidth="480" d:DesignWidth="480" d:DesignHeight="320">
 
     <Grid>
-        <Button x:Name="createProject" Click="createProject_Click" Content="Создать новый проект" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="201"/>
-        <Button x:Name="openProject" Click="openProject_Click" Content="Открыть выбранный проект" Margin="216,0,10,10" Height="22" VerticalAlignment="Bottom"/>
+        <Button x:Name="createProject" Click="createProject_Click" Content="Создать новый проект" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Width="201">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="#FFF3F3F3" Offset="0"/>
+                    <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
+                    <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
+                    <GradientStop Color="#FF615BA0" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <Button x:Name="openProject" Click="openProject_Click" Content="Открыть выбранный проект" Margin="10,63,0,0" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="201">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="#FFF3F3F3" Offset="0"/>
+                    <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
+                    <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
+                    <GradientStop Color="#FF73B455" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <Button x:Name="deleteSelectedProject" Click="deleteSelectedProject_Click" Content="Удалить выбранный проект" HorizontalAlignment="Left" Margin="10,0,0,10" Width="201" Height="22" VerticalAlignment="Bottom">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="#FFF3F3F3" Offset="0"/>
+                    <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
+                    <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
+                    <GradientStop Color="#FFB82F2F" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+
         <TextBlock x:Name="textBlock" Margin="10,10,0,0" TextWrapping="Wrap" Text="Проекты" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Left" Width="201"/>
-        <ListBox x:Name="projectListBox" Margin="10,36,0,37" ScrollViewer.VerticalScrollBarVisibility="Visible" HorizontalAlignment="Left" Width="201"/>
-        <TextBlock x:Name="desc" Margin="215,36,10,169" TextWrapping="Wrap"/>
+        <ListBox x:Name="projectListBox" Margin="10,90,0,37" ScrollViewer.VerticalScrollBarVisibility="Visible" HorizontalAlignment="Left" Width="201" Background="#7FFFFFFF"/>
         <TextBlock x:Name="textBlock_Copy" Margin="216,10,0,0" TextWrapping="Wrap" Text="Информация" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Left" Width="246"/>
+
+        <TextBlock x:Name="projectName" Margin="216,36,9,0" TextWrapping="Wrap" FontSize="16" Height="26" VerticalAlignment="Top" Background="#FF7E7E7E"/>
+        <TextBlock x:Name="projectDesc" Margin="216,106,9,10" TextWrapping="Wrap" Background="#FF7E7E7E"/>
+        <TextBlock x:Name="projectPathAndAuthor" Margin="216,67,9,0" TextWrapping="NoWrap" Height="34" VerticalAlignment="Top" Background="#FF7E7E7E"/>
     </Grid>
 </Page>

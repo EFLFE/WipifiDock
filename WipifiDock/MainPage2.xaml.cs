@@ -60,6 +60,10 @@ namespace WipifiDock
         // отмена
         private void projectCancel_Click(object sender, RoutedEventArgs e)
         {
+            projectName.Text = string.Empty;
+            projectDirPath.Text = string.Empty;
+            projectDesc.Text = string.Empty;
+            projectAuthor.Text = string.Empty;
             NavigateToPage1?.Invoke(sender, e);
         }
     }

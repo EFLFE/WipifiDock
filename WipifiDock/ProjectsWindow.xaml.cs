@@ -76,32 +76,22 @@ namespace WipifiDock
 
         private void loadTree()
         {
-            int i, j;
+            int i;
             string[] rootFiles = Directory.GetFiles(projectData.Path,"*.*", SearchOption.TopDirectoryOnly);
-            string[] dirs = Directory.GetDirectories(projectData.Path, "*", SearchOption.AllDirectories);
+            string[] rootDirs = Directory.GetDirectories(projectData.Path, "*", SearchOption.TopDirectoryOnly);
 
             // root files
             for (i = 0; i < rootFiles.Length; i++)
             {
-                treeView.Items.Add(
-                    new TreeViewData.TreeViewDataFile(Path.GetFileName(rootFiles[i]),
-                        Environment.CurrentDirectory));
+                treeView.Items.Add(new TreeViewData.TreeViewDataFile(
+                    Path.GetFileName(rootFiles[i]),
+                    projectData.Path));
             }
-
-            for (i = 0; i < dirs.Length; i++)
+            for (i = 0; i < rootDirs.Length; i++)
             {
-                var indir = new TreeViewData.TreeViewDataFolder(dirs[i].Remove(0, projectData.Path.Length + 1), dirs[i]);
-                var dif = Directory.GetFiles(dirs[i], "*.*", SearchOption.TopDirectoryOnly);
-
-                // add files in'dir
-                for (j = 0; j < dif.Length; j++)
-                {
-                    indir.Items.Add(
-                        new TreeViewData.TreeViewDataFile(Path.GetFileName(dif[j]),
-                            dirs[i]));
-                }
-
-                treeView.Items.Add(indir);
+                treeView.Items.Add(new TreeViewData.TreeViewDataFolder(
+                    Path.GetFileName(rootDirs[i]),
+                    projectData.Path));
             }
         }
 
