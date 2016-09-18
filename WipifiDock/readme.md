@@ -1,3 +1,3 @@
 ﻿# WipifiDock
-
-This is **WipifiDock** program.
+---
+#### В разработке.

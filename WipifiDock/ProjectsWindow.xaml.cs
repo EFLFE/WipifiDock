@@ -71,8 +71,11 @@ namespace WipifiDock
             projectData = ProjectDataManager.GetSelectedProjectData();
             Title += projectData.Name;
             //selectedWebTab.navigateFile("MainPage.html");
+            loadTree();
+        }
 
-            // load tree
+        private void loadTree()
+        {
             int i, j;
             string[] rootFiles = Directory.GetFiles(projectData.Path,"*.*", SearchOption.TopDirectoryOnly);
             string[] dirs = Directory.GetDirectories(projectData.Path, "*", SearchOption.AllDirectories);
@@ -221,5 +224,40 @@ namespace WipifiDock
             }
         }
 
+        private void addFolder_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void addDock_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void deleteDock_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void deleteFolder_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        // collapse/expand treeView
+        private void collapse_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void expand_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        // save
+        private void saveProject_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        // open project dir
+        private void openProjectFolder_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(projectData.Path);
+        }
     }
 }

@@ -19,7 +19,7 @@ namespace WipifiDock
         {
             InitializeComponent();
             Background = Brushes.Transparent; // в редакторе фон тёмный и нeфига не видно текст
-            vText.Text += App.VERSION;
+            vText.Text += App.Version;
         }
 
         // click on link

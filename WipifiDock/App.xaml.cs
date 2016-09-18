@@ -1,11 +1,20 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Reflection;
 using System.Windows;
 
 namespace WipifiDock
 {
     public partial class App : Application
     {
-        public const string VERSION = "1.0.0";
+        public static string Version { get; private set; }
+
+        public App()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            Version = fvi.FileVersion;
+        }
 
         protected override void OnStartup(StartupEventArgs e)
         {

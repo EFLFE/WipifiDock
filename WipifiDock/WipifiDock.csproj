@@ -175,8 +175,16 @@
     <Content Include="Blanks\MainBlank.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\addDock.png" />
+    <Resource Include="Resources\addFolder.png" />
+    <Resource Include="Resources\collapse.png" />
+    <Resource Include="Resources\delete.png" />
+    <Resource Include="Resources\expand.png" />
+    <Resource Include="Resources\openProjectFolder.png" />
+    <Resource Include="Resources\removeFolder.png" />
+    <Resource Include="Resources\save.png" />
     <Resource Include="Resources\logo.png" />
-    <Resource Include="Resources\volume32.png" />
+    <Resource Include="Resources\miniFolder.png" />
     <SplashScreen Include="SplashScreen.png" />
     <Resource Include="Resources\icon1.png" />
     <Resource Include="Resources\edit.png" />
