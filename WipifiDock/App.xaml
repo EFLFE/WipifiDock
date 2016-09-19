@@ -19,6 +19,7 @@
         <BitmapImage x:Key="mdFile" UriSource="Resources/TreeIcons/mdFile.png" />
         <BitmapImage x:Key="miniProjFile" UriSource="Resources/TreeIcons/miniProjFile.png" />
         <BitmapImage x:Key="unknownFile" UriSource="Resources/TreeIcons/unknownFile.png" />
+        <BitmapImage x:Key="textFile" UriSource="Resources/TreeIcons/textFile.png" />
 
         <BitmapImage x:Key="addDock" UriSource="Resources/Tools/addDock.png" />
         <BitmapImage x:Key="addFolder" UriSource="Resources/Tools/addFolder.png" />

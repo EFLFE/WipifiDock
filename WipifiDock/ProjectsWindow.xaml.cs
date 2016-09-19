@@ -22,6 +22,22 @@ namespace WipifiDock
             treeView.SelectedItemChanged += TreeView_SelectedItemChanged;
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            projectData = ProjectDataManager.GetSelectedProjectData();
+            Title += projectData.Name;
+            //selectedWebTab.navigateFile("MainPage.html");
+            loadTree();
+
+            // open index.html
+            if (File.Exists(projectData.Path + "\\index.html"))
+            {
+                addWebItem();
+                selectedWebTab.NavigateToFile(projectData.Path + "\\index.html");
+                updateEditButtons();
+            }
+        }
+
         // при выборе элемента в TreeView, открыть выбранный элемент
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
@@ -31,45 +47,38 @@ namespace WipifiDock
                 if (item is TreeViewData.TreeViewDataFile)
                 {
                     var tt = item as TreeViewData.TreeViewDataFile;
-                    var path = tt.Path + "\\" + tt.Name;
+                    var path = tt.Path + "\\" + tt.FileName;
 
                     if (tabControl.Items.Count == 1)
                     {
                         addWebItem();
                     }
-                    selectedWebTab.NavigateToFile(path, true);
+                    selectedWebTab.NavigateToFile(path);
+                    updateEditButtons();
                 }
             }
         }
 
-        // open new tab and load selected tree item (middle?)
+        // ???
         private void TreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            object item = treeView.SelectedItem;
-            if (item != null)
-            {
-                if (item is TreeViewData.TreeViewDataFile)
-                {
-                    var tt = item as TreeViewData.TreeViewDataFile;
-                    var path = tt.Path + "\\" + tt.Name;
-
-                    addWebItem();
-                    selectedWebTab.NavigateToFile(path, true);
-                }
-            }
+            //object item = treeView.SelectedItem;
+            //if (item != null)
+            //{
+            //    if (item is TreeViewData.TreeViewDataFile)
+            //    {
+            //        var tt = item as TreeViewData.TreeViewDataFile;
+            //        var path = tt.Path + "\\" + tt.Name;
+            //
+            //        addWebItem();
+            //        selectedWebTab.NavigateToFile(path, true);
+            //    }
+            //}
         }
 
         private void exitmenu_Click(object sender, RoutedEventArgs e)
         {
             Close();
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            projectData = ProjectDataManager.GetSelectedProjectData();
-            Title += projectData.Name;
-            //selectedWebTab.navigateFile("MainPage.html");
-            loadTree();
         }
 
         private void loadTree()
@@ -205,22 +214,19 @@ namespace WipifiDock
             safeRecursion--;
         }
 
-        private void convertMDtoHTML()
-        {
-            using (var reader = new StreamReader("source.md"))
-            {
-                using (var writer = new StreamWriter("result.html"))
-                {
-                    CommonMarkConverter.Convert(reader, writer);
-                }
-            }
-        }
-
         private void urlTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                selectedWebTab.NavigateToFile(urlTextBox.Text, false);
+                var pp = projectData.Path + "\\" + urlTextBox.Text;
+                if (File.Exists(pp))
+                {
+                    selectedWebTab.NavigateToFile(urlTextBox.Text);
+                }
+                else
+                {
+                    MessageBox.Show("Файл \"" + pp + "\" не найден.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
@@ -240,18 +246,21 @@ namespace WipifiDock
             updateEditButtons();
         }
 
+        // EnableEditMode
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
             selectedWebTab?.EnableEditMode();
             updateEditButtons();
         }
 
+        // DisableEditMode
         private void toHtmlButton_Click(object sender, RoutedEventArgs e)
         {
             selectedWebTab?.DisableEditMode();
             updateEditButtons();
         }
 
+        // add new tab
         private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!IsLoaded)
@@ -259,7 +268,7 @@ namespace WipifiDock
 
             if (tabControl.SelectedIndex == tabControl.Items.Count - 1)
             {
-                addWebItem();
+                addWebItem(true);
                 return;
             }
 
@@ -267,9 +276,14 @@ namespace WipifiDock
             updateEditButtons();
         }
 
-        private void addWebItem()
+        /// <summary> Добавить tab в tabControl. </summary>
+        /// <param name="suspedAddTabButton"> Заморозить кнопку + таба на короткое время. </param>
+        private void addWebItem(bool suspedAddTabButton = false)
         {
-            (tabControl.Items[tabControl.Items.Count - 1] as TabItem).IsEnabled = false;
+            if (suspedAddTabButton)
+            {
+                (tabControl.Items[tabControl.Items.Count - 1] as TabItem).IsEnabled = false;
+            }
 
             var _tab = new TabItem();
             var _grid = new Grid();
@@ -287,15 +301,18 @@ namespace WipifiDock
             tabControl.Items.Insert(tabControl.Items.Count - 1, _tab);
             tabControl.SelectedIndex = tabControl.Items.Count - 2;
 
-            ThreadPool.QueueUserWorkItem(new WaitCallback((_) =>
+            if (suspedAddTabButton)
             {
-                // костыль, ибо я без понятия
-                // почему при первом добавлении таба
-                // он добавляет сразу два
-                Thread.Sleep(99);
-                Dispatcher.Invoke(() => { (tabControl.Items[tabControl.Items.Count - 1] as TabItem).IsEnabled = true; });
+                ThreadPool.QueueUserWorkItem(new WaitCallback((_) =>
+                {
+                    // костыль, ибо я без понятия
+                    // почему при первом добавлении таба
+                    // он добавляет сразу два
+                    Thread.Sleep(99);
+                    Dispatcher.Invoke(() => { (tabControl.Items[tabControl.Items.Count - 1] as TabItem).IsEnabled = true; });
+                }
+                ));
             }
-            ));
         }
 
         private void _webTab_OnNavigated(string title)
@@ -303,55 +320,59 @@ namespace WipifiDock
             updateEditButtons();
         }
 
+        // обновить доступность кнопок переключения режима редактирования
         private void updateEditButtons()
         {
-            if (selectedWebTab == null || !selectedWebTab.Navigated)
+            if (selectedWebTab.LastFileFormatType == BlankGenerator.FileFormatType.HTML ||
+                selectedWebTab.LastFileFormatType == BlankGenerator.FileFormatType.MarkDown)
+            {
+                if (selectedWebTab == null || !selectedWebTab.Navigated)
+                {
+                    editButton.IsEnabled = false;
+                    toHtmlButton.IsEnabled = false;
+                }
+                else
+                {
+                    if (selectedWebTab.EditMode)
+                    {
+                        editButton.IsEnabled = false;
+                        toHtmlButton.IsEnabled = true;
+                    }
+                    else
+                    {
+                        editButton.IsEnabled = true;
+                        toHtmlButton.IsEnabled = false;
+                    }
+                }
+            }
+            else
             {
                 editButton.IsEnabled = false;
                 toHtmlButton.IsEnabled = false;
             }
-            else
-            {
-                if (selectedWebTab.EditMode)
-                {
-                    editButton.IsEnabled = false;
-                    toHtmlButton.IsEnabled = true;
-                }
-                else
-                {
-                    editButton.IsEnabled = true;
-                    toHtmlButton.IsEnabled = false;
-                }
-            }
         }
 
-#warning TODO: addFolder_Click
         private void addFolder_Click(object sender, RoutedEventArgs e)
         {
+#warning TODO: addFolder_Click
             MessageBox.Show("Не реализован.");
         }
 
-#warning TODO: addDock_Click
         private void addDock_Click(object sender, RoutedEventArgs e)
         {
+#warning TODO: addDock_Click
             MessageBox.Show("Не реализован.");
         }
 
-#warning TODO: deleteDock_Click
         private void deleteDock_Click(object sender, RoutedEventArgs e)
         {
+#warning TODO: deleteDock_Click
             MessageBox.Show("Не реализован.");
         }
 
-#warning TODO: deleteFolder_Click
         private void deleteFolder_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Не реализован.");
-        }
-
-#warning TODO: saveProject_Click
-        private void saveProject_Click(object sender, RoutedEventArgs e)
-        {
+#warning TODO: deleteFolder_Click
             MessageBox.Show("Не реализован.");
         }
 
@@ -359,6 +380,18 @@ namespace WipifiDock
         private void openProjectFolder_Click(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start(projectData.Path);
+        }
+
+        private void configProject_Click(object sender, RoutedEventArgs e)
+        {
+#warning TODO: configProject_Click
+            MessageBox.Show("Не реализован.");
+        }
+
+        private void projectToWebButton_Click(object sender, RoutedEventArgs e)
+        {
+#warning TODO: projectToWebButton_Click
+            MessageBox.Show("Не реализован.");
         }
     }
 }

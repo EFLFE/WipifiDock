@@ -70,9 +70,9 @@
 
             <Grid Width="16"></Grid>
 
-            <Button x:Name="saveProject" Click="saveProject_Click" Width="32" Height="32" IsEnabled="False">
+            <Button x:Name="configProject" Click="configProject_Click" Width="32" Height="32" ToolTip="Настройкки проекта">
                 <StackPanel>
-                    <Image Source="Resources/Tools/save.png" />
+                    <Image Source="Resources/Tools/config.png" />
                 </StackPanel>
             </Button>
             <Button x:Name="openProjectFolder" Click="openProjectFolder_Click" Width="20" Height="32" ToolTip="Открыть каталог проекта">
@@ -80,12 +80,18 @@
                     <Image Source="Resources/Tools/openProjectFolder.png" />
                 </StackPanel>
             </Button>
+            <Button x:Name="projectToWebButton" Click="projectToWebButton_Click" Width="32" Height="32" ToolTip="Конвертировать проект в Web формат" Margin="0,-2,0,-3">
+                <StackPanel>
+                    <Image Source="Resources/Tools/projectToWeb.png" />
+                </StackPanel>
+            </Button>
 
         </ToolBar>
         <!--#endregion-->
 
         <!--#region Browse Buttons-->
-        <TextBox x:Name="urlTextBox" IsEnabled="false" KeyDown="urlTextBox_KeyDown" Height="23" Margin="69,32,0,0" TextWrapping="Wrap" Text="index.html" VerticalAlignment="Top" FontFamily="Consolas" FontSize="14"/>
+        <TextBox x:Name="urlTextBox" IsEnabled="true" KeyDown="urlTextBox_KeyDown" Height="23" Margin="69,32,0,0" TextWrapping="Wrap" Text="blank" VerticalAlignment="Top" FontFamily="Consolas" FontSize="14"/>
+        
         <Button x:Name="backButton" Click="backButton_Click" HorizontalAlignment="Left" Height="23" Margin="0,32,0,0" VerticalAlignment="Top" Width="23">
             <StackPanel>
                 <Image Source="Resources/Browse/back.png" />
@@ -128,10 +134,10 @@
                                         <!-- Как этот Binding работает?! -->
                                         <Image Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
                                             AncestorType={x:Type q:TreeViewDataFolder}}, Path=GetImage}" Width="16" Height="16" />
-                                        
+
                                         <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
                                             AncestorType={x:Type q:TreeViewDataFolder}}, Path=FolderName}" />
-                                        
+
                                         <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
                                             AncestorType={x:Type q:TreeViewDataFolder}}, Path=GetItemCountString}" Foreground="Gray"/>
 
@@ -149,7 +155,7 @@
 
                                         <Image Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
                                             AncestorType={x:Type q:TreeViewDataFile}}, Path=GetImage}" Width="16" Height="16" />
-                                        
+
                                         <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
                                             AncestorType={x:Type q:TreeViewDataFile}}, Path=FileName}" />
 

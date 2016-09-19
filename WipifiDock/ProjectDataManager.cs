@@ -59,6 +59,7 @@ namespace WipifiDock
                     }
                 }
 
+                // базовый набор проекта
                 if (!Directory.Exists(path))
                 {
                     var dir = Directory.CreateDirectory(path);
@@ -67,6 +68,15 @@ namespace WipifiDock
                         throw new Exception("Не удалось создать каталог \"" + path + "\"!");
                     }
                 }
+                File.WriteAllText(path + "\\index.html", BlankGenerator.Custom(
+                    "Проект - " + name,
+                    null,
+                    new[] {
+                        $"<h2>Проект - {name}</h2>",
+                        $"<h3>Автор - {author}</h3>",
+                        "<h4>Описание:</h4>",
+                        $"<p>{desc}</p>"
+                    }));
 
                 // write
                 using (var stream = File.Open(CONF_FILE, FileMode.OpenOrCreate, FileAccess.Write))
@@ -232,6 +242,7 @@ namespace WipifiDock
             return false;
         }
 
+        // удалить проект из конфиг файла
         private static void deleteProjectData(string name)
         {
             // без расчёта на очень большой конфиг файл
