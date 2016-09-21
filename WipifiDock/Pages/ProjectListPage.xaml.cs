@@ -3,28 +3,30 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using WipifiDock.Data;
 
-namespace WipifiDock
+namespace WipifiDock.Pages
 {
     /// <summary> Project list. </summary>
-    public partial class MainPage1 : Page
+    public partial class ProjectListPage : Page
     {
-        /// <summary> СОбытия для перехода на MainPage2. </summary>
-        public event EventHandler NavigateToPage2;
-
-        /// <summary> Событие создания нового проекта. </summary>
-        public event EventHandler ProjectWasSelected;
-
+        private MainWipifiWindow OwnerMainWindow;
         private ProjectData selectedProject;
 
-        public MainPage1()
+        public ProjectListPage(MainWipifiWindow ownerMainWindow)
         {
+            OwnerMainWindow = ownerMainWindow;
+            Loaded += ProjectListPage_Loaded;
+
             InitializeComponent();
 
             projectName.Background = Brushes.Transparent;
             projectDesc.Background = Brushes.Transparent;
             projectPathAndAuthor.Background = Brushes.Transparent;
+        }
 
+        private void ProjectListPage_Loaded(object sender, RoutedEventArgs e)
+        {
             projectListBox.SelectionChanged += ProjectListBox_SelectionChanged;
 
             // загрузить и заполнить список проектов
@@ -68,10 +70,10 @@ namespace WipifiDock
             deleteSelectedProject.IsEnabled = true;
         }
 
-        // после создания проекта перейти на MainPage2
+        // после создания проекта перейти на CreateNewProjectPage
         private void createProject_Click(object sender, RoutedEventArgs e)
         {
-            NavigateToPage2?.Invoke(sender, e);
+            OwnerMainWindow.FrameNavigate(MainWipifiWindow.PageType.CreateNewProjectPage);
         }
 
         // открыть проект
@@ -80,8 +82,8 @@ namespace WipifiDock
             var pi = projectListBox.SelectedItem as string;
             if (pi != null && ProjectDataManager.SelectProjectName(pi))
             {
-                ProjectWasSelected(sender, e);
-            }
+                OwnerMainWindow.FrameNavigate(MainWipifiWindow.PageType.ProjectPage);
+            }            
         }
 
         private void deleteSelectedProject_Click(object sender, RoutedEventArgs e)
@@ -103,7 +105,10 @@ namespace WipifiDock
             {
                 var path = ofd.SelectedPath;
                 var name = path.Remove(0, path.LastIndexOf('\\') + 1);
-                NavigateToPage2?.Invoke(new string[2] { name, path }, e);
+
+
+                OwnerMainWindow.createNewProjectPage.SetMainData(name, path);
+                OwnerMainWindow.FrameNavigate(MainWipifiWindow.PageType.CreateNewProjectPage);
             }
         }
     }

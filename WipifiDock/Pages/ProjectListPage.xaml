@@ -1,4 +1,4 @@
-﻿<Page x:Class="WipifiDock.MainPage1"
+﻿<Page x:Class="WipifiDock.Pages.ProjectListPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -16,7 +16,7 @@
                 </RadialGradientBrush>
             </Button.Background>
             <StackPanel>
-                <Image Source="Resources/Tools/addDock.png" />
+                <Image Source="/WipifiDock;component/Resources/Tools/addDock.png" />
             </StackPanel>
         </Button>
         <Button x:Name="openProject" IsEnabled="false" ToolTip="Открыть выбранный проект" Click="openProject_Click" Margin="35,36,0,0" Height="32" VerticalAlignment="Top" HorizontalAlignment="Left" Width="20">
@@ -27,7 +27,7 @@
                 </RadialGradientBrush>
             </Button.Background>
             <StackPanel>
-                <Image Source="Resources/Tools/openProjectFolder.png" />
+                <Image Source="/WipifiDock;component/Resources/Tools/openProjectFolder.png" />
             </StackPanel>
         </Button>
         <Button x:Name="openExistProject" ToolTip="Добавть существующий проект" Click="openExistProject_Click" HorizontalAlignment="Left" Margin="60,36,0,0" VerticalAlignment="Top" Width="20" Height="32">
@@ -38,7 +38,7 @@
                 </RadialGradientBrush>
             </Button.Background>
             <StackPanel>
-                <Image Source="Resources/Tools/addFolder.png" />
+                <Image Source="/WipifiDock;component/Resources/Tools/addFolder.png" />
             </StackPanel>
         </Button>
         <Button x:Name="deleteSelectedProject" IsEnabled="false" ToolTip="Удалить выбранный проект" Click="deleteSelectedProject_Click" HorizontalAlignment="Left" Margin="191,0,0,252" Width="20" Height="32" VerticalAlignment="Bottom">
@@ -49,7 +49,7 @@
                 </RadialGradientBrush>
             </Button.Background>
             <StackPanel>
-                <Image Source="Resources/Tools/delete.png" />
+                <Image Source="/WipifiDock;component/Resources/Tools/delete.png" />
             </StackPanel>
         </Button>
 

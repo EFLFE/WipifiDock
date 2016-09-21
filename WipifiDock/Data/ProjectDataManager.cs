@@ -5,21 +5,33 @@ using System.IO;
 using System.Windows;
 using System.Text;
 
-namespace WipifiDock
+namespace WipifiDock.Data
 {
     /// <summary> Наш личный менеджер по проектам. </summary>
     public static class ProjectDataManager
     {
-        /* [project]
-         * name
-         * path
-         * desc
-         * author
-         * {NewLine}
-         */
+        // вся инфа в файле pro.bin.txt
+        private const string CONF_FILE = "projects.ini";
+        private const string PROJECT_FILE = "wdproj.ini";
+        private const string WEB_EXT = ".wdweb";
+        private const string STYLE_EXT = "wdstyle";
 
-        private const string CONF_FILE = "wipifi.cfg";
-        private const string PROJECT_LABEL = "[project]";
+        [Flags]
+        public enum WebFlags : byte
+        {
+            None = 0,
+            html = 1,
+            md = 2,
+            css = 4
+        }
+
+        [Flags]
+        public enum StyleFlags : byte
+        {
+            None = 0,
+            css = 1,
+            html = 2
+        }
 
         private static string selectedProjectName;
 
@@ -48,15 +60,22 @@ namespace WipifiDock
         {
             try
             {
+                // проверка наличия каталога
                 if (Directory.Exists(path) && !ignoreExistsDirectory)
                 {
-                    var rere = MessageBox.Show("Каталог уже существует. Продолжить?",
+                    var rere = MessageBox.Show("Каталог уже существует. Некоторые данные будут перезаписаны Продолжить?",
                         "Внимание", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
                     if (rere == MessageBoxResult.No || rere == MessageBoxResult.None)
                     {
                         return false;
                     }
+                }
+
+                // проверка наличия проекта в списке
+                if (projects.ContainsKey(name))
+                {
+                    throw new Exception($"Проект \"{name}\" уже существует.");
                 }
 
                 // базовый набор проекта
@@ -68,49 +87,29 @@ namespace WipifiDock
                         throw new Exception("Не удалось создать каталог \"" + path + "\"!");
                     }
                 }
-                File.WriteAllText(path + "\\index.html", BlankGenerator.Custom(
-                    "Проект - " + name,
-                    null,
-                    new[] {
-                        $"<h2>Проект - {name}</h2>",
-                        $"<h3>Автор - {author}</h3>",
-                        "<h4>Описание:</h4>",
-                        $"<p>{desc}</p>"
-                    }));
 
-                // write
-                using (var stream = File.Open(CONF_FILE, FileMode.OpenOrCreate, FileAccess.Write))
-                {
-                    // я знаю, что есть класс, который записывает текст одним методом
-                    // но я забыл как он называется
-                    var en = new UTF8Encoding(true);
-                    byte[] w1 = en.GetBytes(PROJECT_LABEL + Environment.NewLine);
-                    byte[] w2 = en.GetBytes(name + Environment.NewLine);
-                    byte[] w3 = en.GetBytes(path + Environment.NewLine);
-                    byte[] w4 = en.GetBytes(desc + Environment.NewLine);
-                    byte[] w5 = en.GetBytes(author + Environment.NewLine);
-                    byte[] w6 = en.GetBytes(Environment.NewLine);
-
-                    stream.Seek(0, SeekOrigin.End);
-                    stream.Write(w1, 0, w1.Length);
-                    stream.Write(w2, 0, w2.Length);
-                    stream.Write(w3, 0, w3.Length);
-                    stream.Write(w4, 0, w4.Length);
-                    stream.Write(w5, 0, w5.Length);
-                    stream.Write(w6, 0, w6.Length);
-                }
-
-                if (projects.ContainsKey(name))
-                {
-                    throw new Exception($"Проект \"{name}\" уже существует.");
-                }
+                // add
                 projects.Add(name, new ProjectData(name, path, desc, author));
+
+                // index md
+                File.WriteAllText(
+                    path + "\\index.md",
+                    $"#Проект {name}\n\n##Автор - {author}\n\n###Описание:\n\n{desc}");
+
+                File.WriteAllBytes(
+                    $"{path}\\{name}{WEB_EXT}",
+                    new[] { (byte)WebFlags.md });
+
+                // project file
+                File.WriteAllText(
+                    $"{path}\\{name}{PROJECT_FILE}",
+                    $"{name}\n{path}\n{desc}\n{author}\nindex\n");
 
                 return true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Ошибка создания проекта.", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.ToString(), "Ошибка создания проекта.", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
         }
@@ -124,25 +123,19 @@ namespace WipifiDock
                 try
                 {
                     projects.Clear();
-                    string[] txt = File.ReadAllLines(CONF_FILE);
 
-                    for (int i = 0; i < txt.Length; i++)
+                    if (File.Exists(CONF_FILE))
                     {
-                        if (txt[i].Length > 0)
+                        var txt = File.ReadAllLines(CONF_FILE);
+                        for (int i = 0; i < txt.Length;)
                         {
-                            if (txt[i].Equals(PROJECT_LABEL, StringComparison.OrdinalIgnoreCase))
-                            {
-                                string name = txt[++i];
-                                string path = txt[++i];
-                                string desc = txt[++i];
-                                string author = txt[++i];
+                            if (txt[i].Length == 0)
+                                continue;
 
-                                if (projects.ContainsKey(name))
-                                {
-                                    throw new Exception($"Проект \"{name}\" уже существует.");
-                                }
-                                projects.Add(name, new ProjectData(name, path, desc, author));
-                            }
+                            string name = txt[i++];
+                            string path = txt[i++];
+
+                            projects.Add(name, new ProjectData(name, path));
                         }
                     }
 
@@ -150,7 +143,7 @@ namespace WipifiDock
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка при загрузке конфигурации.", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.ToString(), "Ошибка при загрузке конфигурации.", MessageBoxButton.OK, MessageBoxImage.Error);
                     return null;
                 }
             }
@@ -206,7 +199,7 @@ namespace WipifiDock
                         if (msr == MessageBoxResult.Yes)
                         {
                             // удалить каталог
-                            //Directory.Delete(selectedProject.Path, true); // ОПАСНОСТЬ!
+                            //Directory.Delete(seleсtedProject.Pаth, true); #error ОПАСНО!
                             Microsoft.VisualBasic.FileIO.FileSystem.DeleteDirectory(
                                 selectedProject.Path,
                                 Microsoft.VisualBasic.FileIO.UIOption.AllDialogs,
@@ -218,14 +211,14 @@ namespace WipifiDock
                                 return false;
                             }
 
-                            deleteProjectData(selectedProject.Name);
+                            projects.Remove(name);
                             MessageBox.Show($"Все данные в каталоге \"{selectedProject.Path}\" были удалены.", "Готово");
                             return true;
                         }
                     }
                     else
                     {
-                        deleteProjectData(selectedProject.Name);
+                        projects.Remove(name);
                         MessageBox.Show($"Каталог \"{selectedProject.Path}\" не найден.\n\nИнформация о проекте была удалена.", "Готово");
                         return true;
                     }
@@ -237,56 +230,27 @@ namespace WipifiDock
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.ToString(), ex.Message, MessageBoxButton.OK, MessageBoxImage.Error);
             }
             return false;
         }
 
-        // удалить проект из конфиг файла
-        private static void deleteProjectData(string name)
+        /// <summary> Сохранить проекты в конфиг файл. </summary>
+        public static void SaveProjects()
         {
-            // без расчёта на очень большой конфиг файл
-            var txt = File.ReadAllLines(CONF_FILE);
-            int i;
-
-            for (i = 0; i < txt.Length; i++)
+            if (projects.Count > 0)
             {
-                // 6 lines
-                // PROJECT_LABEL
-                // name
-                // path
-                // desc
-                // author
-                // \n
-
-                if (txt[i].Equals(PROJECT_LABEL, StringComparison.OrdinalIgnoreCase))
+                var sb = new StringBuilder();
+                foreach (var p in projects.Values)
                 {
-                    if (txt[i + 1].Equals(name, StringComparison.OrdinalIgnoreCase))
-                    {
-                        // попался!
-                        txt[i] = null;
-                        txt[i + 1] = null;
-                        txt[i + 2] = null;
-                        txt[i + 3] = null;
-                        txt[i + 4] = null;
-                        txt[i + 5] = null;
-                        break;
-                    }
+                    sb.AppendLine(p.Name);
+                    sb.AppendLine(p.Path);
                 }
+                File.WriteAllText(CONF_FILE, sb.ToString());
             }
-            // write
-            var en = new UTF8Encoding(true);
-
-            using (var stream = File.Open(CONF_FILE, FileMode.Create, FileAccess.Write))
+            else if (File.Exists(CONF_FILE))
             {
-                for (i = 0; i < txt.Length; i++)
-                {
-                    if (txt[i] != null)
-                    {
-                        byte[] w = en.GetBytes(txt[i] + Environment.NewLine);
-                        stream.Write(w, 0, w.Length);
-                    }
-                }
+                File.Delete(CONF_FILE);
             }
         }
 

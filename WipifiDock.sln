@@ -5,6 +5,12 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WipifiDock", "WipifiDock\WipifiDock.csproj", "{1BB746A7-DF33-43BD-AF0C-B1BD6A93B9EB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{27DC99E8-9DCC-43BE-A4AC-ACE8C57A42B6}"
+	ProjectSection(SolutionItems) = preProject
+		pro.bin.txt = pro.bin.txt
+		readme.md = readme.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

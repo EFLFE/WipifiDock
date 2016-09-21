@@ -5,18 +5,15 @@ using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 
-namespace WipifiDock
+namespace WipifiDock.Pages
 {
-    public partial class MainPage0 : Page
+    public partial class MainPage : Page
     {
-        /// <summary> Событие для перехода на MainPage1. </summary>
-        public event EventHandler GotoPage1;
-
-        /// <summary> Событие по нажатии кнопки выхода. </summary>
-        public event EventHandler OnExit;
-
-        public MainPage0()
+        private MainWipifiWindow ownerMainWindow;
+        
+        public MainPage(MainWipifiWindow _ownerMainWindow)
         {
+            ownerMainWindow = _ownerMainWindow;
             InitializeComponent();
             Background = Brushes.Transparent; // в редакторе фон тёмный и нeфига не видно текст
             vText.Text += App.Version;
@@ -37,17 +34,17 @@ namespace WipifiDock
 
         private void buttonGotoPage1_Click(object sender, RoutedEventArgs e)
         {
-            GotoPage1(sender, e);
+            ownerMainWindow.FrameNavigate(MainWipifiWindow.PageType.ProjectListPage);
         }
 
         private void buttonCheckUpdate_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+#warning update project NotImplementedException
         }
 
         private void buttonExit_Click(object sender, RoutedEventArgs e)
         {
-            OnExit(sender, e);
+            ownerMainWindow.Close();
         }
 
     }

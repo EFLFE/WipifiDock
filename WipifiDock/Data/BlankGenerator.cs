@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using System.Windows;
 
-namespace WipifiDock
+namespace WipifiDock.Data
 {
     public static class BlankGenerator
     {

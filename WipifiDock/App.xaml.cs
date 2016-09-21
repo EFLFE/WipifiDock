@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
+using WipifiDock.Data;
 
 namespace WipifiDock
 {
@@ -20,20 +21,20 @@ namespace WipifiDock
         {
             base.OnStartup(e);
 
-            var main = new MainWindow();
-            var proj = new ProjectsWindow();
+#if DEBUG
+            var mainWindow = new MainWipifiWindow();
+            mainWindow.ShowDialog();
+#else
+#error TRY RELEASE!!!!!!!
+#endif
 
-            main.ShowDialog();
-
-            if (ProjectDataManager.ProjectProfileWasSelected)
-            {
-                proj.ShowDialog();
-            }
-            else
-            {
-                // если не закрыть, то поток приложения не завершится
-                proj.Close();
-            }
         }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            ProjectDataManager.SaveProjects();
+            base.OnExit(e);
+        }
+
     }
 }

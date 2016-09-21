@@ -2,37 +2,38 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:WipifiDock"
-             >
-             <!-- StartupUri="MainWindow.xaml" -->
+             xmlns:System="clr-namespace:System;assembly=mscorlib">
     <Application.Resources>
 
-        <BitmapImage x:Key="icon1" UriSource="Resources/icon1.png" />
-        <BitmapImage x:Key="logo" UriSource="Resources/logo.png" />
+        <!-- <System:String x:Key="ResPath">/WipifiDock;component/Resources/</System:String> и..я хз что дальше =\ -->
 
-        <BitmapImage x:Key="back" UriSource="Resources/Browse/back.png" />
-        <BitmapImage x:Key="front" UriSource="Resources/Browse/front.png" />
-        <BitmapImage x:Key="update" UriSource="Resources/Browse/update.png" />
-        
-        <BitmapImage x:Key="miniFolder" UriSource="Resources/TreeIcons/miniFolder.png" />
-        <BitmapImage x:Key="htmlFile" UriSource="Resources/TreeIcons/htmlFile.png" />
-        <BitmapImage x:Key="imageFile" UriSource="Resources/TreeIcons/imageFile.png" />
-        <BitmapImage x:Key="mdFile" UriSource="Resources/TreeIcons/mdFile.png" />
-        <BitmapImage x:Key="miniProjFile" UriSource="Resources/TreeIcons/miniProjFile.png" />
-        <BitmapImage x:Key="unknownFile" UriSource="Resources/TreeIcons/unknownFile.png" />
-        <BitmapImage x:Key="textFile" UriSource="Resources/TreeIcons/textFile.png" />
+        <BitmapImage x:Key="icon1" UriSource="/WipifiDock;component/Resources/icon1.png" />
+        <BitmapImage x:Key="logo"  UriSource="/WipifiDock;component/Resources/logo.png" />
 
-        <BitmapImage x:Key="addDock" UriSource="Resources/Tools/addDock.png" />
-        <BitmapImage x:Key="addFolder" UriSource="Resources/Tools/addFolder.png" />
-        <BitmapImage x:Key="collapse" UriSource="Resources/Tools/collapse.png" />
-        <BitmapImage x:Key="config" UriSource="Resources/Tools/config.png" />
-        <BitmapImage x:Key="delete" UriSource="Resources/Tools/delete.png" />
-        <BitmapImage x:Key="edit" UriSource="Resources/Tools/edit.png" />
-        <BitmapImage x:Key="expand" UriSource="Resources/Tools/expand.png" />
-        <BitmapImage x:Key="openProjectFolder" UriSource="Resources/Tools/openProjectFolder.png" />
-        <BitmapImage x:Key="projectToWeb" UriSource="Resources/Tools/projectToWeb.png" />
-        <BitmapImage x:Key="removeFolder" UriSource="Resources/Tools/removeFolder.png" />
-        <BitmapImage x:Key="save" UriSource="Resources/Tools/save.png" />
-        <BitmapImage x:Key="tohtml" UriSource="Resources/Tools/tohtml.png" />
-        
+        <BitmapImage x:Key="back"   UriSource="/WipifiDock;component/Resources/Browse/back.png" />
+        <BitmapImage x:Key="front"  UriSource="/WipifiDock;component/Resources/Browse/front.png" />
+        <BitmapImage x:Key="update" UriSource="/WipifiDock;component/Resources/Browse/update.png" />
+
+        <BitmapImage x:Key="miniFolder"   UriSource="/WipifiDock;component/Resources/TreeIcons/miniFolder.png" />
+        <BitmapImage x:Key="htmlFile"     UriSource="/WipifiDock;component/Resources/TreeIcons/htmlFile.png" />
+        <BitmapImage x:Key="imageFile"    UriSource="/WipifiDock;component/Resources/TreeIcons/imageFile.png" />
+        <BitmapImage x:Key="mdFile"       UriSource="/WipifiDock;component/Resources/TreeIcons/mdFile.png" />
+        <BitmapImage x:Key="miniProjFile" UriSource="/WipifiDock;component/Resources/TreeIcons/miniProjFile.png" />
+        <BitmapImage x:Key="unknownFile"  UriSource="/WipifiDock;component/Resources/TreeIcons/unknownFile.png" />
+        <BitmapImage x:Key="textFile"     UriSource="/WipifiDock;component/Resources/TreeIcons/textFile.png" />
+
+        <BitmapImage x:Key="addDock"           UriSource="/WipifiDock;component/Resources/Tools/addDock.png" />
+        <BitmapImage x:Key="addFolder"         UriSource="/WipifiDock;component/Resources/Tools/addFolder.png" />
+        <BitmapImage x:Key="collapse"          UriSource="/WipifiDock;component/Resources/Tools/collapse.png" />
+        <BitmapImage x:Key="config"            UriSource="/WipifiDock;component/Resources/Tools/config.png" />
+        <BitmapImage x:Key="delete"            UriSource="/WipifiDock;component/Resources/Tools/delete.png" />
+        <BitmapImage x:Key="edit"              UriSource="/WipifiDock;component/Resources/Tools/edit.png" />
+        <BitmapImage x:Key="expand"            UriSource="/WipifiDock;component/Resources/Tools/expand.png" />
+        <BitmapImage x:Key="openProjectFolder" UriSource="/WipifiDock;component/Resources/Tools/openProjectFolder.png" />
+        <BitmapImage x:Key="projectToWeb"      UriSource="/WipifiDock;component/Resources/Tools/projectToWeb.png" />
+        <BitmapImage x:Key="removeFolder"      UriSource="/WipifiDock;component/Resources/Tools/removeFolder.png" />
+        <BitmapImage x:Key="save"              UriSource="/WipifiDock;component/Resources/Tools/save.png" />
+        <BitmapImage x:Key="tohtml"            UriSource="/WipifiDock;component/Resources/Tools/tohtml.png" />
+
     </Application.Resources>
 </Application>

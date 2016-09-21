@@ -4,81 +4,70 @@ using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Windows.Threading;
+using WipifiDock.Pages;
 
 namespace WipifiDock
 {
-    public partial class MainWindow : Window
+    public partial class MainWipifiWindow : Window
     {
-        private MainPage0 page0;
-        private MainPage1 page1;
-        private MainPage2 page2;
+        public enum PageType
+        {
+            MainPage,
+            ProjectListPage,
+            CreateNewProjectPage,
+            ProjectPage
+        }
+
+        public MainPage mainPage;
+        public ProjectListPage projectListPage;
+        public CreateNewProjectPage createNewProjectPage;
+        public ProjectPage projectPage;
 
         // animation
         private bool                        _allowDirectNavigation = false;
         private NavigatingCancelEventArgs   _navArgs = null;
         private Duration                    _duration = new Duration(TimeSpan.FromSeconds(0.2));
 
-        public MainWindow()
+        public MainWipifiWindow()
         {
             InitializeComponent();
 
-            page0 = new MainPage0();
-            page1 = new MainPage1();
-            page2 = new MainPage2();
-
-            page0.GotoPage1 += Page0_GotoPage1;
-            page0.OnExit += Page0_OnExit;
-
-            page1.NavigateToPage2 += Page1_NavigateToPage2;
-            page1.ProjectWasSelected += Page1_ProjectWasSelected;
-
-            page2.NavigateToPage1 += Page2_NavigateToPage1;
-            page2.OnCreateNewProject += Page2_OnCreateNewProject;
+            mainPage = new MainPage(this);
+            projectListPage = new ProjectListPage(this);
+            createNewProjectPage = new CreateNewProjectPage(this);
+            projectPage = new ProjectPage();
 
             frame.NavigationUIVisibility = NavigationUIVisibility.Hidden;
             frame.Navigating += frame_Navigating;
         }
-
-        private void Page0_OnExit(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void Page0_GotoPage1(object sender, EventArgs e)
-        {
-            frame.Navigate(page1);
-        }
-
+        
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            frame.Navigate(page0);
+            frame.Navigate(mainPage);
         }
-
-        private void Page1_ProjectWasSelected(object sender, EventArgs e)
+        
+        public void FrameNavigate(PageType pageType)
         {
-            Close();
-        }
-
-        private void Page2_OnCreateNewProject(string name)
-        {
-            page1.AddProfile(name);
-        }
-
-        private void Page2_NavigateToPage1(object sender, EventArgs e)
-        {
-            frame.Navigate(page1);
-        }
-
-        private void Page1_NavigateToPage2(object sender, EventArgs e)
-        {
-            if (sender is string[])
+            switch (pageType)
             {
-                var args = sender as string[];
-                page2.SetMainData(args[0], args[1]);
-            }
-            frame.Navigate(page2);
-        }
+            case PageType.MainPage:
+                frame.Navigate(mainPage);
+                break;
 
+            case PageType.ProjectListPage:
+                frame.Navigate(projectListPage);
+                break;
+
+            case PageType.CreateNewProjectPage:
+                frame.Navigate(createNewProjectPage);
+                break;
+
+            case PageType.ProjectPage:
+                frame.Navigate(projectPage);
+                break;
+            }
+        }
+        
         // page animation
         private void frame_Navigating(object sender, NavigatingCancelEventArgs e)
         {

@@ -2,6 +2,15 @@
 using System.Runtime.InteropServices;
 using System.Windows;
 
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+[assembly: AssemblyVersion("0.6.0.*")]
+
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
@@ -10,7 +19,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("WipifiDock")]
-[assembly: AssemblyCopyright("Copyright © EFLFE 2016")]
+[assembly: AssemblyCopyright("© EFLFE 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -37,16 +46,3 @@ using System.Windows;
                                               //(used if a resource is not found in the page, 
                                               // app, or any theme specific resource dictionaries)
 )]
-
-
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Build and Revision Numbers 
-// by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.5.0.*")]

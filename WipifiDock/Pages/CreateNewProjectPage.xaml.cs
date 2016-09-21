@@ -1,27 +1,23 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using WipifiDock.Data;
 
-namespace WipifiDock
+namespace WipifiDock.Pages
 {
     /// <summary> Create new project. </summary>
-    public partial class MainPage2 : Page
+    public partial class CreateNewProjectPage : Page
     {
-        public delegate void DelOnCreateNewProject(string name);
-
-        /// <summary> Событие для перехода на MainPage1. </summary>
-        public event EventHandler NavigateToPage1;
-
-        /// <summary> Событие создания нового проекта. </summary>
-        public event DelOnCreateNewProject OnCreateNewProject;
-
+        private MainWipifiWindow ownerMainWindow;
+        
         // костыли
         private bool autoAddNameToPath = true;
         private bool onlock;
         private bool ignoreExistsDirectory;
 
-        public MainPage2()
+        public CreateNewProjectPage(MainWipifiWindow _ownerMainWindow)
         {
+            ownerMainWindow = _ownerMainWindow;
             InitializeComponent();
             projectDirPath.Text = Environment.CurrentDirectory + "\\";
 
@@ -53,9 +49,9 @@ namespace WipifiDock
                 if (ProjectDataManager.CreateProfile(
                     projectName.Text, projectDirPath.Text, projectDesc.Text, projectAuthor.Text, ignoreExistsDirectory))
                 {
-                    OnCreateNewProject.Invoke(projectName.Text);
-                    NavigateToPage1?.Invoke(sender, e);
+                    ownerMainWindow.projectListPage.AddProfile(projectName.Text);
                     reset();
+                    ownerMainWindow.FrameNavigate(MainWipifiWindow.PageType.ProjectListPage);
                 }
             }
         }
@@ -64,7 +60,7 @@ namespace WipifiDock
         private void projectCancel_Click(object sender, RoutedEventArgs e)
         {
             reset();
-            NavigateToPage1?.Invoke(sender, e);
+            ownerMainWindow.FrameNavigate(MainWipifiWindow.PageType.ProjectListPage);
         }
 
         /// <summary> Задать начальные значения. </summary>
@@ -82,7 +78,7 @@ namespace WipifiDock
         {
             projectName.Text = string.Empty;
             projectDesc.Text = string.Empty;
-            projectDirPath.Text = string.Empty;
+            projectDirPath.Text = Environment.CurrentDirectory + "\\";
             projectAuthor.Text = string.Empty;
             onlock = false;
             ignoreExistsDirectory = false;

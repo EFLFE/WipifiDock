@@ -4,8 +4,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 using mshtml;
+using WipifiDock.Data;
 
-namespace WipifiDock
+namespace WipifiDock.Controls
 {
     /// <summary> Форма с браузером и текстовый редактором. </summary>
     public partial class WebTab : UserControl

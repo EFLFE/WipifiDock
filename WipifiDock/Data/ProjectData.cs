@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WipifiDock
+namespace WipifiDock.Data
 {
     /// <summary> Данные по проекту. </summary>
     public struct ProjectData
@@ -17,6 +17,17 @@ namespace WipifiDock
 
         /// <summary> Автор. </summary>
         public string Author;
+
+        /// <summary> Создать данные. </summary>
+        /// <param name="name"> Имя проекта. </param>
+        /// <param name="path"> Путь. </param>
+        public ProjectData(string name, string path)
+        {
+            Name = name;
+            Path = path;
+            Desc = string.Empty;
+            Author = string.Empty;
+        }
 
         /// <summary> Создать данные. </summary>
         /// <param name="name"> Имя проекта. </param>
