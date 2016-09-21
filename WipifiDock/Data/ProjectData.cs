@@ -53,22 +53,5 @@ namespace WipifiDock.Data
             MainHtmlFile = mainHtmlFile;
             StyleName = styleName;
         }
-
-        /// <summary> Задать данные. </summary>
-        /// <param name="name"> Имя проекта. </param>
-        /// <param name="path"> Путь. </param>
-        /// <param name="desc"> Описание. </param>
-        /// <param name="author"> Автор. </param>
-        /// <param name="mainHtmlFile"> Имя файла начальной страницы. </param>
-        /// <param name="styleName"> Имя стиля. </param>
-        public void Set(string name, string path, string desc, string author, string mainHtmlFile, string styleName)
-        {
-            Name = name;
-            Path = path;
-            Desc = desc;
-            Author = author;
-            MainHtmlFile = mainHtmlFile;
-            StyleName = styleName;
-        }
     }
 }

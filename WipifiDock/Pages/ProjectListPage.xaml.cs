@@ -19,10 +19,7 @@ namespace WipifiDock.Pages
             Loaded += ProjectListPage_Loaded;
 
             InitializeComponent();
-
-            projectName.Background = Brushes.Transparent;
-            projectDesc.Background = Brushes.Transparent;
-            projectPathAndAuthor.Background = Brushes.Transparent;
+            grid.Background = Brushes.Transparent;
         }
 
         private void ProjectListPage_Loaded(object sender, RoutedEventArgs e)
@@ -53,21 +50,39 @@ namespace WipifiDock.Pages
             string name = projectListBox.SelectedItem as string;
             if (name == null || name.Length == 0)
             {
-                projectName.Text = "Проект: ";
-                projectDesc.Text = "Описание:\n";
-                projectPathAndAuthor.Text = "Автор:\nКаталог:";
+                clearInfo();
                 openProject.IsEnabled = false;
                 deleteSelectedProject.IsEnabled = false;
                 return;
             }
-            selectedProject = ProjectDataManager.GetProjectData(name);
+            try
+            {
+                selectedProject = ProjectDataManager.SelectAndLoadProject(name);
 
-            projectName.Text = "Проект: " + selectedProject.Name;
-            projectDesc.Text = "Описание:\n" + selectedProject.Desc;
-            projectPathAndAuthor.Text = $"Автор: {selectedProject.Author}\nКаталог: {selectedProject.Path}";
+                nameText.Text = selectedProject.Name;
+                dirText.Text = selectedProject.Path;
+                authorText.Text = selectedProject.Author;
+                descText.Text = selectedProject.Desc;
 
-            openProject.IsEnabled = true;
-            deleteSelectedProject.IsEnabled = true;
+                var di = new DirectoryInfo(selectedProject.Path);
+                lastDateText.Text = di.LastWriteTime.ToString("dd.MM.yyyy - HH:mm:ss");
+
+                openProject.IsEnabled = true;
+                deleteSelectedProject.IsEnabled = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Ошибка получения данных проекта", MessageBoxButton.OK, MessageBoxImage.Error);
+            }            
+        }
+
+        private void clearInfo()
+        {
+            nameText.Text = string.Empty;
+            dirText.Text = string.Empty;
+            authorText.Text = string.Empty;
+            lastDateText.Text = string.Empty;
+            descText.Text = string.Empty;
         }
 
         // после создания проекта перейти на CreateNewProjectPage
@@ -79,11 +94,10 @@ namespace WipifiDock.Pages
         // открыть проект
         private void openProject_Click(object sender, RoutedEventArgs e)
         {
-            var pi = projectListBox.SelectedItem as string;
-            if (pi != null && ProjectDataManager.SelectProjectName(pi))
+            if (ProjectDataManager.ProjectProfileWasSelected)
             {
                 OwnerMainWindow.FrameNavigate(MainWipifiWindow.PageType.ProjectPage);
-            }            
+            }
         }
 
         private void deleteSelectedProject_Click(object sender, RoutedEventArgs e)

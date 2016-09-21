@@ -97,7 +97,7 @@ namespace WipifiDock.Data
 
                 // index md
                 File.WriteAllText(
-                    path + "\\index.md",
+                    $"{path}\\{mainHtmlFile}.md",
                     $"#Проект {name}\n\n##Автор - {author}\n\n###Описание:\n\n{desc}");
 
                 File.WriteAllBytes(
@@ -106,8 +106,8 @@ namespace WipifiDock.Data
 
                 // project file
                 File.WriteAllText(
-                    $"{path}\\{name}{PROJECT_FILE}",
-                    $"{name}\n{path}\n{desc}\n{author}\nindex\n");
+                    $"{path}\\{PROJECT_FILE}",
+                    $"{name}\n{path}\n{desc}\n{author}\n{mainHtmlFile}\n\n");
 
                 return true;
             }
@@ -166,14 +166,14 @@ namespace WipifiDock.Data
             }
 
             // get data
-            var txt = File.ReadAllLines(projects[name].Path, Encoding.UTF8);
+            var txt = File.ReadAllLines($"{projects[name].Path}\\{PROJECT_FILE}", Encoding.UTF8);
             var _name           = txt[0];
             var _path           = txt[1];
             var _description    = txt[2];
             var _author         = txt[3];
             var _main_html_page = txt[4];
             var _wdstyle_name   = txt[5];
-            projects[name].Set(_name, _path, _description, _author, _main_html_page, _wdstyle_name);
+            projects[name] = new ProjectData(_name, _path, _description, _author, _main_html_page, _wdstyle_name);
 
             selectedProjectName = name;
             return projects[selectedProjectName];

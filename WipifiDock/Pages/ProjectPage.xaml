@@ -7,10 +7,10 @@
       xmlns:q="clr-namespace:WipifiDock.Controls.TreeViewData"
       mc:Ignorable="d"
       Loaded="Page_Loaded"
-      WindowHeight="320" WindowWidth="480" d:DesignWidth="480" d:DesignHeight="320"
+      WindowHeight="320" WindowWidth="520" d:DesignWidth="520" d:DesignHeight="320"
       Title="ProjectWindow">
 
-    <Grid>
+    <Grid x:Name="grid" Background="White">
         <!--#region ToolBar-->
         <ToolBar x:Name="gridPanel" Height="32" VerticalAlignment="Top" Margin="1,0,-1,0">
 

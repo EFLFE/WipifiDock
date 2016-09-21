@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WipifiDock"
       mc:Ignorable="d" 
-      WindowHeight="320" WindowWidth="480" d:DesignWidth="480" d:DesignHeight="320"
+      WindowHeight="320" WindowWidth="520" d:DesignHeight="320" d:DesignWidth="520"
       Title="MainPage0"
       SizeChanged="Page_SizeChanged"
       Background="White">
@@ -54,8 +54,8 @@
         <Line x:Name="line2" X1="10" Y1="260" X2="200" Y2="260" VerticalAlignment="Top" Stroke="Black"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="10,204,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="* * *" FontWeight="Bold" Width="10"></TextBlock>
-        
-        <Button x:Name="buttonGotoPage1" Click="buttonGotoPage1_Click" Content="Проекты" HorizontalAlignment="Left" Margin="10,288,0,0" VerticalAlignment="Top" Width="99">
+
+        <Button x:Name="buttonGotoPage1" Click="buttonGotoPage1_Click" Content="Проекты" HorizontalAlignment="Left" Margin="10,0,0,10" Width="99" Height="22" VerticalAlignment="Bottom" TabIndex="1">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                     <GradientStop Color="#FFF3F3F3" Offset="0"/>
@@ -65,7 +65,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="buttonCheckUpdate" IsEnabled="false" Click="buttonCheckUpdate_Click" Content="Проверить обновление" HorizontalAlignment="Left" Margin="114,288,0,0" VerticalAlignment="Top" Width="252">
+        <Button x:Name="buttonCheckUpdate" IsEnabled="false" Click="buttonCheckUpdate_Click" Content="Проверить обновление" Margin="114,0,114,10" Height="22" VerticalAlignment="Bottom" TabIndex="2">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                     <GradientStop Color="#FFF3F3F3" Offset="0"/>
@@ -75,7 +75,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="buttonExit" Click="buttonExit_Click" Content="Выход" Margin="371,288,0,0" VerticalAlignment="Top" Width="99" HorizontalAlignment="Left">
+        <Button x:Name="buttonExit" Click="buttonExit_Click" Content="Выход" Margin="0,0,10,10" HorizontalAlignment="Right" Width="99" Height="22" VerticalAlignment="Bottom" TabIndex="3">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                     <GradientStop Color="#FFF3F3F3" Offset="0"/>

@@ -14,6 +14,6 @@
         <Grid.Background>
             <ImageBrush ImageSource="SplashScreen.png" Opacity="0.1" Stretch="UniformToFill"/>
         </Grid.Background>
-        <Frame x:Name="frame"></Frame>
+        <Frame x:Name="frame"/>
     </Grid>
 </Window>

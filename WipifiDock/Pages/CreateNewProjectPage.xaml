@@ -5,20 +5,22 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WipifiDock"
       mc:Ignorable="d" 
-      WindowHeight="320" WindowWidth="480" d:DesignWidth="480" d:DesignHeight="320">
+      WindowHeight="320" WindowWidth="520" d:DesignWidth="520" d:DesignHeight="320">
 
     <Grid x:Name="grid" Background="White">
-        <Button x:Name="projectCreate" Click="projectCreate_Click" Content="Создать" HorizontalAlignment="Left" Margin="10,0,0,10" Width="75" Height="22" VerticalAlignment="Bottom"/>
-        <Button x:Name="projectCancel" Click="projectCancel_Click" Content="Отмена" Margin="0,0,10,10" Height="22" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75"/>
-        <TextBox x:Name="projectName" Height="23" Margin="10,26,10,0" TextWrapping="NoWrap" VerticalAlignment="Top"/>
-        <TextBox x:Name="projectDesc" Margin="10,202,10,37" TextWrapping="Wrap"/>
-        <TextBox x:Name="projectAuthor" Margin="10,0,10,139" TextWrapping="NoWrap" Height="23" VerticalAlignment="Bottom"/>
-        <TextBox x:Name="projectDirPath" Margin="10,0,10,227" TextWrapping="NoWrap" Height="23" VerticalAlignment="Bottom"/>
-        <TextBox x:Name="indexName" Text="index" Height="23" Margin="10,114,10,0" TextWrapping="NoWrap" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Имя проекта:" VerticalAlignment="Top" FontWeight="Bold" Width="460"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,186,0,0" TextWrapping="Wrap" Text="Описание:" VerticalAlignment="Top" Width="460"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,0,0,162" TextWrapping="Wrap" Text="Автор:" VerticalAlignment="Bottom" Width="460"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,0,0,250" TextWrapping="Wrap" Text="Путь к проекту:" VerticalAlignment="Bottom" FontWeight="Bold" Width="460"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,98,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" Width="460"><Run Text="Имя "/><Run Text="стартовой страницы"/><Run Text=":"/></TextBlock>
+        <Button x:Name="projectCreate" Click="projectCreate_Click" Content="Создать" HorizontalAlignment="Left" Margin="10,0,0,10" Width="75" Height="22" VerticalAlignment="Bottom" TabIndex="6"/>
+        <Button x:Name="projectCancel" Click="projectCancel_Click" Content="Отмена" Margin="0,0,10,10" Height="22" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" TabIndex="20"/>
+        
+        <TextBox x:Name="projectName" Height="23" Margin="10,26,10,0" TextWrapping="NoWrap" VerticalAlignment="Top" TabIndex="1"/>
+        <TextBox x:Name="projectDesc" Margin="10,202,10,37" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Visible" TabIndex="5" UndoLimit="50"/>
+        <TextBox x:Name="projectAuthor" Margin="10,158,10,0" TextWrapping="NoWrap" Height="23" VerticalAlignment="Top" TabIndex="4"/>
+        <TextBox x:Name="projectDirPath" Margin="10,70,10,0" TextWrapping="NoWrap" Height="23" VerticalAlignment="Top" TabIndex="2"/>
+        <TextBox x:Name="indexName" Text="index" Height="23" Margin="10,114,10,0" TextWrapping="NoWrap" VerticalAlignment="Top" TabIndex="3"/>
+        
+        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Имя проекта:" VerticalAlignment="Top" FontWeight="Bold" Width="500"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,186,0,0" TextWrapping="Wrap" Text="Описание:" VerticalAlignment="Top" Width="500"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,142,0,0" TextWrapping="Wrap" Text="Автор:" VerticalAlignment="Top" Width="500"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,54,0,0" TextWrapping="Wrap" Text="Путь к проекту:" VerticalAlignment="Top" FontWeight="Bold" Width="500"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,98,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" Width="500"><Run Text="Имя "/><Run Text="стартовой страницы"/><Run Text=":"/></TextBlock>
     </Grid>
 </Page>

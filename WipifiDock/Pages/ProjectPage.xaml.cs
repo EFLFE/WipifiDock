@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace WipifiDock.Pages
 {
@@ -8,6 +9,7 @@ namespace WipifiDock.Pages
         public ProjectPage()
         {
             InitializeComponent();
+            grid.Background = Brushes.Transparent;
         }
 
         private void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)

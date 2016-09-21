@@ -5,10 +5,10 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WipifiDock"
       mc:Ignorable="d" 
-      WindowHeight="320" WindowWidth="480" d:DesignWidth="480" d:DesignHeight="320">
+      WindowHeight="320" WindowWidth="520" d:DesignWidth="520" d:DesignHeight="320">
 
-    <Grid>
-        <Button x:Name="createProject" ToolTip="Создать новый проект" Click="createProject_Click" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Width="20" Height="32">
+    <Grid x:Name="grid" Background="White">
+        <Button x:Name="createProject" ToolTip="Создать новый проект" Click="createProject_Click" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Width="20" Height="32" TabIndex="2">
             <Button.Background>
                 <RadialGradientBrush>
                     <GradientStop Color="#FFF3F3F3" Offset="1"/>
@@ -19,7 +19,7 @@
                 <Image Source="/WipifiDock;component/Resources/Tools/addDock.png" />
             </StackPanel>
         </Button>
-        <Button x:Name="openProject" IsEnabled="false" ToolTip="Открыть выбранный проект" Click="openProject_Click" Margin="35,36,0,0" Height="32" VerticalAlignment="Top" HorizontalAlignment="Left" Width="20">
+        <Button x:Name="openProject" IsEnabled="false" ToolTip="Открыть выбранный проект" Click="openProject_Click" Margin="35,36,0,0" Height="32" VerticalAlignment="Top" HorizontalAlignment="Left" Width="20" TabIndex="3">
             <Button.Background>
                 <RadialGradientBrush>
                     <GradientStop Color="#FFF3F3F3" Offset="1"/>
@@ -30,7 +30,7 @@
                 <Image Source="/WipifiDock;component/Resources/Tools/openProjectFolder.png" />
             </StackPanel>
         </Button>
-        <Button x:Name="openExistProject" ToolTip="Добавть существующий проект" Click="openExistProject_Click" HorizontalAlignment="Left" Margin="60,36,0,0" VerticalAlignment="Top" Width="20" Height="32">
+        <Button x:Name="openExistProject" ToolTip="Добавть существующий проект" Click="openExistProject_Click" HorizontalAlignment="Left" Margin="60,36,0,0" VerticalAlignment="Top" Width="20" Height="32" TabIndex="4">
             <Button.Background>
                 <RadialGradientBrush>
                     <GradientStop Color="#FFF3F3F3" Offset="1"/>
@@ -41,7 +41,7 @@
                 <Image Source="/WipifiDock;component/Resources/Tools/addFolder.png" />
             </StackPanel>
         </Button>
-        <Button x:Name="deleteSelectedProject" IsEnabled="false" ToolTip="Удалить выбранный проект" Click="deleteSelectedProject_Click" HorizontalAlignment="Left" Margin="191,0,0,252" Width="20" Height="32" VerticalAlignment="Bottom">
+        <Button x:Name="deleteSelectedProject" IsEnabled="false" ToolTip="Удалить выбранный проект" Click="deleteSelectedProject_Click" HorizontalAlignment="Left" Margin="191,36,0,0" Width="20" Height="32" VerticalAlignment="Top" TabIndex="9">
             <Button.Background>
                 <RadialGradientBrush>
                     <GradientStop Color="#FFF3F3F3" Offset="1"/>
@@ -53,13 +53,21 @@
             </StackPanel>
         </Button>
 
-        <TextBlock x:Name="textBlock" Margin="10,10,0,0" TextWrapping="Wrap" Text="Проекты" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Left" Width="201"/>
-        <ListBox x:Name="projectListBox" Margin="10,73,0,10" ScrollViewer.VerticalScrollBarVisibility="Visible" HorizontalAlignment="Left" Width="201" Background="#7FFFFFFF"/>
-        <TextBlock x:Name="textBlock_Copy" Margin="216,10,0,0" TextWrapping="Wrap" Text="Информация" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Left" Width="246"/>
+        <TextBlock Margin="10,10,0,0" TextWrapping="Wrap" Text="Проекты" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Left" Width="201"/>
+        <ListBox x:Name="projectListBox" Margin="10,73,0,10" ScrollViewer.VerticalScrollBarVisibility="Visible" HorizontalAlignment="Left" Width="201" Background="#7FFFFFFF" TabIndex="1"/>
+        <TextBlock Margin="216,10,10,0" TextWrapping="Wrap" Text="Информация" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" TextAlignment="Center"/>
 
-        <TextBlock x:Name="projectName" Margin="216,36,9,0" TextWrapping="Wrap" FontSize="16" Height="26" VerticalAlignment="Top" Background="#FF7E7E7E"/>
-        <TextBlock x:Name="projectDesc" Margin="216,106,9,10" TextWrapping="Wrap" Background="#FF7E7E7E"/>
-        <TextBlock x:Name="projectPathAndAuthor" Margin="216,67,9,0" TextWrapping="NoWrap" Height="34" VerticalAlignment="Top" Background="#FF7E7E7E"/>
+        <TextBlock Margin="216,38,10,0" TextWrapping="Wrap" Text="Имя проекта:" VerticalAlignment="Top" FontWeight="Bold"/>
+        <TextBlock Margin="216,75,10,0" TextWrapping="Wrap" Text="Каталог:" VerticalAlignment="Top" FontWeight="Bold"/>
+        <TextBlock Margin="216,186,10,0" TextWrapping="Wrap" Text="Описание:" VerticalAlignment="Top" FontWeight="Bold"/>
+        <TextBlock Margin="216,112,10,0" TextWrapping="Wrap" Text="Автор:" VerticalAlignment="Top" FontWeight="Bold"/>
+        <TextBlock Margin="216,149,10,0" TextWrapping="Wrap" Text="Время последнего изменения:" VerticalAlignment="Top" FontWeight="Bold"/>
+
+        <TextBlock x:Name="nameText" Margin="216,54,10,0" TextWrapping="NoWrap" FontSize="11" Height="16" VerticalAlignment="Top"/>
+        <TextBlock x:Name="dirText" Margin="216,91,10,0" TextWrapping="NoWrap" FontSize="11" Height="16" VerticalAlignment="Top"/>
+        <TextBlock x:Name="authorText" Margin="216,128,10,0" TextWrapping="NoWrap" FontSize="11" Height="16" VerticalAlignment="Top"/>
+        <TextBlock x:Name="lastDateText" Margin="216,165,10,0" TextWrapping="NoWrap" FontSize="11" Height="16" VerticalAlignment="Top"/>
+        <TextBlock x:Name="descText" Margin="216,202,10,10" TextWrapping="Wrap" FontSize="11"/>
 
     </Grid>
 </Page>
