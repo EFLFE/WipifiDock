@@ -101,7 +101,7 @@ namespace WipifiDock.Data
                     $"#Проект {name}\n\n##Автор - {author}\n\n###Описание:\n\n{desc}");
 
                 File.WriteAllBytes(
-                    $"{path}\\{name}{WEB_EXT}",
+                    $"{path}\\{mainHtmlFile}{WEB_EXT}",
                     new[] { (byte)WebFlags.md });
 
                 // project file

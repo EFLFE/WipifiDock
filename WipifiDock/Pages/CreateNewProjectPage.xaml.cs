@@ -27,6 +27,13 @@ namespace WipifiDock.Pages
 
             projectDirPath.TextChanged += ProjectDirPath_TextChanged;
             projectName.TextChanged += ProjectName_TextChanged;
+
+            Loaded += CreateNewProjectPage_Loaded;
+        }
+
+        private void CreateNewProjectPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            reset();
         }
 
         // автозаполнение к директории проекта
@@ -99,7 +106,6 @@ namespace WipifiDock.Pages
                 projectName.Text, projectDirPath.Text, projectDesc.Text, projectAuthor.Text, indexName.Text, "", ignoreExistsDirectory))
             {
                 ownerMainWindow.projectListPage.AddProfile(projectName.Text);
-                reset();
                 ownerMainWindow.FrameNavigate(MainWipifiWindow.PageType.ProjectListPage);
             }
         }
@@ -107,7 +113,6 @@ namespace WipifiDock.Pages
         // отмена
         private void projectCancel_Click(object sender, RoutedEventArgs e)
         {
-            reset();
             ownerMainWindow.FrameNavigate(MainWipifiWindow.PageType.ProjectListPage);
         }
 

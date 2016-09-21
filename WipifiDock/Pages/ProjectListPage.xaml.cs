@@ -20,10 +20,6 @@ namespace WipifiDock.Pages
 
             InitializeComponent();
             grid.Background = Brushes.Transparent;
-        }
-
-        private void ProjectListPage_Loaded(object sender, RoutedEventArgs e)
-        {
             projectListBox.SelectionChanged += ProjectListBox_SelectionChanged;
 
             // загрузить и заполнить список проектов
@@ -35,6 +31,10 @@ namespace WipifiDock.Pages
                     projectListBox.Items.Add(p[i].Name);
                 }
             }
+        }
+
+        private void ProjectListPage_Loaded(object sender, RoutedEventArgs e)
+        {
         }
 
         /// <summary> Добавить имя проекта в ListBox. </summary>
