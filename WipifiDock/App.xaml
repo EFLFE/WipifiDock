@@ -5,6 +5,10 @@
              xmlns:System="clr-namespace:System;assembly=mscorlib">
     <Application.Resources>
 
+        <System:Double x:Key="smallTooBarSize">27.0</System:Double>
+        <System:Double x:Key="mediumTooBarSize">35.0</System:Double>
+        <System:Double x:Key="bigTooBarSize">43.0</System:Double>
+
         <!-- <System:String x:Key="ResPath">/WipifiDock;component/Resources/</System:String> и..я хз что дальше =\ -->
 
         <BitmapImage x:Key="icon1" UriSource="/WipifiDock;component/Resources/icon1.png" />
@@ -22,18 +26,35 @@
         <BitmapImage x:Key="unknownFile"  UriSource="/WipifiDock;component/Resources/TreeIcons/unknownFile.png" />
         <BitmapImage x:Key="textFile"     UriSource="/WipifiDock;component/Resources/TreeIcons/textFile.png" />
 
-        <BitmapImage x:Key="addDock"           UriSource="/WipifiDock;component/Resources/Tools/addDock.png" />
-        <BitmapImage x:Key="addFolder"         UriSource="/WipifiDock;component/Resources/Tools/addFolder.png" />
-        <BitmapImage x:Key="collapse"          UriSource="/WipifiDock;component/Resources/Tools/collapse.png" />
-        <BitmapImage x:Key="config"            UriSource="/WipifiDock;component/Resources/Tools/config.png" />
-        <BitmapImage x:Key="delete"            UriSource="/WipifiDock;component/Resources/Tools/delete.png" />
-        <BitmapImage x:Key="edit"              UriSource="/WipifiDock;component/Resources/Tools/edit.png" />
-        <BitmapImage x:Key="expand"            UriSource="/WipifiDock;component/Resources/Tools/expand.png" />
-        <BitmapImage x:Key="openProjectFolder" UriSource="/WipifiDock;component/Resources/Tools/openProjectFolder.png" />
-        <BitmapImage x:Key="projectToWeb"      UriSource="/WipifiDock;component/Resources/Tools/projectToWeb.png" />
-        <BitmapImage x:Key="removeFolder"      UriSource="/WipifiDock;component/Resources/Tools/removeFolder.png" />
-        <BitmapImage x:Key="save"              UriSource="/WipifiDock;component/Resources/Tools/save.png" />
-        <BitmapImage x:Key="tohtml"            UriSource="/WipifiDock;component/Resources/Tools/tohtml.png" />
+        <!-- Tools -->
+        <BitmapImage x:Key="html"   UriSource="/WipifiDock;component/Resources/Tools/Browse/html.png" />
+        <BitmapImage x:Key="md"     UriSource="/WipifiDock;component/Resources/Tools/Browse/md.png" />
+        <BitmapImage x:Key="render" UriSource="/WipifiDock;component/Resources/Tools/Browse/render.png" />
 
+        <BitmapImage x:Key="config"            UriSource="/WipifiDock;component/Resources/Tools/Global/config.png" />
+        <BitmapImage x:Key="openProjectFolder" UriSource="/WipifiDock;component/Resources/Tools/Global/openProjectFolder.png" />
+        <BitmapImage x:Key="projectToWeb"      UriSource="/WipifiDock;component/Resources/Tools/Global/projectToWeb.png" />
+
+        <BitmapImage x:Key="addDock"      UriSource="/WipifiDock;component/Resources/Tools/Tree/addDock.png" />
+        <BitmapImage x:Key="addFolder"    UriSource="/WipifiDock;component/Resources/Tools/Tree/addFolder.png" />
+        <BitmapImage x:Key="collapse"     UriSource="/WipifiDock;component/Resources/Tools/Tree/collapse.png" />
+        <BitmapImage x:Key="delete"       UriSource="/WipifiDock;component/Resources/Tools/Tree/delete.png" />
+        <BitmapImage x:Key="expand"       UriSource="/WipifiDock;component/Resources/Tools/Tree/expand.png" />
+        <BitmapImage x:Key="removeFolder" UriSource="/WipifiDock;component/Resources/Tools/Tree/removeFolder.png" />
+        <BitmapImage x:Key="rename"       UriSource="/WipifiDock;component/Resources/Tools/Tree/rename.png" />
+        
     </Application.Resources>
 </Application>
+
+        <!--
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <RadialGradientBrush>
+                        <GradientStop Color="Blue" Offset="0"/>
+                        <GradientStop Color="White" Offset="1"/>
+                    </RadialGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        -->

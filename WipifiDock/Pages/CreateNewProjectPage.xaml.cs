@@ -35,7 +35,7 @@ namespace WipifiDock.Pages
         {
             reset();
         }
-
+        
         // автозаполнение к директории проекта
         private void ProjectDirPath_TextChanged(object sender, TextChangedEventArgs e)
         {

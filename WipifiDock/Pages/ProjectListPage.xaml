@@ -15,9 +15,7 @@
                     <GradientStop Color="#FF615BA0"/>
                 </RadialGradientBrush>
             </Button.Background>
-            <StackPanel>
-                <Image Source="/WipifiDock;component/Resources/Tools/addDock.png" />
-            </StackPanel>
+            <Image Source="{StaticResource addDock}" />
         </Button>
         <Button x:Name="openProject" IsEnabled="false" ToolTip="Открыть выбранный проект" Click="openProject_Click" Margin="35,36,0,0" Height="32" VerticalAlignment="Top" HorizontalAlignment="Left" Width="20" TabIndex="3">
             <Button.Background>
@@ -26,9 +24,7 @@
                     <GradientStop Color="#FF73B455"/>
                 </RadialGradientBrush>
             </Button.Background>
-            <StackPanel>
-                <Image Source="/WipifiDock;component/Resources/Tools/openProjectFolder.png" />
-            </StackPanel>
+            <Image Source="{StaticResource openProjectFolder}" />
         </Button>
         <Button x:Name="openExistProject" ToolTip="Добавть существующий проект" Click="openExistProject_Click" HorizontalAlignment="Left" Margin="60,36,0,0" VerticalAlignment="Top" Width="20" Height="32" TabIndex="4">
             <Button.Background>
@@ -37,9 +33,7 @@
                     <GradientStop Color="#FF73FFF9"/>
                 </RadialGradientBrush>
             </Button.Background>
-            <StackPanel>
-                <Image Source="/WipifiDock;component/Resources/Tools/addFolder.png" />
-            </StackPanel>
+            <Image Source="{StaticResource addFolder}" />
         </Button>
         <Button x:Name="deleteSelectedProject" IsEnabled="false" ToolTip="Удалить выбранный проект" Click="deleteSelectedProject_Click" HorizontalAlignment="Left" Margin="191,36,0,0" Width="20" Height="32" VerticalAlignment="Top" TabIndex="9">
             <Button.Background>
@@ -48,9 +42,7 @@
                     <GradientStop Color="#FFB82F2F"/>
                 </RadialGradientBrush>
             </Button.Background>
-            <StackPanel>
-                <Image Source="/WipifiDock;component/Resources/Tools/delete.png" />
-            </StackPanel>
+            <Image Source="{StaticResource delete}" />
         </Button>
 
         <TextBlock Margin="10,10,0,0" TextWrapping="Wrap" Text="Проекты" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Left" Width="201"/>

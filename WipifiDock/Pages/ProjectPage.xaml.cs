@@ -9,17 +9,14 @@ namespace WipifiDock.Pages
         public ProjectPage()
         {
             InitializeComponent();
-            grid.Background = Brushes.Transparent;
         }
 
         private void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-
         }
 
         private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
         }
     }
 }

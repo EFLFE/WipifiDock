@@ -12,85 +12,25 @@
 
     <Grid x:Name="grid" Background="White">
         <!--#region ToolBar-->
-        <ToolBar x:Name="gridPanel" Height="32" VerticalAlignment="Top" Margin="1,0,-1,0">
+        <ToolBar x:Name="gridPanel" Height="{StaticResource bigTooBarSize}" VerticalAlignment="Top" Margin="1,0,-1,0">
 
-            <Button x:Name="editButton" Width="32" Height="32" ToolTip="Режим редактирования">
-                <StackPanel>
-                    <Image Source="/WipifiDock;component/Resources/Tools/edit.png" />
-                </StackPanel>
+            <Button x:Name="configProjectButton" ToolTip="Настройки проекта">
+                <Image Source="{StaticResource config}" />
             </Button>
-            <Button x:Name="toHtmlButton" Width="32" Height="32" ToolTip="Режим HTML">
-                <StackPanel>
-                    <Image Source="/WipifiDock;component/Resources/Tools/tohtml.png" />
-                </StackPanel>
+            <Button x:Name="openProjectFolderButton" ToolTip="Открыть каталог проекта">
+                <Image Source="{StaticResource openProjectFolder}" />
             </Button>
-
-            <Grid Width="16"></Grid>
-
-            <Button x:Name="addDock" Width="20" Height="32" ToolTip="Добавить документ">
-                <StackPanel>
-                    <Image Source="/WipifiDock;component/Resources/Tools/addDock.png" />
-                </StackPanel>
-            </Button>
-            <Button x:Name="addFolder" Width="20" Height="32" ToolTip="Добавить каталог">
-                <StackPanel>
-                    <Image Source="/WipifiDock;component/Resources/Tools/addFolder.png" />
-                </StackPanel>
-            </Button>
-
-            <Grid Width="8"></Grid>
-
-            <Button x:Name="deleteDock"  Width="20" Height="32" ToolTip="Удалить выбранный файл">
-                <StackPanel>
-                    <Image Source="/WipifiDock;component/Resources/Tools/delete.png" />
-                </StackPanel>
-            </Button>
-            <Button x:Name="deleteFolder" Width="20" Height="32" ToolTip="Удалить выбранный каталог">
-                <StackPanel>
-                    <Image Source="/WipifiDock;component/Resources/Tools/removeFolder.png" />
-                </StackPanel>
-            </Button>
-
-            <Grid Width="16"></Grid>
-
-            <Button x:Name="collapse" Width="32" Height="32" ToolTip="Свернуть все каталоги">
-                <StackPanel>
-                    <Image Source="/WipifiDock;component/Resources/Tools/collapse.png" />
-                </StackPanel>
-            </Button>
-            <Button x:Name="expand" Width="32" Height="32" ToolTip="Развернуть все каталоги">
-                <StackPanel>
-                    <Image Source="/WipifiDock;component/Resources/Tools/expand.png" />
-                </StackPanel>
-            </Button>
-
-            <Grid Width="16"></Grid>
-
-            <Button x:Name="configProject" Width="32" Height="32" ToolTip="Настройкки проекта">
-                <StackPanel>
-                    <Image Source="/WipifiDock;component/Resources/Tools/config.png" />
-                </StackPanel>
-            </Button>
-            <Button x:Name="openProjectFolder" Width="20" Height="32" ToolTip="Открыть каталог проекта">
-                <StackPanel>
-                    <Image Source="/WipifiDock;component/Resources/Tools/openProjectFolder.png" />
-                </StackPanel>
-            </Button>
-            <Button x:Name="projectToWebButton" Width="32" Height="32" ToolTip="Конвертировать проект в Web формат" Margin="0,-2,0,-3">
-                <StackPanel>
-                    <Image Source="/WipifiDock;component/Resources/Tools/projectToWeb.png" />
-                </StackPanel>
+            <Button x:Name="projectToWebButton" ToolTip="Конвертировать проект в Web формат" Margin="0,-2,0,-3">
+                <Image Source="{StaticResource projectToWeb}" />
             </Button>
 
         </ToolBar>
         <!--#endregion-->
 
         <!--#region Browse Buttons-->
-        <TextBlock x:Name="urlTextBlock" IsEnabled="true" Height="23" Margin="69,32,0,0"
-                 TextWrapping="NoWrap" Text="blank:null" VerticalAlignment="Top" FontFamily="Consolas" FontSize="14"/>
         <!--#endregion-->
 
-        <Grid Margin="1,55,0,0">
+        <Grid Margin="1,43,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="160*"/>
                 <ColumnDefinition Width="431*"/>
@@ -99,11 +39,11 @@
             <GridSplitter Grid.Row="0" Width="4"
                       VerticalAlignment="Stretch" HorizontalAlignment="Right" ResizeDirection="Columns" Background="#FFC3C3C3"/>
 
-            <TabControl x:Name="tabControl" SelectionChanged="tabControl_SelectionChanged"  Grid.Column="1">
+            <TabControl x:Name="tabControl" SelectionChanged="tabControl_SelectionChanged"  Grid.Column="1" Margin="0,35,0,0">
                 <TabItem x:Name="addTabItem" Header="+" FontWeight="Bold" FontFamily="Consolas" FontSize="14"/>
             </TabControl>
 
-            <TreeView x:Name="treeView" Margin="0,0,4,0">
+            <TreeView x:Name="treeView" Margin="0,27,4,0">
                 <TreeView.Resources>
                     <!-- Folders -->
                     <Style TargetType="{x:Type q:TreeViewDataFolder}">
@@ -148,6 +88,48 @@
 
                 </TreeView.Resources>
             </TreeView>
+
+            <ToolBar Grid.Column="1" Height="{StaticResource mediumTooBarSize}" VerticalAlignment="Top">
+
+                <Button x:Name="renderButton" ToolTip="Режим браузера">
+                    <Image Source="{StaticResource render}" />
+                </Button>
+                <Button x:Name="mdButton" ToolTip="Редактор MD">
+                    <Image Source="{StaticResource md}" />
+                </Button>
+                <Button x:Name="htmlButton" ToolTip="Показать HTML">
+                    <Image Source="{StaticResource html}" />
+                </Button>
+                
+            </ToolBar>
+
+            <!-- # TREE TOOLS # -->
+            <ToolBar VerticalAlignment="Top" Height="{StaticResource smallTooBarSize}" Margin="0,0,5,0">
+
+                <Button x:Name="addDockButton" ToolTip="Добавить документ">
+                    <Image Source="{StaticResource addDock}" />
+                </Button>
+                <Button x:Name="addFolderButton" ToolTip="Добавить каталог">
+                    <Image Source="{StaticResource addFolder}" />
+                </Button>
+                <Button x:Name="deleteDockButton" ToolTip="Удалить выбранный файл">
+                    <Image Source="{StaticResource delete}" />
+                </Button>
+                <Button x:Name="deleteFolderButton" ToolTip="Удалить выбранный каталог">
+                    <Image Source="{StaticResource removeFolder}" />
+                </Button>
+
+                <Button x:Name="collapseButton" ToolTip="Свернуть все каталоги">
+                    <Image Source="{StaticResource collapse}" />
+                </Button>
+                <Button x:Name="expandButton" ToolTip="Развернуть все каталоги">
+                    <Image Source="{StaticResource expand}" />
+                </Button>
+                <Button x:Name="renameButton" ToolTip="Переименовать">
+                    <Image Source="{StaticResource rename}" />
+                </Button>
+                
+            </ToolBar>
 
         </Grid>
     </Grid>
