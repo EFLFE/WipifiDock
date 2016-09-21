@@ -18,6 +18,12 @@ namespace WipifiDock.Data
         /// <summary> Автор. </summary>
         public string Author;
 
+        /// <summary> Имя файла начальной страницы. </summary>
+        public string MainHtmlFile;
+
+        /// <summary> Имя стиля. </summary>
+        public string StyleName;
+
         /// <summary> Создать данные. </summary>
         /// <param name="name"> Имя проекта. </param>
         /// <param name="path"> Путь. </param>
@@ -27,6 +33,8 @@ namespace WipifiDock.Data
             Path = path;
             Desc = string.Empty;
             Author = string.Empty;
+            MainHtmlFile = string.Empty;
+            StyleName = string.Empty;
         }
 
         /// <summary> Создать данные. </summary>
@@ -34,12 +42,33 @@ namespace WipifiDock.Data
         /// <param name="path"> Путь. </param>
         /// <param name="desc"> Описание. </param>
         /// <param name="author"> Автор. </param>
-        public ProjectData(string name, string path, string desc, string author)
+        /// <param name="mainHtmlFile"> Имя файла начальной страницы. </param>
+        /// <param name="styleName"> Имя стиля. </param>
+        public ProjectData(string name, string path, string desc, string author, string mainHtmlFile, string styleName)
         {
             Name = name;
             Path = path;
             Desc = desc;
             Author = author;
+            MainHtmlFile = mainHtmlFile;
+            StyleName = styleName;
+        }
+
+        /// <summary> Задать данные. </summary>
+        /// <param name="name"> Имя проекта. </param>
+        /// <param name="path"> Путь. </param>
+        /// <param name="desc"> Описание. </param>
+        /// <param name="author"> Автор. </param>
+        /// <param name="mainHtmlFile"> Имя файла начальной страницы. </param>
+        /// <param name="styleName"> Имя стиля. </param>
+        public void Set(string name, string path, string desc, string author, string mainHtmlFile, string styleName)
+        {
+            Name = name;
+            Path = path;
+            Desc = desc;
+            Author = author;
+            MainHtmlFile = mainHtmlFile;
+            StyleName = styleName;
         }
     }
 }

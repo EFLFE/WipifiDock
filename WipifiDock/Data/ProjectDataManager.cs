@@ -55,8 +55,12 @@ namespace WipifiDock.Data
         /// <param name="path"> Путь. </param>
         /// <param name="desc"> Описание. </param>
         /// <param name="author"> Автор. </param>
+        /// <param name="mainHtmlFile"> Имя файла начальной страницы. </param>
+        /// <param name="styleName"> Имя стиля. </param>
+        /// <param name="ignoreExistsDirectory"> Игнорировать наличия одноимённого каталога. </param>
         /// <returns> Профиль был создан. </returns>
-        public static bool CreateProfile(string name, string path, string desc, string author, bool ignoreExistsDirectory)
+        public static bool CreateProfile(string name, string path, string desc, string author,
+                                         string mainHtmlFile, string styleName, bool ignoreExistsDirectory)
         {
             try
             {
@@ -89,7 +93,7 @@ namespace WipifiDock.Data
                 }
 
                 // add
-                projects.Add(name, new ProjectData(name, path, desc, author));
+                projects.Add(name, new ProjectData(name, path, desc, author, mainHtmlFile, styleName));
 
                 // index md
                 File.WriteAllText(
@@ -150,31 +154,31 @@ namespace WipifiDock.Data
             return null;
         }
 
-        /// <summary> Выбрать проект для дальнейшей работы. </summary>
+        /// <summary> Выбрать проект для дальнейшей работы, получив все данные. </summary>
         /// <param name="name"> Имя проекта. </param>
-        /// <returns> Проект найден и выбран. </returns>
-        public static bool SelectProjectName(string name)
+        /// <returns> Получить данные по выбранному проекту. </returns>
+        /// <exception cref="KeyNotFoundException"> Проект не был найден. </exception>
+        public static ProjectData SelectAndLoadProject(string name)
         {
-            if (projects.ContainsKey(name))
+            if (!projects.ContainsKey(name))
             {
-                selectedProjectName = name;
-                return true;
+                throw new KeyNotFoundException($"Проект \"{name}\" не был найден.");
             }
-            else
-            {
-                MessageBox.Show($"Проект \"{name}\" уже существует.", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return false;
-            }
-        }
 
-        /// <summary> Получить данные по выбранному проекту. </summary>
-        /// <returns> Данные проекта. </returns>
-        /// <exception cref="KeyNotFoundException"> Возможно.. </exception>
-        public static ProjectData GetSelectedProjectData()
-        {
+            // get data
+            var txt = File.ReadAllLines(projects[name].Path, Encoding.UTF8);
+            var _name           = txt[0];
+            var _path           = txt[1];
+            var _description    = txt[2];
+            var _author         = txt[3];
+            var _main_html_page = txt[4];
+            var _wdstyle_name   = txt[5];
+            projects[name].Set(_name, _path, _description, _author, _main_html_page, _wdstyle_name);
+
+            selectedProjectName = name;
             return projects[selectedProjectName];
         }
-
+        
         /// <summary> Удалить проект. </summary>
         /// <param name="name"> Имя проекта. </param>
         /// <returns> Был удалён. </returns>

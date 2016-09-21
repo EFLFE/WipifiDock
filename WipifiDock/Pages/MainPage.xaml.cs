@@ -28,6 +28,7 @@ namespace WipifiDock.Pages
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             // такое возможно в XAML?
+            // возможно, но тут проще, чем в xaml
             line1.X2 = WindowWidth - 30.0;
             line2.X2 = WindowWidth - 30.0;
         }
@@ -39,7 +40,7 @@ namespace WipifiDock.Pages
 
         private void buttonCheckUpdate_Click(object sender, RoutedEventArgs e)
         {
-#warning update project NotImplementedException
+            // TODO: update project NotImplementedException
         }
 
         private void buttonExit_Click(object sender, RoutedEventArgs e)

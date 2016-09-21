@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using WipifiDock.Data;
 
 namespace WipifiDock.Pages
@@ -9,7 +11,7 @@ namespace WipifiDock.Pages
     public partial class CreateNewProjectPage : Page
     {
         private MainWipifiWindow ownerMainWindow;
-        
+
         // костыли
         private bool autoAddNameToPath = true;
         private bool onlock;
@@ -19,6 +21,8 @@ namespace WipifiDock.Pages
         {
             ownerMainWindow = _ownerMainWindow;
             InitializeComponent();
+
+            grid.Background = Brushes.Transparent;
             projectDirPath.Text = Environment.CurrentDirectory + "\\";
 
             projectDirPath.TextChanged += ProjectDirPath_TextChanged;
@@ -44,15 +48,59 @@ namespace WipifiDock.Pages
         // создать проект
         private void projectCreate_Click(object sender, RoutedEventArgs e)
         {
-            if (projectName.Text.Length > 0 && projectDirPath.Text.Length > 3)
+            if (projectName.Text.Length == 0)
             {
-                if (ProjectDataManager.CreateProfile(
-                    projectName.Text, projectDirPath.Text, projectDesc.Text, projectAuthor.Text, ignoreExistsDirectory))
-                {
-                    ownerMainWindow.projectListPage.AddProfile(projectName.Text);
-                    reset();
-                    ownerMainWindow.FrameNavigate(MainWipifiWindow.PageType.ProjectListPage);
-                }
+                MessageBox.Show("Введите название проекта.", "Введите название проекта",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if (projectDirPath.Text.Length < 3)
+            {
+                MessageBox.Show("Введите полный путь в каталогу проекта.", "Введите полный путь в каталогу проекта",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if (indexName.Text.Length == 0)
+            {
+                MessageBox.Show("Введите имя файла начальной странице.", "Введите имя файла начальной странице",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            // correct //
+            var ipc = Path.GetInvalidPathChars();
+            var ifc = Path.GetInvalidFileNameChars();
+            if (indexName.Text.IndexOf('.') != -1)
+            {
+                MessageBox.Show("Имя файла начальной страницы вводится без формата файла.", "Введите корректное имя файла начальной странице",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if (projectName.Text.IndexOfAny(ifc) != -1)
+            {
+                MessageBox.Show("Введите корректное имя проекта.", "Введите корректное имя проекта",
+                       MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if (indexName.Text.IndexOfAny(ifc) != -1)
+            {
+                MessageBox.Show("Введите корректное имя начальной странице.", "Введите корректное имя начальной странице",
+                          MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if (projectDirPath.Text.IndexOfAny(ipc) != -1)
+            {
+                MessageBox.Show("Введите корректный путь к проекту.", "Введите корректный путь к проекту",
+                          MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // create
+            if (ProjectDataManager.CreateProfile(
+                projectName.Text, projectDirPath.Text, projectDesc.Text, projectAuthor.Text, indexName.Text, "", ignoreExistsDirectory))
+            {
+                ownerMainWindow.projectListPage.AddProfile(projectName.Text);
+                reset();
+                ownerMainWindow.FrameNavigate(MainWipifiWindow.PageType.ProjectListPage);
             }
         }
 
@@ -80,6 +128,7 @@ namespace WipifiDock.Pages
             projectDesc.Text = string.Empty;
             projectDirPath.Text = Environment.CurrentDirectory + "\\";
             projectAuthor.Text = string.Empty;
+            indexName.Text = "index";
             onlock = false;
             ignoreExistsDirectory = false;
             projectDirPath.IsEnabled = true;
