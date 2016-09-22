@@ -9,25 +9,23 @@
       Loaded="Page_Loaded"
       WindowHeight="320" WindowWidth="520" d:DesignWidth="520" d:DesignHeight="320"
       Title="ProjectWindow">
+    <!--WindowHeight="320" WindowWidth="520" d:DesignWidth="520" d:DesignHeight="320"-->
 
     <Grid x:Name="grid" Background="White">
         <!--#region ToolBar-->
         <ToolBar x:Name="gridPanel" Height="{StaticResource bigTooBarSize}" VerticalAlignment="Top" Margin="1,0,-1,0">
 
-            <Button x:Name="configProjectButton" ToolTip="Настройки проекта" Style="{StaticResource imageButtonStyle}">
+            <Button x:Name="configProjectButton" MaxWidth="{StaticResource bigTooBarSize}" MaxHeight="{StaticResource bigTooBarSize}" Click="configProjectButton_Click" ToolTip="Настройки проекта" Style="{StaticResource imageButtonStyle}">
                 <Image Source="{StaticResource config}" />
             </Button>
-            <Button x:Name="openProjectFolderButton" ToolTip="Открыть каталог проекта" Style="{StaticResource imageButtonStyle}">
+            <Button x:Name="openProjectFolderButton" MaxWidth="{StaticResource bigTooBarSize}" MaxHeight="{StaticResource bigTooBarSize}" Click="openProjectFolderButton_Click" ToolTip="Открыть каталог проекта" Style="{StaticResource imageButtonStyle}">
                 <Image Source="{StaticResource openProjectFolder}" />
             </Button>
-            <Button x:Name="projectToWebButton" ToolTip="Конвертировать проект в Web формат" Style="{StaticResource imageButtonStyle}">
+            <Button x:Name="projectToWebButton" MaxWidth="{StaticResource bigTooBarSize}" MaxHeight="{StaticResource bigTooBarSize}" Click="projectToWebButton_Click" ToolTip="Конвертировать проект в Web формат" Style="{StaticResource imageButtonStyle}">
                 <Image Source="{StaticResource projectToWeb}" />
             </Button>
 
         </ToolBar>
-        <!--#endregion-->
-
-        <!--#region Browse Buttons-->
         <!--#endregion-->
 
         <Grid Margin="1,43,0,0">
@@ -89,15 +87,15 @@
                 </TreeView.Resources>
             </TreeView>
 
-            <ToolBar Grid.Column="1" Height="{StaticResource mediumTooBarSize}" VerticalAlignment="Top">
+            <ToolBar Grid.Column="1" Height="{StaticResource mediumTooBarSize}" VerticalAlignment="Top" Margin="1,0,0,0">
 
-                <Button x:Name="renderButton" ToolTip="Режим браузера" Style="{StaticResource imageButtonStyle}">
+                <Button x:Name="renderButton" MaxWidth="{StaticResource mediumTooBarSize}" MaxHeight="{StaticResource mediumTooBarSize}" Click="renderButton_Click" ToolTip="Режим браузера" Style="{StaticResource imageButtonStyle}">
                     <Image Source="{StaticResource render}" />
                 </Button>
-                <Button x:Name="mdButton" ToolTip="Редактор MD" Style="{StaticResource imageButtonStyle}">
+                <Button x:Name="mdButton" MaxWidth="{StaticResource mediumTooBarSize}" MaxHeight="{StaticResource mediumTooBarSize}" Click="mdButton_Click" ToolTip="Редактор MD" Style="{StaticResource imageButtonStyle}">
                     <Image Source="{StaticResource md}" />
                 </Button>
-                <Button x:Name="htmlButton" ToolTip="Показать HTML" Style="{StaticResource imageButtonStyle}">
+                <Button x:Name="htmlButton" MaxWidth="{StaticResource mediumTooBarSize}" MaxHeight="{StaticResource mediumTooBarSize}" Click="htmlButton_Click" ToolTip="Показать HTML" Style="{StaticResource imageButtonStyle}">
                     <Image Source="{StaticResource html}" />
                 </Button>
 
@@ -106,26 +104,25 @@
             <!-- # TREE TOOLS # -->
             <ToolBar VerticalAlignment="Top" Height="{StaticResource smallTooBarSize}" Margin="0,0,5,0">
 
-                <Button x:Name="addDockButton" ToolTip="Добавить документ" Style="{StaticResource imageButtonStyle}">
+                <Button x:Name="addDockButton"  MaxWidth="{StaticResource smallTooBarSize}" MaxHeight="{StaticResource smallTooBarSize}" Click="addDockButton_Click" ToolTip="Добавить документ" Style="{StaticResource imageButtonStyle}">
                     <Image Source="{StaticResource addDock}" />
                 </Button>
-                <Button x:Name="addFolderButton" ToolTip="Добавить каталог" Style="{StaticResource imageButtonStyle}">
+                <Button x:Name="addFolderButton"  MaxWidth="{StaticResource smallTooBarSize}" MaxHeight="{StaticResource smallTooBarSize}" Click="addFolderButton_Click" ToolTip="Добавить каталог" Style="{StaticResource imageButtonStyle}">
                     <Image Source="{StaticResource addFolder}" />
                 </Button>
-                <Button x:Name="deleteDockButton" ToolTip="Удалить выбранный файл" Style="{StaticResource imageButtonStyle}">
+                <Button x:Name="deleteDockButton"  MaxWidth="{StaticResource smallTooBarSize}" MaxHeight="{StaticResource smallTooBarSize}" Click="deleteDockButton_Click" ToolTip="Удалить выбранный файл" Style="{StaticResource imageButtonStyle}">
                     <Image Source="{StaticResource delete}" />
                 </Button>
-                <Button x:Name="deleteFolderButton" ToolTip="Удалить выбранный каталог" Style="{StaticResource imageButtonStyle}">
+                <Button x:Name="deleteFolderButton" MaxWidth="{StaticResource smallTooBarSize}" MaxHeight="{StaticResource smallTooBarSize}" Click="deleteFolderButton_Click" ToolTip="Удалить выбранный каталог" Style="{StaticResource imageButtonStyle}">
                     <Image Source="{StaticResource removeFolder}" />
                 </Button>
-
-                <Button x:Name="collapseButton" ToolTip="Свернуть все каталоги" Style="{StaticResource imageButtonStyle}">
+                <Button x:Name="collapseButton" MaxWidth="{StaticResource smallTooBarSize}" MaxHeight="{StaticResource smallTooBarSize}" Click="collapseButton_Click" ToolTip="Свернуть все каталоги" Style="{StaticResource imageButtonStyle}">
                     <Image Source="{StaticResource collapse}" />
                 </Button>
-                <Button x:Name="expandButton" ToolTip="Развернуть все каталоги" Style="{StaticResource imageButtonStyle}">
+                <Button x:Name="expandButton" MaxWidth="{StaticResource smallTooBarSize}" MaxHeight="{StaticResource smallTooBarSize}" Click="expandButton_Click" ToolTip="Развернуть все каталоги" Style="{StaticResource imageButtonStyle}">
                     <Image Source="{StaticResource expand}" />
                 </Button>
-                <Button x:Name="renameButton" ToolTip="Переименовать" Style="{StaticResource imageButtonStyle}">
+                <Button x:Name="renameButton" MaxWidth="{StaticResource smallTooBarSize}" MaxHeight="{StaticResource smallTooBarSize}" Click="renameButton_Click" ToolTip="Переименовать" Style="{StaticResource imageButtonStyle}">
                     <Image Source="{StaticResource rename}" />
                 </Button>
 
