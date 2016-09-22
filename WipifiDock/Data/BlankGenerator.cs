@@ -13,62 +13,6 @@ namespace WipifiDock.Data
 
         private static StringBuilder sb = new StringBuilder();
 
-        /// <summary> Получить тип формата файла. </summary>
-        /// <param name="format"> Имя файла или путь к нему. </param>
-        /// <returns> Тип файла. </returns>
-        public static FileFormatType DetectFileFormatType(string format)
-        {
-            // clear path
-            int index1 = format.LastIndexOf('\\');
-            if (index1 != -1)
-            {
-                format = format.Remove(0, index1 + 1);
-            }
-            // get format
-            index1 = format.LastIndexOf('.');
-            if (index1 != -1)
-            {
-                format = format.Remove(0, index1 + 1);
-            }
-
-            switch (format.ToLower())
-            {
-            // todo: надо потом узнать какие форматы может открыть браузер
-            case "bmp":
-            case "gif":
-            case "jpg":
-            case "jpeg":
-            case "jpe":
-            case "jpf":
-            case "jps":
-            case "flif": // на будущее
-            case "png":
-            case "pbm":
-            case "tga":
-            case "tif":
-                return FileFormatType.Image;
-
-            case "txt":
-            case "cs":
-            case "bat":
-            case "cfg":
-            case "log":
-            case "ini":
-                return FileFormatType.TextFile;
-
-            case "html":
-            case "htm":
-                return FileFormatType.HTMLFile;
-
-            case "md":
-            case "markdown":
-                return FileFormatType.MarkDownFile;
-
-            default:
-                return FileFormatType.Unknown;
-            }
-        }
-
         /// <summary> Сгенерировать HTML из шаблона с добавлением кода. </summary>
         /// <param name="title"> Текст заголовка страницы. </param>
         /// <param name="head"> Вставочный код блок HEAD. </param>

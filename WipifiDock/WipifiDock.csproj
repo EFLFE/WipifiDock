@@ -66,8 +66,8 @@
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
-    <Reference Include="CommonMark, Version=0.1.0.0, Culture=neutral, PublicKeyToken=001ef8810438905d, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommonMark.NET.0.13.4\lib\net45\CommonMark.dll</HintPath>
+    <Reference Include="Markdig, Version=0.8.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Markdig.0.8.1\lib\net40\Markdig.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -98,6 +98,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Data\BlankGenerator.cs" />
+    <Compile Include="Data\FileManager.cs" />
     <Compile Include="Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -181,6 +182,7 @@
     <Content Include="Blanks\MainBlank.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\TreeIcons\styleFile.png" />
     <Resource Include="Resources\Tools\Tree\rename.png" />
     <Resource Include="Resources\Tools\Browse\html.png" />
     <Resource Include="Resources\Tools\Browse\md.png" />
@@ -203,7 +205,6 @@
     <Resource Include="Resources\TreeIcons\imageFile.png" />
     <Resource Include="Resources\TreeIcons\mdFile.png" />
     <Resource Include="Resources\TreeIcons\miniFolder.png" />
-    <Resource Include="Resources\TreeIcons\miniProjFile.png" />
     <Resource Include="Resources\TreeIcons\unknownFile.png" />
     <Resource Include="Resources\logo.png" />
     <SplashScreen Include="SplashScreen.png" />

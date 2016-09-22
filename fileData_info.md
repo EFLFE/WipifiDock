@@ -1,84 +1,94 @@
 # ProjectDataManager file data info
 
+## Синтаксис
+
+### Описание
+
+Здесь описаны инструкции для работы с файлами.
+
+#### Маркер
+
+``[key]: [name]``
+
+Где
+
+* **key**: Имя ключа (может быть несколько)
+* **name**: краткое описание или схожее имя с полем
+
+### Ключи
+
+* "**str**": тип strign
+* "**line**": текст на одной линии
+* "**loop**": повторять действия в фигурных скобках
+* "**?**": находится в конце ключа. Означает, что данные для ключа могут быть нулевым
+* "**;**": комментарий
+
 ## Данные проекта
 
 ### Список проектов
 
-```asm
+Хранится рядом с исполняемым файлом данной программы. Хранит имена файлов и путь к ним.
+
+```
 projects.ini
 {
-	str: name
-	str: path
-	loop
+    loop
+    {
+        str line: name
+        str line: path
+    }
 }
 ```
 
 ### Данные конкретного проекта
 
-```asm
+Находится в корневом каталоге проекта. Хранит необходимые данные проекта.
+
+```
 wdproj.ini
 {
-	; count: 6
-	str: name
-	str: path
-	str: description (one line)
-	str: author
-	str: main html page
-	str: wdstyle name
+    str  line: name
+    str  line: path
+    str? line: description (one line)
+    str? line: author
+    str  line  main html page
+    str? line: wdstyle name
 }
 ```
 
-## Файлы-ссылки
+### Web страница
 
-### web страница
+Является магнитом для открытия одноимённых файлов **.HTML** и **.md**. В себе хранит имя стиля.
 
-```asm
+```
 *.wdweb
 {
-	[Flags]
-	byte: flags
-	{
-		html = 1
-		md   = 2
-		css  = 4
-	}
+    str? line: style name
 }
 ```
 
-### глобальны файл для css и html
+### Стиль
 
-```asm
+Является магнитом для открытия одноимённых файлов **css** и **html**.
+
+```
 *.wdstyle
 {
-	[Flags]
-	byte: flags
-	{
-		html = 1
-		css  = 2
-	}
 }
 ```
 
-### контент файл (изображение, текст, тп)
+### Контент файл
 
-```asm
+Является магнитом для одноимённого файла. Тип файла задан в файле.
+
+```
 *.wdcontent
 {
-	byte: flag
-	{
-		image = 1
-		text = 2
-		html = 3
-		md = 4
-	}
+    byte: flag
+    ; unknown = 0
+    ; image = 1
+    ; text = 2
+    ; html = 3
+    ; md = 4
 }
-```
-
-## Прочее
-
-### byte flag lenght
-
-```asm
-max count = 8
-[1 2 4 8 16 32 64 128] = 255
 ```

@@ -3,7 +3,7 @@ using System.IO;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using static WipifiDock.Data.BlankGenerator;
+using WipifiDock.Data;
 
 namespace WipifiDock.Controls.TreeViewData
 {
@@ -23,8 +23,19 @@ namespace WipifiDock.Controls.TreeViewData
         public bool IsEmpty
         { get { return Items.Count == 0 || (Items.Count == 1 && Items[0] == null); } }
 
+        /// <summary> Получить иконфу папки. </summary>
         public ImageSource GetImage
-        { get { return folderImage.Source; } }
+        {
+            get
+            {
+                if (folderImage == null)
+                {
+                    folderImage = new Image();
+                    folderImage.Source = FindResource("miniFolder") as BitmapImage;
+                }
+                return folderImage.Source;
+            }
+        }
 
         public TreeViewDataFolder(string folderName, string path)
         {
@@ -33,30 +44,24 @@ namespace WipifiDock.Controls.TreeViewData
             Items.Add(null); // для возможности развернуть
             initial = Directory.GetDirectories($"{path}\\{folderName}", "*", SearchOption.TopDirectoryOnly).Length
                     + Directory.GetFiles($"{path}\\{folderName}", "*.*", SearchOption.TopDirectoryOnly).Length;
-
-            if (folderImage == null)
-            {
-                folderImage = new Image();
-                folderImage.Source = FindResource("miniFolder") as BitmapImage;
-            }
         }
     }
 
     /// <summary> TreeView файл. </summary>
     public sealed class TreeViewDataFile : TreeViewItem
     {
-        private static Image htmlFile;
-        private static Image imageFile;
-        private static Image mdFile;
-        private static Image miniProjFile;
-        private static Image textFile;
+        private static Image webFile;
+        private static Image styleFile;
+        private static Image contentFile;
         private static Image unknownFile;
+
+        private FileManager.ProjectFileFormatType fileFormatType;
+
+        public FileManager.ProjectFileFormatType GetProjectFileFormatType => fileFormatType;
 
         public string FileName { get; set; }
 
         public string Path { get; set; }
-
-        private FileFormatType fileFormatType;
 
         public ImageSource GetImage
         {
@@ -64,47 +69,31 @@ namespace WipifiDock.Controls.TreeViewData
             {
                 switch (fileFormatType)
                 {
-                case FileFormatType.MarkDown:
-                    if (mdFile == null)
+                case FileManager.ProjectFileFormatType.Web:
+                    if (webFile == null)
                     {
-                        mdFile = new Image();
-                        mdFile.Source = FindResource("mdFile") as BitmapImage;
+                        webFile = new Image();
+                        webFile.Source = FindResource("htmlFile") as BitmapImage;
                     }
-                    return mdFile.Source;
+                    return webFile.Source;
 
-                case FileFormatType.HTML:
-                    if (htmlFile == null)
+                case FileManager.ProjectFileFormatType.Style:
+                    if (styleFile == null)
                     {
-                        htmlFile = new Image();
-                        htmlFile.Source = FindResource("htmlFile") as BitmapImage;
+                        styleFile = new Image();
+                        styleFile.Source = FindResource("styleFile") as BitmapImage;
                     }
-                    return htmlFile.Source;
+                    return styleFile.Source;
 
-                case FileFormatType.Image:
-                    if (imageFile == null)
+                case FileManager.ProjectFileFormatType.Content:
+                    if (contentFile == null)
                     {
-                        imageFile = new Image();
-                        imageFile.Source = FindResource("imageFile") as BitmapImage;
+                        contentFile = new Image();
+                        contentFile.Source = FindResource("imageFile") as BitmapImage;
                     }
-                    return imageFile.Source;
+                    return contentFile.Source;
 
-                case FileFormatType.Project:
-                    if (miniProjFile == null)
-                    {
-                        miniProjFile = new Image();
-                        miniProjFile.Source = FindResource("miniProjFile") as BitmapImage;
-                    }
-                    return miniProjFile.Source;
-
-                case FileFormatType.Text:
-                    if (miniProjFile == null)
-                    {
-                        miniProjFile = new Image();
-                        miniProjFile.Source = FindResource("textFile") as BitmapImage;
-                    }
-                    return miniProjFile.Source;
-
-                case FileFormatType.Unknown:
+                case FileManager.ProjectFileFormatType.Unknown:
                 default:
                     if (unknownFile == null)
                     {
@@ -114,14 +103,13 @@ namespace WipifiDock.Controls.TreeViewData
                     return unknownFile.Source;
                 }
             }
-            set { }
         }
 
         public TreeViewDataFile(string fileName, string path)
         {
             FileName = fileName;
             Path = path;
-            fileFormatType = DetectFileFormatType(fileName);
+            fileFormatType = FileManager.DetectProjectFileFormatType(fileName);
         }
     }
 }

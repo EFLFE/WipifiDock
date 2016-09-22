@@ -19,11 +19,11 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style x:Key="ShadowStyle">
             <Setter Property="Control.Foreground" Value="LightGray" />
         </Style>
-        
+
         <Style x:Key="imageButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="OverridesDefaultStyle" Value="True"/>
             <Setter Property="Margin" Value="2"/>
@@ -42,20 +42,20 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Name="border" 
+                        <Border Name="border"
         				BorderThickness="0"
         				Padding="2"
-        				CornerRadius="0" 
+        				CornerRadius="0"
         				Background="{TemplateBinding Background}">
                             <Grid >
-                                <ContentPresenter HorizontalAlignment="Center" 
-        	                           VerticalAlignment="Center" Name="contentShadow" 
+                                <ContentPresenter HorizontalAlignment="Center"
+        	                           VerticalAlignment="Center" Name="contentShadow"
         					Style="{StaticResource ShadowStyle}">
                                     <ContentPresenter.RenderTransform>
                                         <TranslateTransform X="1.0" Y="1.0" />
                                     </ContentPresenter.RenderTransform>
                                 </ContentPresenter>
-                                <ContentPresenter HorizontalAlignment="Center" 
+                                <ContentPresenter HorizontalAlignment="Center"
                                     VerticalAlignment="Center" Name="content"/>
                             </Grid>
                         </Border>
@@ -108,6 +108,8 @@
         </Style>
         <!--#endregion-->
 
+        <!--#region  Consts -->
+
         <System:Double x:Key="smallTooBarSize">27.0</System:Double>
         <System:Double x:Key="mediumTooBarSize">35.0</System:Double>
         <System:Double x:Key="bigTooBarSize">43.0</System:Double>
@@ -125,7 +127,7 @@
         <BitmapImage x:Key="htmlFile"     UriSource="/WipifiDock;component/Resources/TreeIcons/htmlFile.png" />
         <BitmapImage x:Key="imageFile"    UriSource="/WipifiDock;component/Resources/TreeIcons/imageFile.png" />
         <BitmapImage x:Key="mdFile"       UriSource="/WipifiDock;component/Resources/TreeIcons/mdFile.png" />
-        <BitmapImage x:Key="miniProjFile" UriSource="/WipifiDock;component/Resources/TreeIcons/miniProjFile.png" />
+        <BitmapImage x:Key="styleFile"    UriSource="/WipifiDock;component/Resources/TreeIcons/styleFile.png" />
         <BitmapImage x:Key="unknownFile"  UriSource="/WipifiDock;component/Resources/TreeIcons/unknownFile.png" />
         <BitmapImage x:Key="textFile"     UriSource="/WipifiDock;component/Resources/TreeIcons/textFile.png" />
 
@@ -145,6 +147,8 @@
         <BitmapImage x:Key="expand"       UriSource="/WipifiDock;component/Resources/Tools/Tree/expand.png" />
         <BitmapImage x:Key="removeFolder" UriSource="/WipifiDock;component/Resources/Tools/Tree/removeFolder.png" />
         <BitmapImage x:Key="rename"       UriSource="/WipifiDock;component/Resources/Tools/Tree/rename.png" />
+
+        <!--#endregion-->
 
     </Application.Resources>
 </Application>

@@ -30,8 +30,8 @@
 
         <Grid Margin="1,43,0,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="166*"/>
-                <ColumnDefinition Width="353*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
 
             <GridSplitter Grid.Row="0" Width="4"
@@ -75,7 +75,7 @@
                                         <Image Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
                                             AncestorType={x:Type q:TreeViewDataFile}}, Path=GetImage}" Width="16" Height="16" />
 
-                                        <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
+                                        <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
                                             AncestorType={x:Type q:TreeViewDataFile}}, Path=FileName}" />
 
                                     </StackPanel>

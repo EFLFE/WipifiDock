@@ -10,55 +10,13 @@ namespace WipifiDock.Data
     /// <summary> Мой личный менеджер по проектам. </summary>
     public static class ProjectDataManager
     {
-        // вся инфа в файле fileData_info.md
-        private const string CONF_FILE = "projects.ini";
-        private const string PROJECT_FILE = "wdproj.ini";
-        private const string WEB_EXT = ".wdweb";
-        private const string STYLE_EXT = "wdstyle";
-        private const string STYLE_EXT = "wdstyle";
-
-        /// <summary> Флаги веб файла. </summary>
-        [Flags]
-        public enum WebFlags : byte
-        {
-            None = 0,
-            html = 1,
-            md = 2,
-            css = 4
-        }
-
-        /// <summary> Флаги файла стиля. </summary>
-        [Flags]
-        public enum StyleFlags : byte
-        {
-            None = 0,
-            css = 1,
-            html = 2
-        }
-
-        /// <summary> Тип контент-файла. </summary>
-        public enum ContentFormatType
-        {
-            Unknown = 0,
-            Image,
-            TextFile,
-            HTMLFile,
-            MarkDownFile
-        }
-
-        /// <summary> Тип проект-файла (расширение). </summary>
-        public enum ProjectFileFormatType
-        {
-            Unknown = 0,
-            Web,
-            Style,
-            Content
-        }
-
         private static string selectedProjectName;
 
         /// <summary> Имя проекта методом SelectProjectName был выбран. </summary>
-        public static bool ProjectProfileWasSelected => selectedProjectName != null && selectedProjectName.Length > 0;
+        public static bool ProjectProfileWasSelected =>
+            selectedProjectName != null
+            && selectedProjectName.Length > 0
+            && projects.ContainsKey(selectedProjectName);
 
         // проекты [имя, данные]
         private static Dictionary<string, ProjectData> projects = new Dictionary<string, ProjectData>();
@@ -67,10 +25,10 @@ namespace WipifiDock.Data
         /// <param name="name"> Имя проекта. </param>
         /// <returns> Данные по проекту. </returns>
         /// <exception cref="KeyNotFoundException"> Возможно.. </exception>
-        public static ProjectData GetProjectData(string name)
-        {
-            return projects[name];
-        }
+        public static ProjectData GetProjectData(string name) => projects[name];
+
+        /// <summary> Получить выбранный проект. </summary>
+        public static ProjectData GetSelectedProjectData() => projects[selectedProjectName];
 
         /// <summary> Создать профиль. </summary>
         /// <param name="name"> Имя проекта. </param>
@@ -114,21 +72,22 @@ namespace WipifiDock.Data
                     }
                 }
 
-                // add
+                // добавить ProjectData, после создание папки ProjectData
                 projects.Add(name, new ProjectData(name, path, desc, author, mainHtmlFile, styleName));
 
-                // index md
+                // index* md
                 File.WriteAllText(
                     $"{path}\\{mainHtmlFile}.md",
                     $"#Проект {name}\n\n##Автор - {author}\n\n###Описание:\n\n{desc}");
 
-                File.WriteAllBytes(
-                    $"{path}\\{mainHtmlFile}{WEB_EXT}",
-                    new[] { (byte)WebFlags.md });
-
-                // project file
+                // web project file
                 File.WriteAllText(
-                    $"{path}\\{PROJECT_FILE}",
+                    $"{path}\\{mainHtmlFile}{FileManager.WEB_EXT}",
+                    "");
+
+                // conf project file
+                File.WriteAllText(
+                    $"{path}\\{FileManager.PROJECT_FILE}",
                     $"{name}\n{path}\n{desc}\n{author}\n{mainHtmlFile}\n\n");
 
                 return true;
@@ -144,15 +103,15 @@ namespace WipifiDock.Data
         /// <returns> ДАнные проектов. </returns>
         public static ProjectData[] LoadProjectConfig()
         {
-            if (File.Exists(CONF_FILE))
+            if (File.Exists(FileManager.CONF_FILE))
             {
                 try
                 {
                     projects.Clear();
 
-                    if (File.Exists(CONF_FILE))
+                    if (File.Exists(FileManager.CONF_FILE))
                     {
-                        var txt = File.ReadAllLines(CONF_FILE);
+                        var txt = File.ReadAllLines(FileManager.CONF_FILE);
                         for (int i = 0; i < txt.Length;)
                         {
                             if (txt[i].Length == 0)
@@ -188,7 +147,7 @@ namespace WipifiDock.Data
             }
 
             // get data
-            var txt = File.ReadAllLines($"{projects[name].Path}\\{PROJECT_FILE}", Encoding.UTF8);
+            var txt = File.ReadAllLines($"{projects[name].Path}\\{FileManager.PROJECT_FILE}", Encoding.UTF8);
             var _name           = txt[0];
             var _path           = txt[1];
             var _description    = txt[2];
@@ -200,7 +159,7 @@ namespace WipifiDock.Data
             selectedProjectName = name;
             return projects[selectedProjectName];
         }
-        
+
         /// <summary> Удалить проект. </summary>
         /// <param name="name"> Имя проекта. </param>
         /// <returns> Был удалён. </returns>
@@ -272,11 +231,11 @@ namespace WipifiDock.Data
                     sb.AppendLine(p.Name);
                     sb.AppendLine(p.Path);
                 }
-                File.WriteAllText(CONF_FILE, sb.ToString());
+                File.WriteAllText(FileManager.CONF_FILE, sb.ToString());
             }
-            else if (File.Exists(CONF_FILE))
+            else if (File.Exists(FileManager.CONF_FILE))
             {
-                File.Delete(CONF_FILE);
+                File.Delete(FileManager.CONF_FILE);
             }
         }
 
