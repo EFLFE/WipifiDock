@@ -49,6 +49,7 @@ namespace WipifiDock.Controls.TreeViewData
         private static Image imageFile;
         private static Image mdFile;
         private static Image miniProjFile;
+        private static Image textFile;
         private static Image unknownFile;
 
         public string FileName { get; set; }

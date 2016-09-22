@@ -9,17 +9,6 @@ namespace WipifiDock.Data
     {
         // TODO: позже сделать кэш что бы не генерировать заного одинаковый файл
 
-        public enum FileFormatType
-        {
-            None,
-            Unknown,
-            MarkDown,
-            HTML,
-            Image,
-            Text,
-            Project
-        }
-
         private const string BLANK_FILE = "Blanks\\MainBlank.html";
 
         private static StringBuilder sb = new StringBuilder();
@@ -64,17 +53,16 @@ namespace WipifiDock.Data
             case "bat":
             case "cfg":
             case "log":
-                return FileFormatType.Text;
+            case "ini":
+                return FileFormatType.TextFile;
 
             case "html":
             case "htm":
-                return FileFormatType.HTML;
+                return FileFormatType.HTMLFile;
 
             case "md":
             case "markdown":
-                return FileFormatType.MarkDown;
-
-            // Project: soon...
+                return FileFormatType.MarkDownFile;
 
             default:
                 return FileFormatType.Unknown;

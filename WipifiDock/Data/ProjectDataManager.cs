@@ -7,15 +7,17 @@ using System.Text;
 
 namespace WipifiDock.Data
 {
-    /// <summary> Наш личный менеджер по проектам. </summary>
+    /// <summary> Мой личный менеджер по проектам. </summary>
     public static class ProjectDataManager
     {
-        // вся инфа в файле pro.bin.txt
+        // вся инфа в файле fileData_info.md
         private const string CONF_FILE = "projects.ini";
         private const string PROJECT_FILE = "wdproj.ini";
         private const string WEB_EXT = ".wdweb";
         private const string STYLE_EXT = "wdstyle";
+        private const string STYLE_EXT = "wdstyle";
 
+        /// <summary> Флаги веб файла. </summary>
         [Flags]
         public enum WebFlags : byte
         {
@@ -25,12 +27,32 @@ namespace WipifiDock.Data
             css = 4
         }
 
+        /// <summary> Флаги файла стиля. </summary>
         [Flags]
         public enum StyleFlags : byte
         {
             None = 0,
             css = 1,
             html = 2
+        }
+
+        /// <summary> Тип контент-файла. </summary>
+        public enum ContentFormatType
+        {
+            Unknown = 0,
+            Image,
+            TextFile,
+            HTMLFile,
+            MarkDownFile
+        }
+
+        /// <summary> Тип проект-файла (расширение). </summary>
+        public enum ProjectFileFormatType
+        {
+            Unknown = 0,
+            Web,
+            Style,
+            Content
         }
 
         private static string selectedProjectName;

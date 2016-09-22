@@ -50,7 +50,7 @@
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
 
-                                        <!-- Как этот Binding работает?! -->
+                                        <!-- Великий и ужасный Binding -->
                                         <Image Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
                                             AncestorType={x:Type q:TreeViewDataFolder}}, Path=GetImage}" Width="16" Height="16" />
 
