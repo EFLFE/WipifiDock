@@ -1,8 +1,8 @@
 ﻿<Page x:Class="WipifiDock.Pages.ProjectPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:local="clr-namespace:WipifiDock.Pages"
       xmlns:q="clr-namespace:WipifiDock.Controls.TreeViewData"
       mc:Ignorable="d"
@@ -89,13 +89,13 @@
 
             <ToolBar Grid.Column="1" Height="{StaticResource mediumTooBarSize}" VerticalAlignment="Top" Margin="1,0,0,0">
 
-                <Button x:Name="renderButton" MaxWidth="{StaticResource mediumTooBarSize}" MaxHeight="{StaticResource mediumTooBarSize}" Click="renderButton_Click" ToolTip="Режим браузера" Style="{StaticResource imageButtonStyle}">
+                <Button x:Name="renderButton" IsEnabled="False" MaxWidth="{StaticResource mediumTooBarSize}" MaxHeight="{StaticResource mediumTooBarSize}" Click="renderButton_Click" ToolTip="Режим браузера" Style="{StaticResource imageButtonStyle}">
                     <Image Source="{StaticResource render}" />
                 </Button>
-                <Button x:Name="mdButton" MaxWidth="{StaticResource mediumTooBarSize}" MaxHeight="{StaticResource mediumTooBarSize}" Click="mdButton_Click" ToolTip="Редактор MD" Style="{StaticResource imageButtonStyle}">
+                <Button x:Name="mdButton" IsEnabled="False" MaxWidth="{StaticResource mediumTooBarSize}" MaxHeight="{StaticResource mediumTooBarSize}" Click="mdButton_Click" ToolTip="Редактор MD" Style="{StaticResource imageButtonStyle}">
                     <Image Source="{StaticResource md}" />
                 </Button>
-                <Button x:Name="htmlButton" MaxWidth="{StaticResource mediumTooBarSize}" MaxHeight="{StaticResource mediumTooBarSize}" Click="htmlButton_Click" ToolTip="Показать HTML" Style="{StaticResource imageButtonStyle}">
+                <Button x:Name="htmlButton" IsEnabled="False" MaxWidth="{StaticResource mediumTooBarSize}" MaxHeight="{StaticResource mediumTooBarSize}" Click="htmlButton_Click" ToolTip="Показать HTML" Style="{StaticResource imageButtonStyle}">
                     <Image Source="{StaticResource html}" />
                 </Button>
 

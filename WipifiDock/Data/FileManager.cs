@@ -94,5 +94,25 @@ namespace WipifiDock.Data
                    .ToArray();
         }
 
+        /// <summary> Получить одноимённый файл проекта. Если файл не найден, то будет создан. </summary>
+        /// <param name="projectFileName"> Проект-файл. </param>
+        /// <param name="ext"> Формат файла (например - .html). </param>
+        public static string GetTextFromMagnetProjectFile(string projectFileName, string ext)
+        {
+            var mFile = projectFileName.Replace(WEB_EXT, ext);
+            string text = "";
+
+            if (File.Exists(mFile))
+            {
+                text = File.ReadAllText(mFile);
+            }
+            else
+            {
+                File.CreateText(mFile).Close();
+            }
+
+            return text;
+        }
+
     }
 }

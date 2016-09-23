@@ -61,6 +61,8 @@ namespace WipifiDock.Controls.TreeViewData
 
         public string FileName { get; set; }
 
+        public string FullFileName { get; set; }
+
         public string Path { get; set; }
 
         public ImageSource GetImage
@@ -107,7 +109,8 @@ namespace WipifiDock.Controls.TreeViewData
 
         public TreeViewDataFile(string fileName, string path)
         {
-            FileName = fileName;
+            FullFileName = fileName;
+            FileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
             Path = path;
             fileFormatType = FileManager.DetectProjectFileFormatType(fileName);
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -18,6 +19,7 @@ namespace WipifiDock.Pages
         {
             InitializeComponent();
             treeView.SelectedItemChanged += TreeView_SelectedItemChanged;
+            treeView.MouseDoubleClick += TreeView_MouseDoubleClick;
         }
 
         // on load (navigate to this page)
@@ -97,14 +99,108 @@ namespace WipifiDock.Pages
             }
         }
 
-        // select item in TreeView
+        // двойной клик по TreeView (что бы выбрать выделенный элемент)
+        private void TreeView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            TreeView_SelectedItemChanged(sender, null);
+        }
+
+        // при выборе элемента в TreeView, открыть выбранный элемент
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            if (treeView.SelectedItem == null)
+                return;
+
+            object item = treeView.SelectedItem;
+            if (item != null)
+            {
+                if (item is TreeViewDataFile)
+                {
+                    var tt = item as TreeViewDataFile;
+                    var path = tt.Path + "\\" + tt.FullFileName;
+
+                    if (tabControl.Items.Count == 1)
+                    {
+                        addWebItem();
+                    }
+                    selectedWebTab.OpenFile(path, tt.GetProjectFileFormatType);
+                    setEditorToolBarMode(tt.GetProjectFileFormatType);
+                }
+            }
+        }
+
+        /// <summary> Включить необходимые для формата файла кнопки управления. </summary>
+        /// <param name="pfft"> Тип файла. </param>
+        private void setEditorToolBarMode(FileManager.ProjectFileFormatType pfft)
+        {
+            switch (pfft)
+            {
+            case FileManager.ProjectFileFormatType.Web:
+                renderButton.IsEnabled = true;
+                mdButton.IsEnabled = true;
+                htmlButton.IsEnabled = true;
+                break;
+
+            default:
+                renderButton.IsEnabled = false;
+                mdButton.IsEnabled = false;
+                htmlButton.IsEnabled = false;
+                break;
+            }
+        }
+
+        /// <summary> Добавить tab в tabControl. </summary>
+        /// <param name="suspedAddTabButton"> Заморозить кнопку + таба на короткое время. </param>
+        private void addWebItem(bool suspedAddTabButton = false)
+        {
+            if (suspedAddTabButton)
+            {
+                (tabControl.Items[tabControl.Items.Count - 1] as TabItem).IsEnabled = false;
+            }
+
+            var _tab = new TabItem();
+            var _grid = new Grid();
+            var _webTab = new WebTab(_tab);
+
+            _grid.Children.Add(_webTab);
+            _tab.Content = _grid;
+
+            _tab.Header = new TextBlock()
+            {
+                Text = "blank"
+            };
+
+            tabControl.Items.Insert(tabControl.Items.Count - 1, _tab);
+            tabControl.SelectedIndex = tabControl.Items.Count - 2;
+
+            if (suspedAddTabButton)
+            {
+                ThreadPool.QueueUserWorkItem(new WaitCallback((_) =>
+                {
+                    // костыль, ибо я без понятия
+                    // почему при первом добавлении таба
+                    // он добавляет сразу два
+                    Thread.Sleep(99);
+                    Dispatcher.Invoke(() => { (tabControl.Items[tabControl.Items.Count - 1] as TabItem).IsEnabled = true; });
+                }
+                ));
+            }
         }
 
         // когда выбрана вкладка
         private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (!IsLoaded)
+                return;
+
+            if (tabControl.SelectedIndex == tabControl.Items.Count - 1)
+            {
+                // [+]
+                addWebItem(true);
+                return;
+            }
+
+            selectedWebTab = ((tabControl.SelectedItem as TabItem).Content as Grid).Children[0] as WebTab;
         }
 
         #region Click Events

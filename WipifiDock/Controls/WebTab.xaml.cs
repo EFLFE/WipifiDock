@@ -20,7 +20,7 @@ namespace WipifiDock.Controls
         /// <summary> Страница загружена. </summary>
         public bool Navigated { get; private set; }
 
-        public delegate void DelOnNavigated(string title);
+        public delegate void DelOnNavigated(string title, object sender, NavigationEventArgs e);
 
         /// <summary> Событие после навигации. </summary>
         public event DelOnNavigated OnNavigated;
@@ -41,21 +41,46 @@ namespace WipifiDock.Controls
 
             Title = title;
             (OwnerTab.Header as TextBlock).Text = title;
-            OnNavigated?.Invoke(title);
+            OnNavigated?.Invoke(title, sender, e);
+        }
+
+        /// <summary> Открыть файл проекта. </summary>
+        /// <param name="file"> Имя файла. Путь строится от корневого. </param>
+        /// <param name="projectFileFormatType"> Тип файла. </param>
+        public void OpenFile(string file, FileManager.ProjectFileFormatType projectFileFormatType)
+        {
+            switch (projectFileFormatType)
+            {
+            case FileManager.ProjectFileFormatType.Web:
+                string html = FileManager.GetTextFromMagnetProjectFile(file, ".html");
+
+                if (html.Length > 0)
+                {
+                    webBrowser.NavigateToString(html);
+                }
+                else
+                {
+                    Title = Path.GetFileNameWithoutExtension(file);
+                    (OwnerTab.Header as TextBlock).Text = Title;
+                }
+
+                textBox.Text = FileManager.GetTextFromMagnetProjectFile(file, ".md");
+                break;
+
+            case FileManager.ProjectFileFormatType.Style:
+            case FileManager.ProjectFileFormatType.Content:
+            case FileManager.ProjectFileFormatType.Unknown:
+            default:
+                webBrowser.NavigateToString(
+                    BlankGenerator.Error("Ошибка", "Формат файла \"" + Path.GetFileName(file) + "\" не поддерживается."));
+                break;
+            }
         }
 
         /// <summary> Обновить страницу. </summary>
         public void Refresh()
         {
             webBrowser.Refresh(true);
-        }
-
-        public void ShowTextBox()
-        {
-        }
-
-        public void ShowWebBrowse()
-        {
         }
 
     }

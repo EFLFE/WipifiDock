@@ -78,7 +78,7 @@ namespace WipifiDock.Data
                 // index* md
                 File.WriteAllText(
                     $"{path}\\{mainHtmlFile}.md",
-                    $"#Проект {name}\n\n##Автор - {author}\n\n###Описание:\n\n{desc}");
+                    $"# Проект {name}\n\n## Автор - {author}\n\n### Описание:\n\n{desc}");
 
                 // web project file
                 File.WriteAllText(
