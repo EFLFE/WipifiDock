@@ -58,7 +58,7 @@ namespace WipifiDock.Data
         /// <param name="title"> Текст заголовка страницы. </param>
         /// <param name="head"> Вставочный код блок HEAD. </param>
         /// <param name="body"> Вставочный код блок BODY. </param>
-        public static string Custom(string title, string[] head, string[] body)
+        public static string HTML(string title, string[] head, string[] body)
         {
             createBlank(title, head, body);
             return sb.ToString();
@@ -97,7 +97,7 @@ namespace WipifiDock.Data
         /// <summary> Сгенерировать HTML для файла который не был найден. </summary>
         /// <param name="imagePath"> Полный путь к фейковому файлу. </param>
         /// <returns> HTML код. </returns>
-        public static string FileNotFouund(string path)
+        public static string FileNotFound(string path)
         {
             createBlank(
                 title: Path.GetFileName(path),

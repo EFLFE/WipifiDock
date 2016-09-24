@@ -182,11 +182,9 @@
     <Content Include="Blanks\MainBlank.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\Tools\X.png" />
     <Resource Include="Resources\TreeIcons\styleFile.png" />
     <Resource Include="Resources\Tools\Tree\rename.png" />
-    <Resource Include="Resources\Tools\Browse\html.png" />
-    <Resource Include="Resources\Tools\Browse\md.png" />
-    <Resource Include="Resources\Tools\Browse\render.png" />
     <Resource Include="Resources\Tools\Global\config.png" />
     <Resource Include="Resources\Tools\Global\openProjectFolder.png" />
     <Resource Include="Resources\Tools\Global\projectToWeb.png" />
@@ -197,9 +195,6 @@
     <Resource Include="Resources\Tools\Tree\expand.png" />
     <Resource Include="Resources\Tools\Tree\removeFolder.png" />
     <Resource Include="Resources\TreeIcons\textFile.png" />
-    <Resource Include="Resources\Browse\back.png" />
-    <Resource Include="Resources\Browse\front.png" />
-    <Resource Include="Resources\Browse\update.png" />
     <Resource Include="Resources\favicon.ico" />
     <Resource Include="Resources\TreeIcons\htmlFile.png" />
     <Resource Include="Resources\TreeIcons\imageFile.png" />

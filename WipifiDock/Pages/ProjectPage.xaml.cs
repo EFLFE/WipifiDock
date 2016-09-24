@@ -3,7 +3,9 @@ using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using WipifiDock.Controls;
 using WipifiDock.Controls.TreeViewData;
 using WipifiDock.Data;
@@ -100,7 +102,7 @@ namespace WipifiDock.Pages
         }
 
         // двойной клик по TreeView (что бы выбрать выделенный элемент)
-        private void TreeView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void TreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             TreeView_SelectedItemChanged(sender, null);
         }
@@ -124,28 +126,8 @@ namespace WipifiDock.Pages
                         addWebItem();
                     }
                     selectedWebTab.OpenFile(path, tt.GetProjectFileFormatType);
-                    setEditorToolBarMode(tt.GetProjectFileFormatType);
+                    //setEditorToolBarMode(tt.GetProjectFileFormatType);
                 }
-            }
-        }
-
-        /// <summary> Включить необходимые для формата файла кнопки управления. </summary>
-        /// <param name="pfft"> Тип файла. </param>
-        private void setEditorToolBarMode(FileManager.ProjectFileFormatType pfft)
-        {
-            switch (pfft)
-            {
-            case FileManager.ProjectFileFormatType.Web:
-                renderButton.IsEnabled = true;
-                mdButton.IsEnabled = true;
-                htmlButton.IsEnabled = true;
-                break;
-
-            default:
-                renderButton.IsEnabled = false;
-                mdButton.IsEnabled = false;
-                htmlButton.IsEnabled = false;
-                break;
             }
         }
 
@@ -159,16 +141,34 @@ namespace WipifiDock.Pages
             }
 
             var _tab = new TabItem();
+            // header
+            var sp = new StackPanel() { Orientation = Orientation.Horizontal };
+            var headerText = new TextBlock() { Text = "blank" };
+            var headerImage = new Image()
+            {
+                Source = FindResource("X") as BitmapImage,
+                Margin = new Thickness(5.0 ,0.0 ,0.0 ,0.0),
+                Width = 12,
+                Height = 12
+            };
+            headerImage.MouseUp += delegate (object s, MouseButtonEventArgs e)
+            {
+                (tabControl.Items[tabControl.Items.Count - 1] as TabItem).IsEnabled = false;
+                tabControl.Items.Remove(_tab);
+                (tabControl.Items[tabControl.Items.Count - 1] as TabItem).IsEnabled = true;
+            };
+
+            sp.Children.Add(headerText);
+            sp.Children.Add(headerImage);
+
+            _tab.Header = sp;
+
+            // content
             var _grid = new Grid();
             var _webTab = new WebTab(_tab);
 
             _grid.Children.Add(_webTab);
             _tab.Content = _grid;
-
-            _tab.Header = new TextBlock()
-            {
-                Text = "blank"
-            };
 
             tabControl.Items.Insert(tabControl.Items.Count - 1, _tab);
             tabControl.SelectedIndex = tabControl.Items.Count - 2;
@@ -190,7 +190,7 @@ namespace WipifiDock.Pages
         // когда выбрана вкладка
         private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!IsLoaded)
+            if (!IsLoaded || tabControl.SelectedIndex == -1)
                 return;
 
             if (tabControl.SelectedIndex == tabControl.Items.Count - 1)

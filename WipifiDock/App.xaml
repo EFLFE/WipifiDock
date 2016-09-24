@@ -119,10 +119,6 @@
         <BitmapImage x:Key="icon1" UriSource="/WipifiDock;component/Resources/icon1.png" />
         <BitmapImage x:Key="logo"  UriSource="/WipifiDock;component/Resources/logo.png" />
 
-        <BitmapImage x:Key="back"   UriSource="/WipifiDock;component/Resources/Browse/back.png" />
-        <BitmapImage x:Key="front"  UriSource="/WipifiDock;component/Resources/Browse/front.png" />
-        <BitmapImage x:Key="update" UriSource="/WipifiDock;component/Resources/Browse/update.png" />
-
         <BitmapImage x:Key="miniFolder"   UriSource="/WipifiDock;component/Resources/TreeIcons/miniFolder.png" />
         <BitmapImage x:Key="htmlFile"     UriSource="/WipifiDock;component/Resources/TreeIcons/htmlFile.png" />
         <BitmapImage x:Key="imageFile"    UriSource="/WipifiDock;component/Resources/TreeIcons/imageFile.png" />
@@ -132,9 +128,8 @@
         <BitmapImage x:Key="textFile"     UriSource="/WipifiDock;component/Resources/TreeIcons/textFile.png" />
 
         <!-- Tools -->
-        <BitmapImage x:Key="html"   UriSource="/WipifiDock;component/Resources/Tools/Browse/html.png" />
-        <BitmapImage x:Key="md"     UriSource="/WipifiDock;component/Resources/Tools/Browse/md.png" />
-        <BitmapImage x:Key="render" UriSource="/WipifiDock;component/Resources/Tools/Browse/render.png" />
+
+        <BitmapImage x:Key="X"            UriSource="/WipifiDock;component/Resources/Tools/X.png" />
 
         <BitmapImage x:Key="config"            UriSource="/WipifiDock;component/Resources/Tools/Global/config.png" />
         <BitmapImage x:Key="openProjectFolder" UriSource="/WipifiDock;component/Resources/Tools/Global/openProjectFolder.png" />

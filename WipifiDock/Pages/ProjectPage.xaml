@@ -37,7 +37,7 @@
             <GridSplitter Grid.Row="0" Width="4"
                       VerticalAlignment="Stretch" HorizontalAlignment="Right" ResizeDirection="Columns" Background="#FFC3C3C3"/>
 
-            <TabControl x:Name="tabControl" SelectionChanged="tabControl_SelectionChanged"  Grid.Column="1" Margin="0,35,0,0">
+            <TabControl x:Name="tabControl" SelectionChanged="tabControl_SelectionChanged"  Grid.Column="1">
                 <TabItem x:Name="addTabItem" Header="+" FontWeight="Bold" FontFamily="Consolas" FontSize="14"/>
             </TabControl>
 
@@ -86,20 +86,6 @@
 
                 </TreeView.Resources>
             </TreeView>
-
-            <ToolBar Grid.Column="1" Height="{StaticResource mediumTooBarSize}" VerticalAlignment="Top" Margin="1,0,0,0">
-
-                <Button x:Name="renderButton" IsEnabled="False" MaxWidth="{StaticResource mediumTooBarSize}" MaxHeight="{StaticResource mediumTooBarSize}" Click="renderButton_Click" ToolTip="Режим браузера" Style="{StaticResource imageButtonStyle}">
-                    <Image Source="{StaticResource render}" />
-                </Button>
-                <Button x:Name="mdButton" IsEnabled="False" MaxWidth="{StaticResource mediumTooBarSize}" MaxHeight="{StaticResource mediumTooBarSize}" Click="mdButton_Click" ToolTip="Редактор MD" Style="{StaticResource imageButtonStyle}">
-                    <Image Source="{StaticResource md}" />
-                </Button>
-                <Button x:Name="htmlButton" IsEnabled="False" MaxWidth="{StaticResource mediumTooBarSize}" MaxHeight="{StaticResource mediumTooBarSize}" Click="htmlButton_Click" ToolTip="Показать HTML" Style="{StaticResource imageButtonStyle}">
-                    <Image Source="{StaticResource html}" />
-                </Button>
-
-            </ToolBar>
 
             <!-- # TREE TOOLS # -->
             <ToolBar VerticalAlignment="Top" Height="{StaticResource smallTooBarSize}" Margin="0,0,5,0">
