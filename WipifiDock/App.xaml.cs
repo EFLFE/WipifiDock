@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
 using WipifiDock.Data;
+using WipifiDock.Forms;
 
 namespace WipifiDock
 {
@@ -22,8 +23,12 @@ namespace WipifiDock
             base.OnStartup(e);
 
 #if DEBUG
+            InsertTextForm.Instance = new InsertTextForm();
+
             var mainWindow = new MainWipifiWindow();
             mainWindow.ShowDialog();
+
+            InsertTextForm.Instance.Close();
 #else
 #error TRY RELEASE!!!!!!!
 #endif

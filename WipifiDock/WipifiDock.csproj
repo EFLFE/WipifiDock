@@ -99,6 +99,9 @@
     </ApplicationDefinition>
     <Compile Include="Data\BlankGenerator.cs" />
     <Compile Include="Data\FileManager.cs" />
+    <Compile Include="Forms\InsertTextForm.xaml.cs">
+      <DependentUpon>InsertTextForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -120,6 +123,10 @@
     <Compile Include="Controls\WebTab.xaml.cs">
       <DependentUpon>WebTab.xaml</DependentUpon>
     </Compile>
+    <Page Include="Forms\InsertTextForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

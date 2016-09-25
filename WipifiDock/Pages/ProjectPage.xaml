@@ -37,7 +37,7 @@
             <GridSplitter Grid.Row="0" Width="4"
                       VerticalAlignment="Stretch" HorizontalAlignment="Right" ResizeDirection="Columns" Background="#FFC3C3C3"/>
 
-            <TabControl x:Name="tabControl" SelectionChanged="tabControl_SelectionChanged"  Grid.Column="1">
+            <TabControl x:Name="tabControl" SelectionChanged="tabControl_SelectionChanged" Grid.Column="1">
                 <TabItem x:Name="addTabItem" Header="+" FontWeight="Bold" FontFamily="Consolas" FontSize="14"/>
             </TabControl>
 

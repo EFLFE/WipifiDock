@@ -6,16 +6,52 @@
              xmlns:local="clr-namespace:WipifiDock"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid x:Name="grid" IsEnabled="false">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
+    <Grid x:Name="grid" Background="White">
 
-        <GridSplitter Grid.Row="0" Width="4" VerticalAlignment="Stretch"
+        <Menu x:Name="menu" VerticalAlignment="Top">
+            <MenuItem Header="MarkDown">
+
+                <MenuItem Header="Заголовки">
+                    <MenuItem Header="Заголовок первого уровня" Click="mdInsertH1" FontSize="22"/>
+                    <MenuItem Header="Заголовок второго уровня" Click="mdInsertH2" FontSize="20"/>
+                    <MenuItem Header="Заголовок третьего уровня" Click="mdInsertH3" FontSize="18"/>
+                    <MenuItem Header="Заголовок четвёртого уровня" Click="mdInsertH4" FontSize="16"/>
+                    <MenuItem Header="Заголовок пятого уровня" Click="mdInsertH5" FontSize="14"/>
+                    <MenuItem Header="Заголовок шестго уровня" Click="mdInsertH6"/>
+                </MenuItem>
+
+                <MenuItem Header="Начертание">
+                    <MenuItem Header="Курсивный (**)" Click="mdInsertItalic1" FontStyle="Italic"/>
+                    <MenuItem Header="Курсивный (__)" Click="mdInsertItalic2" FontStyle="Italic"/>
+                    <MenuItem Header="Жирный (****)" Click="mdInsertBold1" FontWeight="Bold"/>
+                    <MenuItem Header="Жирный (____)" Click="mdInsertBold2" FontWeight="Bold"/>
+                </MenuItem>
+
+                <MenuItem Header="Список">
+                    <MenuItem Header="* Неупорядоченный" Click="mdInsertList1"/>
+                    <MenuItem Header="1 Номерной" Click="mdInsertList2"/>
+                </MenuItem>
+
+                <MenuItem Header="Изображение" Click="mdInsertImage"/>
+                <MenuItem Header="Ссылка" Click="mdInsertUrl"/>
+                <MenuItem Header="Цитата" Click="mdInsertQuote"/>
+                <MenuItem Header="Встроенный код" Click="mdInsertCode"/>
+                <MenuItem Header="Блок кода" Click="mdInsertCodeBlock"/>
+
+            </MenuItem>
+        </Menu>
+
+        <Grid Margin="0,21,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <GridSplitter Grid.Row="0" Width="4" VerticalAlignment="Stretch"
                       HorizontalAlignment="Right" ResizeDirection="Columns" Background="#FFC3C3C3"/>
 
-        <TextBox x:Name="textBox" Margin="0,0,4,0" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" AcceptsReturn="True"/>
-        <WebBrowser x:Name="webBrowser" Grid.Column="1"/>
+            <TextBox x:Name="textBox" Margin="0,0,4,0" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" AcceptsReturn="True"/>
+            <WebBrowser x:Name="webBrowser" Grid.Column="1"/>
+        </Grid>
     </Grid>
 </UserControl>

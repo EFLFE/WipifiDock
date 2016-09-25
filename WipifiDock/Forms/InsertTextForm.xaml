@@ -1,0 +1,42 @@
+﻿<Window x:Class="WipifiDock.Forms.InsertTextForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WipifiDock.Forms"
+        mc:Ignorable="d"
+        Title="Вставить текст" Height="224" Width="420" MinHeight="224" MinWidth="420" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <TabControl x:Name="tab" Height="151" VerticalAlignment="Top">
+            <TabItem Header="Изображение">
+                <Grid>
+                    <Label Content="Маркер:" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold"/>
+                    <Label Content="![Alt Text](url)" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="59,0,0,0"/>
+
+                    <TextBlock HorizontalAlignment="Left" Margin="10,31,0,0" Text="Ссылка на файл:" VerticalAlignment="Top"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="10,75,0,0" Text="Альтернативный текст:" VerticalAlignment="Top"/>
+
+                    <TextBox x:Name="imageUrlTextBox" Height="23" Margin="10,47,10,0" TextWrapping="NoWrap" VerticalAlignment="Top"/>
+                    <TextBox x:Name="altUrlTextBox"   Height="23" Margin="10,91,10,0" TextWrapping="NoWrap" VerticalAlignment="Top"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Ссылка">
+                <Grid>
+                    <Label Content="Маркер:" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold"/>
+                    <Label Content="[text](url)" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="59,0,0,0"/>
+
+                    <TextBlock HorizontalAlignment="Left" Margin="10,31,0,0" Text="Ссылка:" VerticalAlignment="Top"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="10,75,0,0" Text="Текст:" VerticalAlignment="Top"/>
+
+                    <TextBox x:Name="urlTextBox"     Height="23" Margin="10,47,10,0" TextWrapping="NoWrap" VerticalAlignment="Top"/>
+                    <TextBox x:Name="urlTextTextBox" Height="23" Margin="10,91,10,0" TextWrapping="NoWrap" VerticalAlignment="Top"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <Button x:Name="imageUrlButton" Content="ОК, всё готово. Можно вставлять текст" Click="imageUrlButton_Click"
+                            Height="23" Margin="10,156,148,0" VerticalAlignment="Top"/>
+        <Button x:Name="cancelButton" Content="Отмена" Click="cancelButton_Click"
+            Height="23" Margin="0,156,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="72"/>
+    </Grid>
+</Window>

@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using mshtml;
 using WipifiDock.Data;
+using WipifiDock.Forms;
 
 namespace WipifiDock.Controls
 {
@@ -36,6 +37,7 @@ namespace WipifiDock.Controls
         public WebTab(TabItem ownerTab)
         {
             InitializeComponent();
+            grid.IsEnabled = false;
             OwnerTab = ownerTab;
 
             webBrowser.Navigated += WebBrowser_Navigated;
@@ -57,10 +59,15 @@ namespace WipifiDock.Controls
             var title = doc.title;
 
             Title = title;
-            ((OwnerTab.Header as StackPanel).Children[0] as TextBlock).Text = title;
+            setTitle(title);
             OnNavigated?.Invoke(title, sender, e);
 
             Navigated = true;
+        }
+
+        private void setTitle(string title)
+        {
+            ((OwnerTab.Header as StackPanel).Children[0] as TextBlock).Text = title;
         }
 
         private void poolToHtml(object _)
@@ -129,5 +136,100 @@ namespace WipifiDock.Controls
             webBrowser.Refresh(true);
         }
 
+        private void insertMD(string text, int offset = 0)
+        {
+            var newCaret = textBox.CaretIndex + text.Length + offset;
+            textBox.Text = textBox.Text.Insert(textBox.CaretIndex, text);
+            textBox.CaretIndex = newCaret;
+        }
+
+        #region MD INSERT MENU
+        private void mdInsertH1(object sender, RoutedEventArgs e)
+        {
+            insertMD("# ");
+        }
+
+        private void mdInsertH2(object sender, RoutedEventArgs e)
+        {
+            insertMD("## ");
+        }
+
+        private void mdInsertH3(object sender, RoutedEventArgs e)
+        {
+            insertMD("### ");
+        }
+
+        private void mdInsertH4(object sender, RoutedEventArgs e)
+        {
+            insertMD("#### ");
+        }
+
+        private void mdInsertH5(object sender, RoutedEventArgs e)
+        {
+            insertMD("##### ");
+        }
+
+        private void mdInsertH6(object sender, RoutedEventArgs e)
+        {
+            insertMD("###### ");
+        }
+
+        private void mdInsertItalic1(object sender, RoutedEventArgs e)
+        {
+            insertMD("**", -1);
+        }
+
+        private void mdInsertItalic2(object sender, RoutedEventArgs e)
+        {
+            insertMD("__", -1);
+        }
+
+        private void mdInsertBold1(object sender, RoutedEventArgs e)
+        {
+            insertMD("****", -2);
+        }
+
+        private void mdInsertBold2(object sender, RoutedEventArgs e)
+        {
+            insertMD("____", -2);
+        }
+
+        private void mdInsertList1(object sender, RoutedEventArgs e)
+        {
+            insertMD("* ");
+        }
+
+        private void mdInsertList2(object sender, RoutedEventArgs e)
+        {
+            insertMD("1. ");
+        }
+
+        private void mdInsertImage(object sender, RoutedEventArgs e)
+        {
+            InsertTextForm.Instance.ShowDialog();
+            insertMD(InsertTextForm.GetInsertText);
+        }
+
+        private void mdInsertUrl(object sender, RoutedEventArgs e)
+        {
+            InsertTextForm.Instance.ShowDialog();
+            insertMD(InsertTextForm.GetInsertText);
+        }
+
+        private void mdInsertQuote(object sender, RoutedEventArgs e)
+        {
+            insertMD("> ");
+        }
+
+        private void mdInsertCode(object sender, RoutedEventArgs e)
+        {
+            insertMD("``", -1);
+        }
+
+        private void mdInsertCodeBlock(object sender, RoutedEventArgs e)
+        {
+            insertMD("``````", -3);
+        }
+        #endregion
     }
 }
