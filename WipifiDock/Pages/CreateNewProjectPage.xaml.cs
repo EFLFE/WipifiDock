@@ -84,9 +84,9 @@ namespace WipifiDock.Pages
             }
 
             // create
-            if (ProjectDataManager.CreateProfile(projectName.Text, projectDirPath.Text, ignoreExistsDirectory))
+            if (ProjectManager.CreateProfile(projectName.Text, projectDirPath.Text, ignoreExistsDirectory))
             {
-                ProjectDataManager.SaveProjects();
+                ProjectManager.SaveProjects();
                 ownerMainWindow.projectListPage.AddProfile(projectName.Text);
                 ownerMainWindow.FrameNavigate(MainWipifiWindow.PageType.ProjectListPage);
             }

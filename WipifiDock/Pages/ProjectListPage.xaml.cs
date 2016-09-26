@@ -23,7 +23,7 @@ namespace WipifiDock.Pages
             projectListBox.SelectionChanged += ProjectListBox_SelectionChanged;
 
             // загрузить и заполнить список проектов
-            var p = ProjectDataManager.LoadProjectConfig();
+            var p = ProjectManager.LoadProjectConfig();
             if (p != null)
             {
                 for (int i = 0; i < p.Length; i++)
@@ -57,7 +57,7 @@ namespace WipifiDock.Pages
             }
             try
             {
-                selectedProject = ProjectDataManager.SelectAndLoadProject(name);
+                selectedProject = ProjectManager.SelectAndLoadProject(name);
 
                 nameText.Text = selectedProject.Name;
                 dirText.Text = selectedProject.Path;
@@ -91,7 +91,7 @@ namespace WipifiDock.Pages
         // открыть проект
         private void openProject_Click(object sender, RoutedEventArgs e)
         {
-            if (ProjectDataManager.ProjectProfileWasSelected)
+            if (ProjectManager.ProjectProfileWasSelected)
             {
                 OwnerMainWindow.FrameNavigate(MainWipifiWindow.PageType.ProjectPage);
             }
@@ -99,7 +99,7 @@ namespace WipifiDock.Pages
 
         private void deleteSelectedProject_Click(object sender, RoutedEventArgs e)
         {
-            if (projectListBox.SelectedIndex != -1 && ProjectDataManager.RemoveProjectData(selectedProject.Name))
+            if (projectListBox.SelectedIndex != -1 && ProjectManager.RemoveProjectData(selectedProject.Name))
             {
                 projectListBox.Items.RemoveAt(projectListBox.SelectedIndex);
             }

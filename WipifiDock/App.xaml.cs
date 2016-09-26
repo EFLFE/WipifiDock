@@ -39,7 +39,7 @@ namespace WipifiDock
 
         protected override void OnExit(ExitEventArgs e)
         {
-            ProjectDataManager.SaveProjects();
+            ProjectManager.SaveProjects();
             base.OnExit(e);
         }
 

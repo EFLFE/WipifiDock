@@ -266,12 +266,14 @@ namespace WipifiDock.Controls
 
         private void mdInsertImage(object sender, RoutedEventArgs e)
         {
+            InsertTextForm.Instance.SelectTab(0);
             InsertTextForm.Instance.ShowDialog();
             insertMD(InsertTextForm.GetInsertText);
         }
 
         private void mdInsertUrl(object sender, RoutedEventArgs e)
         {
+            InsertTextForm.Instance.SelectTab(1);
             InsertTextForm.Instance.ShowDialog();
             insertMD(InsertTextForm.GetInsertText);
         }

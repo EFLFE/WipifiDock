@@ -27,7 +27,7 @@ namespace WipifiDock.Pages
         // on load (navigate to this page)
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            projectData = ProjectDataManager.GetSelectedProjectData();
+            projectData = ProjectManager.GetSelectedProjectData();
             Title = "Проект - " + projectData.Name;
             FileManager.RootPath = projectData.Path;
             BlankGenerator.InitBlankGenerator();

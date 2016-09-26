@@ -8,7 +8,7 @@ using System.Text;
 namespace WipifiDock.Data
 {
     /// <summary> Мой личный менеджер по проектам. </summary>
-    public static class ProjectDataManager
+    public static class ProjectManager
     {
         private static string selectedProjectName;
 

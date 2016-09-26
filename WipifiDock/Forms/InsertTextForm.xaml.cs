@@ -17,6 +17,14 @@ namespace WipifiDock.Forms
             InitializeComponent();
         }
 
+        public void SelectTab(int index)
+        {
+            if (index < tab.Items.Count && index > -2)
+            {
+                tab.SelectedIndex = index;
+            }
+        }
+
         private void imageUrlButton_Click(object sender, RoutedEventArgs e)
         {
             if (tab.SelectedIndex == 0)

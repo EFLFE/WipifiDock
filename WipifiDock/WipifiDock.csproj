@@ -122,7 +122,7 @@
       <DependentUpon>ProjectPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Data\ProjectData.cs" />
-    <Compile Include="Data\ProjectDataManager.cs" />
+    <Compile Include="Data\ProjectManager.cs" />
     <Compile Include="Controls\TreeViewData.cs" />
     <Compile Include="Controls\MDTabEditor.xaml.cs">
       <DependentUpon>MDTabEditor.xaml</DependentUpon>
