@@ -9,8 +9,8 @@
     <Grid x:Name="grid" Background="White">
 
         <Menu x:Name="menu" VerticalAlignment="Top">
-            <MenuItem Header="MarkDown">
 
+            <MenuItem Header="MarkDown" x:Name="mdMenuItem">
                 <MenuItem Header="Заголовки">
                     <MenuItem Header="Заголовок первого уровня" Click="mdInsertH1" FontSize="22"/>
                     <MenuItem Header="Заголовок второго уровня" Click="mdInsertH2" FontSize="20"/>
@@ -37,7 +37,6 @@
                 <MenuItem Header="Цитата" Click="mdInsertQuote"/>
                 <MenuItem Header="Встроенный код" Click="mdInsertCode"/>
                 <MenuItem Header="Блок кода" Click="mdInsertCodeBlock"/>
-
             </MenuItem>
         </Menu>
 

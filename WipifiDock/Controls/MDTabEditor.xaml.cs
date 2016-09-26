@@ -49,7 +49,7 @@ namespace WipifiDock.Controls
             webBrowser.Navigated += WebBrowser_Navigated;
             textBox.TextChanged += TextBox_TextChanged;
 
-            ThreadPool.QueueUserWorkItem(poolToHtml, null);
+            ThreadPool.QueueUserWorkItem(pool, null);
         }
 
         // задаёт таймер обновления страницы после изменения текста (только .md)
@@ -78,21 +78,25 @@ namespace WipifiDock.Controls
         }
 
         // пул поток для автообновления страницы
-        private void poolToHtml(object _)
+        private void pool(object _)
         {
             while (true)
             {
                 Thread.Sleep(100);
-                lock (_lock_)
+                if (poolEnable)
                 {
-                    if (poolEnable && timeToUpdate > 0 && Navigated)
+                    lock (_lock_)
                     {
-                        if (--timeToUpdate == 0)
+                        if (timeToUpdate > 0 && Navigated)
                         {
-                            Dispatcher.Invoke(() =>
+                            if (--timeToUpdate == 0)
                             {
-                                navigateToHtml();
-                            });
+                                Dispatcher.Invoke(() =>
+                                {
+                                    File.WriteAllText(workFileName, textBox.Text);
+                                    navigateToHtml();
+                                });
+                            }
                         }
                     }
                 }
@@ -150,6 +154,7 @@ namespace WipifiDock.Controls
 
             poolEnable = true;
             grid.IsEnabled = true;
+            mdMenuItem.Visibility = Visibility.Visible;
         }
 
         private void openText(string file)
@@ -158,6 +163,7 @@ namespace WipifiDock.Controls
             workFileName = file;
             textBox.Text = File.ReadAllText(file);
             grid.IsEnabled = true;
+            mdMenuItem.Visibility = Visibility.Hidden;
         }
 
         /// <summary> Закрыть файл. </summary>

@@ -71,6 +71,8 @@ namespace WipifiDock.Data
                 // добавить ProjectData, после создание папки ProjectData
                 projects.Add(name, new ProjectData(name, path));
 
+                string cssFileName = "style.css";
+
                 // index* md
                 File.WriteAllText(
                     $"{path}\\index.md",
@@ -79,17 +81,18 @@ namespace WipifiDock.Data
                 File.WriteAllText(
                     $"{path}\\{FileManager.HEAD_FILE}",
                     "<!-- Вставочный шаблон в тег head -->\n" +
-                    "<META charset=\"utf - 8\">");
+                    "<link rel=\"styleshee\t\" type=\"text / css\" href=\"" + cssFileName + "\">\n" +
+                    "<META charset=\"utf - 8\">\n");
 
                 File.WriteAllText(
                     $"{path}\\{FileManager.BODY_FILE}",
-                    "<!-- Вставочный шаблон в начало тега body -->");
+                    "<!-- Вставочный шаблон в начало тега body -->\n");
 
                 File.WriteAllText(
                     $"{path}\\{FileManager.FOOTER_FILE}",
-                    "<!-- Вставочный шаблон в конец тега head -->");
+                    "<!-- Вставочный шаблон в конец тега head -->\n");
 
-                File.WriteAllText(path + "\\style.css", "/* Стиль для страниц */");
+                File.WriteAllText(path + "\\" + cssFileName, "/* Стиль для страниц */");
 
                 return true;
             }
