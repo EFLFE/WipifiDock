@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Windows.Threading;
+using WipifiDock.Forms;
 using WipifiDock.Pages;
 
 namespace WipifiDock
@@ -23,6 +24,8 @@ namespace WipifiDock
         public CreateNewProjectPage createNewProjectPage;
         public ProjectPage projectPage;
 
+        private LoggerForm loggerForm;
+
         // animation
         private bool                        _allowDirectNavigation = false;
         private NavigatingCancelEventArgs   _navArgs = null;
@@ -32,6 +35,7 @@ namespace WipifiDock
         {
             InitializeComponent();
 
+            loggerForm = new LoggerForm();
             mainPage = new MainPage(this);
             projectListPage = new ProjectListPage(this);
             createNewProjectPage = new CreateNewProjectPage(this);
@@ -40,14 +44,22 @@ namespace WipifiDock
             frame.NavigationUIVisibility = NavigationUIVisibility.Hidden;
             frame.Navigating += frame_Navigating;
         }
-        
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             frame.Navigate(mainPage);
+            loggerForm.Show();
         }
-        
+
+        protected override void OnClosed(EventArgs e)
+        {
+            loggerForm.Close();
+            base.OnClosed(e);
+        }
+
         public void FrameNavigate(PageType pageType)
         {
+            Log.Write("Frame navigate to " + pageType);
             switch (pageType)
             {
             case PageType.MainPage:
@@ -67,7 +79,7 @@ namespace WipifiDock
                 break;
             }
         }
-        
+
         // page animation
         private void frame_Navigating(object sender, NavigatingCancelEventArgs e)
         {
@@ -116,13 +128,13 @@ namespace WipifiDock
             }
 
             Dispatcher.BeginInvoke(DispatcherPriority.Loaded, (ThreadStart)delegate ()
-                {
-                    DoubleAnimation animation0 = new DoubleAnimation();
-                    animation0.From = 0;
-                    animation0.To = 1.0;
-                    animation0.Duration = _duration;
-                    frame.BeginAnimation(OpacityProperty, animation0);
-                });
+            {
+                DoubleAnimation animation0 = new DoubleAnimation();
+                animation0.From = 0;
+                animation0.To = 1.0;
+                animation0.Duration = _duration;
+                frame.BeginAnimation(OpacityProperty, animation0);
+            });
         }
     }
 }

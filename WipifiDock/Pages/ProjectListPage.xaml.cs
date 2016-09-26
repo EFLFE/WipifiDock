@@ -61,8 +61,6 @@ namespace WipifiDock.Pages
 
                 nameText.Text = selectedProject.Name;
                 dirText.Text = selectedProject.Path;
-                authorText.Text = selectedProject.Author;
-                descText.Text = selectedProject.Desc;
 
                 var di = new DirectoryInfo(selectedProject.Path);
                 lastDateText.Text = di.LastWriteTime.ToString("dd.MM.yyyy - HH:mm:ss");
@@ -72,17 +70,16 @@ namespace WipifiDock.Pages
             }
             catch (Exception ex)
             {
+                Log.Write(ex.ToString(), Log.MessageType.ERROR);
                 MessageBox.Show(ex.ToString(), "Ошибка получения данных проекта", MessageBoxButton.OK, MessageBoxImage.Error);
-            }            
+            }
         }
 
         private void clearInfo()
         {
             nameText.Text = string.Empty;
             dirText.Text = string.Empty;
-            authorText.Text = string.Empty;
             lastDateText.Text = string.Empty;
-            descText.Text = string.Empty;
         }
 
         // после создания проекта перейти на CreateNewProjectPage
@@ -119,7 +116,6 @@ namespace WipifiDock.Pages
             {
                 var path = ofd.SelectedPath;
                 var name = path.Remove(0, path.LastIndexOf('\\') + 1);
-
 
                 OwnerMainWindow.createNewProjectPage.SetMainData(name, path);
                 OwnerMainWindow.FrameNavigate(MainWipifiWindow.PageType.CreateNewProjectPage);

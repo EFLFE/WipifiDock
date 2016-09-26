@@ -31,14 +31,7 @@
             <Setter Property="FontSize" Value="11px"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="FocusVisualStyle" Value="{StaticResource MyFocusVisual}" />
-            <Setter Property="Background" >
-                <Setter.Value>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
-                        <GradientStop Color="Transparent" Offset="0.80"/>
-                        <GradientStop Color="Black" Offset="0.90"/>
-                    </LinearGradientBrush>
-                </Setter.Value>
-            </Setter>
+            <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -61,24 +54,10 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background">
-                                    <Setter.Value>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
-                                            <GradientStop Color="Transparent" Offset="0.0"/>
-                                            <GradientStop Color="Black" Offset="0.90"/>
-                                        </LinearGradientBrush>
-                                    </Setter.Value>
-                                </Setter>
+                                <Setter Property="Background" Value="Gray"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" >
-                                    <Setter.Value>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
-                                            <GradientStop Color="Transparent" Offset="0.0"/>
-                                            <GradientStop Color="Blue" Offset="0.90"/>
-                                        </LinearGradientBrush>
-                                    </Setter.Value>
-                                </Setter>
+                                <Setter Property="Background" Value="DarkGray"/>
                                 <Setter TargetName="content" Property="RenderTransform" >
                                     <Setter.Value>
                                         <TranslateTransform Y="1.0" />
@@ -91,13 +70,13 @@
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter TargetName="content" Property="Opacity" Value="0.5" />
-                                <Setter Property="Background" >
-                                    <Setter.Value>
+                                <Setter Property="Background" Value="Transparent" >
+                                    <!--<Setter.Value>
                                         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
                                             <GradientStop Color="Transparent" Offset="0.80"/>
                                             <GradientStop Color="Gray" Offset="0.90"/>
                                         </LinearGradientBrush>
-                                    </Setter.Value>
+                                    </Setter.Value>-->
                                 </Setter>
                             </Trigger>
 
@@ -119,29 +98,24 @@
         <BitmapImage x:Key="icon1" UriSource="/WipifiDock;component/Resources/icon1.png" />
         <BitmapImage x:Key="logo"  UriSource="/WipifiDock;component/Resources/logo.png" />
 
-        <BitmapImage x:Key="miniFolder"   UriSource="/WipifiDock;component/Resources/TreeIcons/miniFolder.png" />
-        <BitmapImage x:Key="htmlFile"     UriSource="/WipifiDock;component/Resources/TreeIcons/htmlFile.png" />
-        <BitmapImage x:Key="imageFile"    UriSource="/WipifiDock;component/Resources/TreeIcons/imageFile.png" />
-        <BitmapImage x:Key="mdFile"       UriSource="/WipifiDock;component/Resources/TreeIcons/mdFile.png" />
-        <BitmapImage x:Key="styleFile"    UriSource="/WipifiDock;component/Resources/TreeIcons/styleFile.png" />
-        <BitmapImage x:Key="unknownFile"  UriSource="/WipifiDock;component/Resources/TreeIcons/unknownFile.png" />
-        <BitmapImage x:Key="textFile"     UriSource="/WipifiDock;component/Resources/TreeIcons/textFile.png" />
+        <BitmapImage x:Key="miniFolder"  UriSource="/WipifiDock;component/Resources/TreeIcons/miniFolder.png" />
+        <BitmapImage x:Key="htmlFile"    UriSource="/WipifiDock;component/Resources/TreeIcons/htmlFile.png" />
+        <BitmapImage x:Key="imageFile"   UriSource="/WipifiDock;component/Resources/TreeIcons/imageFile.png" />
+        <BitmapImage x:Key="mdFile"      UriSource="/WipifiDock;component/Resources/TreeIcons/mdFile.png" />
+        <BitmapImage x:Key="styleFile"   UriSource="/WipifiDock;component/Resources/TreeIcons/styleFile.png" />
+        <BitmapImage x:Key="unknownFile" UriSource="/WipifiDock;component/Resources/TreeIcons/unknownFile.png" />
+        <BitmapImage x:Key="textFile"    UriSource="/WipifiDock;component/Resources/TreeIcons/textFile.png" />
 
         <!-- Tools -->
 
         <BitmapImage x:Key="X"            UriSource="/WipifiDock;component/Resources/Tools/X.png" />
+        <BitmapImage x:Key="addProj"      UriSource="/WipifiDock;component/Resources/Tools/addProj.png" />
+        <BitmapImage x:Key="addExistProj" UriSource="/WipifiDock;component/Resources/Tools/addExistProj.png" />
+        <BitmapImage x:Key="deleteProj"   UriSource="/WipifiDock;component/Resources/Tools/deleteProj.png" />
 
         <BitmapImage x:Key="config"            UriSource="/WipifiDock;component/Resources/Tools/Global/config.png" />
         <BitmapImage x:Key="openProjectFolder" UriSource="/WipifiDock;component/Resources/Tools/Global/openProjectFolder.png" />
         <BitmapImage x:Key="projectToWeb"      UriSource="/WipifiDock;component/Resources/Tools/Global/projectToWeb.png" />
-
-        <BitmapImage x:Key="addDock"      UriSource="/WipifiDock;component/Resources/Tools/Tree/addDock.png" />
-        <BitmapImage x:Key="addFolder"    UriSource="/WipifiDock;component/Resources/Tools/Tree/addFolder.png" />
-        <BitmapImage x:Key="collapse"     UriSource="/WipifiDock;component/Resources/Tools/Tree/collapse.png" />
-        <BitmapImage x:Key="delete"       UriSource="/WipifiDock;component/Resources/Tools/Tree/delete.png" />
-        <BitmapImage x:Key="expand"       UriSource="/WipifiDock;component/Resources/Tools/Tree/expand.png" />
-        <BitmapImage x:Key="removeFolder" UriSource="/WipifiDock;component/Resources/Tools/Tree/removeFolder.png" />
-        <BitmapImage x:Key="rename"       UriSource="/WipifiDock;component/Resources/Tools/Tree/rename.png" />
 
         <!--#endregion-->
 

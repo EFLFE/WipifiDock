@@ -23,9 +23,11 @@ namespace WipifiDock
             base.OnStartup(e);
 
 #if DEBUG
-            InsertTextForm.Instance = new InsertTextForm();
+            Log.EnableTrace = true;
 
             var mainWindow = new MainWipifiWindow();
+            InsertTextForm.Instance = new InsertTextForm();
+
             mainWindow.ShowDialog();
 
             InsertTextForm.Instance.Close();

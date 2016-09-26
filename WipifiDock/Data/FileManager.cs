@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.IO;
+using System.Windows;
 
 namespace WipifiDock.Data
 {
@@ -10,49 +11,74 @@ namespace WipifiDock.Data
         public const string CONF_FILE = "projects.ini";
         public const string PROJECT_FILE = "wdproj.ini";
 
-        public const string WEB_EXT = ".wdweb";
-        public const string STYLE_EXT = ".wdstyle";
-        public const string CONTENT_EXT = ".wdcontent";
+        public const string HEAD_FILE = "head.html";
+        public const string BODY_FILE = "body.html";
+        public const string FOOTER_FILE = "footer.html";
+
+        public const string HEAD_FILE_WE = "head";
+        public const string BODY_FILE_WE = "body";
+        public const string FOOTER_FILE_WE = "footer";
 
         /// <summary> Корневой каталог проекта. </summary>
         public static string RootPath;
 
-        /// <summary> Тип контент-файла. </summary>
-        public enum ContentFormatType
+        public enum FileFormatType
         {
-            Unknown = 0,
-            Image,
-            TextFile,
-            HTMLFile,
-            MarkDownFile
+            Unknown,
+            HTML,
+            MD,
+            CSS,
+            TXT,
+            IMAGE
         }
 
-        /// <summary> Тип проект-файла (↑ расширение ↑). </summary>
-        public enum ProjectFileFormatType
+        /// <summary> Возвращает true, если файл конфликтует с шаблонными для вставки файлами. </summary>
+        /// <param name="file"> полное имя файла. </param>
+        /// <returns> конфликтует? </returns>
+        public static bool CheckFileIsConflict(string file)
         {
-            Unknown = 0,
-            Web,
-            Style,
-            Content
+            string mess = "Файл {0} является вставочным шаблоном и может быть открыт только в .html формате.";
+
+            if (file.Contains(HEAD_FILE_WE) && file.EndsWith(".md", StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show( string.Format(mess, HEAD_FILE_WE), "Внимание",  MessageBoxButton.OK, MessageBoxImage.Warning);
+                return true;
+            }
+            if (file.Contains(BODY_FILE_WE) && file.EndsWith(".md", StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show(string.Format(mess, BODY_FILE_WE), "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return true;
+            }
+            if (file.Contains(FOOTER_FILE_WE) && file.EndsWith(".md", StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show(string.Format(mess, FOOTER_FILE_WE), "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return true;
+            }
+            return false;
         }
 
         /// <summary> Получить тип проект-файла. </summary>
         /// <param name="fileNameOrPathToFileOrHalfPathToFile"> Имя файла или путь к нему. </param>
-        public static ProjectFileFormatType DetectProjectFileFormatType(string fileNameOrPathToFileOrHalfPathToFile)
+        public static FileFormatType DetectProjectFileFormatType(string fileNameOrPathToFileOrHalfPathToFile)
         {
             switch (getExt(fileNameOrPathToFileOrHalfPathToFile))
             {
-            case WEB_EXT:
-                return ProjectFileFormatType.Web;
+            case ".html": return FileFormatType.HTML;
 
-            case STYLE_EXT:
-                return ProjectFileFormatType.Style;
+            case ".md": return FileFormatType.MD;
 
-            case CONTENT_EXT:
-                return ProjectFileFormatType.Content;
+            case ".css": return FileFormatType.CSS;
 
-            default:
-                return ProjectFileFormatType.Unknown;
+            case ".txt": return FileFormatType.TXT;
+
+            case ".png":
+            case ".jpeg":
+            case ".jpg":
+            case ".tga":
+            case ".gif":
+                return FileFormatType.IMAGE;
+
+            default: return FileFormatType.Unknown;
             }
         }
 
@@ -80,38 +106,14 @@ namespace WipifiDock.Data
         /// <param name="path"> Поиска начинается с корня проекта. </param>
         public static string[] GetProjectFiles(string path = "\\")
         {
-            return Directory.EnumerateFiles(RootPath + path, "*.*", SearchOption.TopDirectoryOnly)
-                   .Where(f => (f.EndsWith(WEB_EXT) || f.EndsWith(STYLE_EXT) || f.EndsWith(CONTENT_EXT)))
-                   .ToArray();
+            return Directory.EnumerateFiles(RootPath + path, "*.*", SearchOption.TopDirectoryOnly).ToArray();
         }
 
         /// <summary> Получить каталоги проекта. </summary>
         /// <param name="path"> Поиска начинается с корня проекта. </param>
         public static string[] GetProjectDirs(string path = "\\")
         {
-            return Directory.EnumerateDirectories(RootPath + path, "*", SearchOption.TopDirectoryOnly)
-                   .Where(f => (f.EndsWith(WEB_EXT) || f.EndsWith(STYLE_EXT) || f.EndsWith(CONTENT_EXT)))
-                   .ToArray();
-        }
-
-        /// <summary> Получить одноимённый файл проекта. Если файл не найден, то будет создан. </summary>
-        /// <param name="projectFileName"> Проект-файл. </param>
-        /// <param name="ext"> Формат файла (например - .html). </param>
-        public static string GetTextFromMagnetProjectFile(string projectFileName, string ext)
-        {
-            var mFile = projectFileName.Replace(WEB_EXT, ext);
-            string text = "";
-
-            if (File.Exists(mFile))
-            {
-                text = File.ReadAllText(mFile);
-            }
-            else
-            {
-                File.CreateText(mFile).Close();
-            }
-
-            return text;
+            return Directory.EnumerateDirectories(RootPath + path, "*", SearchOption.TopDirectoryOnly).ToArray();
         }
 
     }

@@ -55,9 +55,9 @@ namespace WipifiDock.Controls.TreeViewData
         private static Image contentFile;
         private static Image unknownFile;
 
-        private FileManager.ProjectFileFormatType fileFormatType;
+        private FileManager.FileFormatType fileFormatType;
 
-        public FileManager.ProjectFileFormatType GetProjectFileFormatType => fileFormatType;
+        public FileManager.FileFormatType GetProjectFileFormatType => fileFormatType;
 
         public string FileName { get; set; }
 
@@ -71,7 +71,7 @@ namespace WipifiDock.Controls.TreeViewData
             {
                 switch (fileFormatType)
                 {
-                case FileManager.ProjectFileFormatType.Web:
+                case FileManager.FileFormatType.HTML:
                     if (webFile == null)
                     {
                         webFile = new Image();
@@ -79,7 +79,7 @@ namespace WipifiDock.Controls.TreeViewData
                     }
                     return webFile.Source;
 
-                case FileManager.ProjectFileFormatType.Style:
+                case FileManager.FileFormatType.CSS:
                     if (styleFile == null)
                     {
                         styleFile = new Image();
@@ -87,7 +87,7 @@ namespace WipifiDock.Controls.TreeViewData
                     }
                     return styleFile.Source;
 
-                case FileManager.ProjectFileFormatType.Content:
+                case FileManager.FileFormatType.IMAGE:
                     if (contentFile == null)
                     {
                         contentFile = new Image();
@@ -95,7 +95,23 @@ namespace WipifiDock.Controls.TreeViewData
                     }
                     return contentFile.Source;
 
-                case FileManager.ProjectFileFormatType.Unknown:
+                case FileManager.FileFormatType.MD:
+                    if (contentFile == null)
+                    {
+                        contentFile = new Image();
+                        contentFile.Source = FindResource("mdFile") as BitmapImage;
+                    }
+                    return contentFile.Source;
+
+                case FileManager.FileFormatType.TXT:
+                    if (contentFile == null)
+                    {
+                        contentFile = new Image();
+                        contentFile.Source = FindResource("textFile") as BitmapImage;
+                    }
+                    return contentFile.Source;
+
+                case FileManager.FileFormatType.Unknown:
                 default:
                     if (unknownFile == null)
                     {

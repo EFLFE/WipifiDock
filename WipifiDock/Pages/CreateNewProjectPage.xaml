@@ -8,19 +8,14 @@
       WindowHeight="320" WindowWidth="520" d:DesignWidth="520" d:DesignHeight="320">
 
     <Grid x:Name="grid" Background="White">
-        <Button x:Name="projectCreate" Click="projectCreate_Click" Content="Создать" HorizontalAlignment="Left" Margin="10,0,0,10" Width="75" Height="22" VerticalAlignment="Bottom" TabIndex="6"/>
-        <Button x:Name="projectCancel" Click="projectCancel_Click" Content="Отмена" Margin="0,0,10,10" Height="22" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" TabIndex="20"/>
-        
-        <TextBox x:Name="projectName" Height="23" Margin="10,26,10,0" TextWrapping="NoWrap" VerticalAlignment="Top" TabIndex="1"/>
-        <TextBox x:Name="projectDesc" Margin="10,202,10,37" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Visible" TabIndex="5" UndoLimit="50"/>
-        <TextBox x:Name="projectAuthor" Margin="10,158,10,0" TextWrapping="NoWrap" Height="23" VerticalAlignment="Top" TabIndex="4"/>
-        <TextBox x:Name="projectDirPath" Margin="10,70,10,0" TextWrapping="NoWrap" Height="23" VerticalAlignment="Top" TabIndex="2"/>
-        <TextBox x:Name="indexName" Text="index" Height="23" Margin="10,114,10,0" TextWrapping="NoWrap" VerticalAlignment="Top" TabIndex="3"/>
-        
-        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Имя проекта:" VerticalAlignment="Top" FontWeight="Bold" Width="500"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,186,0,0" TextWrapping="Wrap" Text="Описание:" VerticalAlignment="Top" Width="500"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,142,0,0" TextWrapping="Wrap" Text="Автор:" VerticalAlignment="Top" Width="500"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,54,0,0" TextWrapping="Wrap" Text="Путь к проекту:" VerticalAlignment="Top" FontWeight="Bold" Width="500"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,98,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" Width="500"><Run Text="Имя "/><Run Text="стартовой страницы"/><Run Text=":"/></TextBlock>
+        <Button x:Name="projectCreate" Click="projectCreate_Click" Content="Создать" HorizontalAlignment="Left" Margin="10,0,0,10" Width="150" Height="22" VerticalAlignment="Bottom" TabIndex="6"/>
+        <Button x:Name="projectCancel" Click="projectCancel_Click" Content="Отмена" Margin="0,0,10,10" Height="22" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="150" TabIndex="20"/>
+
+        <TextBox x:Name="projectName" Height="23" Margin="10,65,10,0" TextWrapping="NoWrap" VerticalAlignment="Top" TabIndex="1"/>
+        <TextBox x:Name="projectDirPath" Margin="10,109,10,0" TextWrapping="NoWrap" Height="23" VerticalAlignment="Top" TabIndex="2"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="10,49,0,0" TextWrapping="Wrap" Text="Имя проекта:" VerticalAlignment="Top" FontWeight="Bold" Width="500"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,93,0,0" TextWrapping="Wrap" Text="Путь к проекту:" VerticalAlignment="Top" FontWeight="Bold" Width="500"/>
+        <TextBlock x:Name="textBlock" Margin="10,10,10,0" TextWrapping="Wrap" Text="Создание проекта" VerticalAlignment="Top" FontWeight="Bold" FontSize="20" TextAlignment="Center"/>
     </Grid>
 </Page>

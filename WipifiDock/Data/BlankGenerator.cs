@@ -1,34 +1,151 @@
 ﻿using System;
+using System.Linq;
 using System.IO;
 using System.Text;
 using System.Windows;
+using System.Security.Permissions;
 
 namespace WipifiDock.Data
 {
     public static class BlankGenerator
     {
-        // TODO: позже сделать кэш что бы не генерировать заного одинаковый файл
-
         private const string BLANK_FILE = "Blanks\\MainBlank.html";
 
+        public const string TITLE_LINE = "#TITLE#";
+        public const string HEAD_LINE = "#HEAD#";
+        public const string BODY_LINE = "#BODY#";
+        public const string FOOTER_LINE = "#FOOTER#";
+        public const string MD_LINE = "#MD#";
+
+        private static string[] blankLines;
+        private static string headText, bodyText, footerText;
+        private static FileSystemWatcher fileWatcher;
         private static StringBuilder sb = new StringBuilder();
+
+        [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
+        public static void InitBlankGenerator()
+        {
+            Log.Write("Init BlankGenerator");
+
+            try
+            {
+                sb = new StringBuilder();
+                headText = string.Empty;
+                bodyText = string.Empty;
+                footerText = string.Empty;
+
+                Log.Write("Start FileSystemWatcher in \"" + FileManager.RootPath + "\"");
+
+                fileWatcher = new FileSystemWatcher(FileManager.RootPath);
+                fileWatcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.LastWrite;
+                fileWatcher.Filter = "*.html";
+
+                fileWatcher.Created += fileSystemWatcher_clearText;
+                fileWatcher.Deleted += fileSystemWatcher_clearText;
+                fileWatcher.Renamed += fileSystemWatcher_renamed;
+                fileWatcher.Changed += fileSystemWatcher_readText;
+
+                blankLines = File.ReadAllLines(BLANK_FILE);
+
+                fileWatcher.EnableRaisingEvents = true;
+            }
+            catch (Exception ex)
+            {
+                Log.Write(ex.ToString(), Log.MessageType.ERROR);
+            }
+        }
+
+        private static void fileSystemWatcher_readText(object sender, FileSystemEventArgs e)
+        {
+            switch (e.Name)
+            {
+            case FileManager.HEAD_FILE:
+                headText = File.ReadAllText(e.FullPath);
+                break;
+
+            case FileManager.BODY_FILE:
+                bodyText = File.ReadAllText(e.FullPath);
+                break;
+
+            case FileManager.FOOTER_FILE:
+                footerText = File.ReadAllText(e.FullPath);
+                break;
+
+            default: return;
+            }
+#if DEBUG
+            Log.Write("FileSystemWatcher: " + e.ChangeType + " " + e.Name);
+#endif
+            Log.Write("Read " + e.Name);
+        }
+
+        private static void fileSystemWatcher_renamed(object sender, RenamedEventArgs e)
+        {
+            switch (e.OldName)
+            {
+            case FileManager.HEAD_FILE:
+                headText = string.Empty;
+                break;
+
+            case FileManager.BODY_FILE:
+                bodyText = string.Empty;
+                break;
+
+            case FileManager.FOOTER_FILE:
+                footerText = string.Empty;
+                break;
+
+            default: return;
+            }
+#if DEBUG
+            Log.Write("FileSystemWatcher: Rename " + e.OldName + " to " + e.Name);
+#endif
+        }
+
+        private static void fileSystemWatcher_clearText(object sender, FileSystemEventArgs e)
+        {
+            switch (e.Name)
+            {
+            case FileManager.HEAD_FILE:
+                headText = string.Empty;
+                break;
+
+            case FileManager.BODY_FILE:
+                bodyText = string.Empty;
+                break;
+
+            case FileManager.FOOTER_FILE:
+                footerText = string.Empty;
+                break;
+
+            default: return;
+            }
+#if DEBUG
+            Log.Write("FileSystemWatcher: " + e.ChangeType + " " + e.Name);
+#endif
+        }
 
         /// <summary> Сгенерировать HTML из шаблона с добавлением кода. </summary>
         /// <param name="title"> Текст заголовка страницы. </param>
         /// <param name="head"> Вставочный код блок HEAD. </param>
         /// <param name="body"> Вставочный код блок BODY. </param>
-        private static void createBlank(string title, string[] head, string[] body)
+        private static void createHtml(string title, string[] head, string[] body)
         {
+            Log.Write("Create HTML " + title);
+
             sb.Clear();
-            string[] txt = File.ReadAllLines(BLANK_FILE);
-            for (int i = 0; i < txt.Length; i++)
+
+            for (int i = 0; i < blankLines.Length; i++)
             {
-                if (txt[i].Contains("#TITLE#"))
+                if (blankLines[i].Contains(TITLE_LINE))
                 {
-                    sb.AppendLine(txt[i].Replace("#TITLE#", title == null ? "Blank" : title));
+                    // TITLE
+                    sb.AppendLine(blankLines[i].Replace(TITLE_LINE, title == null ? "Blank" : title));
                 }
-                else if (txt[i].Contains("#HEAD#"))
+                else if (blankLines[i].Contains(HEAD_LINE))
                 {
+                    // HEAD
+                    sb.AppendLine(headText);
                     if (head != null && head.Length > 0)
                     {
                         for (int j = 0; j < head.Length; j++)
@@ -37,8 +154,10 @@ namespace WipifiDock.Data
                         }
                     }
                 }
-                else if (txt[i].Contains("#BODY#"))
+                else if (blankLines[i].Contains(BODY_LINE))
                 {
+                    // BODY
+                    sb.AppendLine(bodyText);
                     if (body != null && body.Length > 0)
                     {
                         for (int j = 0; j < body.Length; j++)
@@ -47,9 +166,14 @@ namespace WipifiDock.Data
                         }
                     }
                 }
+                else if (blankLines[i].Contains(FOOTER_LINE))
+                {
+                    // FOOTER (end of body)
+                    sb.AppendLine(footerText);
+                }
                 else
                 {
-                    sb.AppendLine(txt[i]);
+                    sb.AppendLine(blankLines[i]);
                 }
             }
         }
@@ -60,87 +184,7 @@ namespace WipifiDock.Data
         /// <param name="body"> Вставочный код блок BODY. </param>
         public static string HTML(string title, string[] head, string[] body)
         {
-            createBlank(title, head, body);
-            return sb.ToString();
-        }
-
-        /// <summary> Сгенерировать HTML для просмотра изображения. </summary>
-        /// <param name="imagePath"> Полный путь к файлу изображения. </param>
-        /// <returns> HTML код. </returns>
-        public static string ViewImage(string imagePath)
-        {
-            createBlank(
-                title: Path.GetFileName(imagePath),
-                head: null,
-                body: new string[]
-                {
-                    $"<img src=\"{imagePath}\" alt=\"{Path.GetFileName(imagePath)}\" />"
-                });
-            return sb.ToString();
-        }
-
-        /// <summary> Сгенерировать HTML для неизвестного формата файла. </summary>
-        /// <param name="imagePath"> Полный путь к файлу. </param>
-        /// <returns> HTML код. </returns>
-        public static string UnknownFileInfo(string path)
-        {
-            createBlank(
-                title: Path.GetFileName(path),
-                head: null,
-                body: new string[]
-                {
-                    $"<h2>Неизветный формта файла {Path.GetFileName(path)}</h2>"
-                });
-            return sb.ToString();
-        }
-
-        /// <summary> Сгенерировать HTML для файла который не был найден. </summary>
-        /// <param name="imagePath"> Полный путь к фейковому файлу. </param>
-        /// <returns> HTML код. </returns>
-        public static string FileNotFound(string path)
-        {
-            createBlank(
-                title: Path.GetFileName(path),
-                head: null,
-                body: new string[]
-                {
-                    $"<h2>Файл {Path.GetFileName(path)} не найден</h2>"
-                });
-            return sb.ToString();
-        }
-
-        /// <summary> Сгенерировать HTML для просмотра текстового файла. </summary>
-        /// <param name="imagePath"> Полный путь к фейковому файлу. </param>
-        /// <returns> HTML код. </returns>
-        public static string Text(string path)
-        {
-            createBlank(
-                title: Path.GetFileName(path),
-                head: null,
-                body: new string[]
-                {
-                    "<p>",
-                    File.ReadAllText(path),
-                    "</p>"
-                });
-            return sb.ToString();
-        }
-
-        /// <summary> Сгенерировать HTML для просмотра текстового файла. </summary>
-        /// <param name="title"> Заголовок. </param>
-        /// <param name="message"> Текст ошибки. </param>
-        /// <returns> HTML </returns>
-        public static string Error(string title, string message)
-        {
-            createBlank(
-                title: title,
-                head: null,
-                body: new string[]
-                {
-                    "<p>",
-                    "Ошибка! " + message,
-                    "</p>"
-                });
+            createHtml(title, head, body);
             return sb.ToString();
         }
 

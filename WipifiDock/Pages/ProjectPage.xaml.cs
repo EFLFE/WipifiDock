@@ -15,7 +15,7 @@ namespace WipifiDock.Pages
     public sealed partial class ProjectPage : Page
     {
         private ProjectData projectData;
-        private WebTab selectedWebTab;
+        private MDTabEditor selectedTab;
 
         public ProjectPage()
         {
@@ -30,7 +30,7 @@ namespace WipifiDock.Pages
             projectData = ProjectDataManager.GetSelectedProjectData();
             Title = "Проект - " + projectData.Name;
             FileManager.RootPath = projectData.Path;
-
+            BlankGenerator.InitBlankGenerator();
             clear();
             loadTree();
         }
@@ -121,24 +121,33 @@ namespace WipifiDock.Pages
                     var tt = item as TreeViewDataFile;
                     var path = tt.Path + "\\" + tt.FullFileName;
 
-                    if (tabControl.Items.Count == 1)
+                    // проверить наличие открытой вкладки для файла
+                    for (int i = 0; i < tabControl.Items.Count; i++)
                     {
-                        addWebItem();
+                        var mdTab = ((tabControl.Items[i] as TabItem).Content as Grid).Children[0] as MDTabEditor;
+
+                        if (path.Equals(mdTab.GetWorkFileName, StringComparison.OrdinalIgnoreCase))
+                        {
+                            tabControl.SelectedIndex = i;
+                            return;
+                        }
                     }
-                    selectedWebTab.OpenFile(path, tt.GetProjectFileFormatType);
-                    //setEditorToolBarMode(tt.GetProjectFileFormatType);
+
+                    // запрет на открытия файлов шаблонных в .md формате
+                    if (FileManager.CheckFileIsConflict(tt.FullFileName))
+                        return;
+
+                    addWebItem();
+                    selectedTab?.OpenFile(path, tt.GetProjectFileFormatType);
                 }
             }
         }
 
         /// <summary> Добавить tab в tabControl. </summary>
         /// <param name="suspedAddTabButton"> Заморозить кнопку + таба на короткое время. </param>
-        private void addWebItem(bool suspedAddTabButton = false)
+        private void addWebItem()
         {
-            if (suspedAddTabButton)
-            {
-                (tabControl.Items[tabControl.Items.Count - 1] as TabItem).IsEnabled = false;
-            }
+            Log.Write("Add tab");
 
             var _tab = new TabItem();
             // header
@@ -147,15 +156,15 @@ namespace WipifiDock.Pages
             var headerImage = new Image()
             {
                 Source = FindResource("X") as BitmapImage,
-                Margin = new Thickness(5.0 ,0.0 ,0.0 ,0.0),
+                Margin = new Thickness(5.0, 0.0, 0.0, 0.0),
                 Width = 12,
                 Height = 12
             };
             headerImage.MouseUp += delegate (object s, MouseButtonEventArgs e)
             {
-                (tabControl.Items[tabControl.Items.Count - 1] as TabItem).IsEnabled = false;
-                tabControl.Items.Remove(_tab);
-                (tabControl.Items[tabControl.Items.Count - 1] as TabItem).IsEnabled = true;
+                // close tab
+                Log.Write("Close tab");
+                tabControl.Items.Remove(_tab); // вызывается tabControl_SelectionChanged
             };
 
             sp.Children.Add(headerText);
@@ -165,42 +174,24 @@ namespace WipifiDock.Pages
 
             // content
             var _grid = new Grid();
-            var _webTab = new WebTab(_tab);
+            var _mdtab = new MDTabEditor(_tab);
 
-            _grid.Children.Add(_webTab);
+            _grid.Children.Add(_mdtab);
             _tab.Content = _grid;
 
-            tabControl.Items.Insert(tabControl.Items.Count - 1, _tab);
-            tabControl.SelectedIndex = tabControl.Items.Count - 2;
-
-            if (suspedAddTabButton)
-            {
-                ThreadPool.QueueUserWorkItem(new WaitCallback((_) =>
-                {
-                    // костыль, ибо я без понятия
-                    // почему при первом добавлении таба
-                    // он добавляет сразу два
-                    Thread.Sleep(99);
-                    Dispatcher.Invoke(() => { (tabControl.Items[tabControl.Items.Count - 1] as TabItem).IsEnabled = true; });
-                }
-                ));
-            }
+            tabControl.Items.Add(_tab);
+            tabControl.SelectedIndex = tabControl.Items.Count - 1;
         }
 
         // когда выбрана вкладка
         private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            Log.Write("Tab selected: " + tabControl.SelectedIndex);
+
             if (!IsLoaded || tabControl.SelectedIndex == -1)
                 return;
 
-            if (tabControl.SelectedIndex == tabControl.Items.Count - 1)
-            {
-                // [+]
-                addWebItem(true);
-                return;
-            }
-
-            selectedWebTab = ((tabControl.SelectedItem as TabItem).Content as Grid).Children[0] as WebTab;
+            selectedTab = ((tabControl.SelectedItem as TabItem).Content as Grid).Children[0] as MDTabEditor;
         }
 
         #region Click Events

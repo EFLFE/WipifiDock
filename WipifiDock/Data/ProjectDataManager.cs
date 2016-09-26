@@ -33,15 +33,11 @@ namespace WipifiDock.Data
         /// <summary> Создать профиль. </summary>
         /// <param name="name"> Имя проекта. </param>
         /// <param name="path"> Путь. </param>
-        /// <param name="desc"> Описание. </param>
-        /// <param name="author"> Автор. </param>
-        /// <param name="mainHtmlFile"> Имя файла начальной страницы. </param>
-        /// <param name="styleName"> Имя стиля. </param>
         /// <param name="ignoreExistsDirectory"> Игнорировать наличия одноимённого каталога. </param>
         /// <returns> Профиль был создан. </returns>
-        public static bool CreateProfile(string name, string path, string desc, string author,
-                                         string mainHtmlFile, string styleName, bool ignoreExistsDirectory)
+        public static bool CreateProfile(string name, string path, bool ignoreExistsDirectory)
         {
+            Log.Write($"Create profile {name} in \"{path}\"");
             try
             {
                 // проверка наличия каталога
@@ -73,27 +69,33 @@ namespace WipifiDock.Data
                 }
 
                 // добавить ProjectData, после создание папки ProjectData
-                projects.Add(name, new ProjectData(name, path, desc, author, mainHtmlFile, styleName));
+                projects.Add(name, new ProjectData(name, path));
 
                 // index* md
                 File.WriteAllText(
-                    $"{path}\\{mainHtmlFile}.md",
-                    $"# Проект {name}\n\n## Автор - {author}\n\n### Описание:\n\n{desc}");
+                    $"{path}\\index.md",
+                    $"# Проект {name}");
 
-                // web project file
                 File.WriteAllText(
-                    $"{path}\\{mainHtmlFile}{FileManager.WEB_EXT}",
-                    "");
+                    $"{path}\\{FileManager.HEAD_FILE}",
+                    "<!-- Вставочный шаблон в тег head -->\n" +
+                    "<META charset=\"utf - 8\">");
 
-                // conf project file
                 File.WriteAllText(
-                    $"{path}\\{FileManager.PROJECT_FILE}",
-                    $"{name}\n{path}\n{desc}\n{author}\n{mainHtmlFile}\n\n");
+                    $"{path}\\{FileManager.BODY_FILE}",
+                    "<!-- Вставочный шаблон в начало тега body -->");
+
+                File.WriteAllText(
+                    $"{path}\\{FileManager.FOOTER_FILE}",
+                    "<!-- Вставочный шаблон в конец тега head -->");
+
+                File.WriteAllText(path + "\\style.css", "/* Стиль для страниц */");
 
                 return true;
             }
             catch (Exception ex)
             {
+                Log.Write(ex.ToString(), Log.MessageType.ERROR);
                 MessageBox.Show(ex.ToString(), "Ошибка создания проекта.", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
@@ -103,6 +105,7 @@ namespace WipifiDock.Data
         /// <returns> ДАнные проектов. </returns>
         public static ProjectData[] LoadProjectConfig()
         {
+            Log.Write("Load Project Config");
             if (File.Exists(FileManager.CONF_FILE))
             {
                 try
@@ -128,6 +131,7 @@ namespace WipifiDock.Data
                 }
                 catch (Exception ex)
                 {
+                    Log.Write(ex.ToString(), Log.MessageType.ERROR);
                     MessageBox.Show(ex.ToString(), "Ошибка при загрузке конфигурации.", MessageBoxButton.OK, MessageBoxImage.Error);
                     return null;
                 }
@@ -141,20 +145,11 @@ namespace WipifiDock.Data
         /// <exception cref="KeyNotFoundException"> Проект не был найден. </exception>
         public static ProjectData SelectAndLoadProject(string name)
         {
+            Log.Write("Select And Load Project - " + name);
             if (!projects.ContainsKey(name))
             {
                 throw new KeyNotFoundException($"Проект \"{name}\" не был найден.");
             }
-
-            // get data
-            var txt = File.ReadAllLines($"{projects[name].Path}\\{FileManager.PROJECT_FILE}", Encoding.UTF8);
-            var _name           = txt[0];
-            var _path           = txt[1];
-            var _description    = txt[2];
-            var _author         = txt[3];
-            var _main_html_page = txt[4];
-            var _wdstyle_name   = txt[5];
-            projects[name] = new ProjectData(_name, _path, _description, _author, _main_html_page, _wdstyle_name);
 
             selectedProjectName = name;
             return projects[selectedProjectName];
@@ -165,6 +160,7 @@ namespace WipifiDock.Data
         /// <returns> Был удалён. </returns>
         public static bool RemoveProjectData(string name)
         {
+            Log.Write("Remove Project Data");
             try
             {
                 if (projects.ContainsKey(name))
@@ -174,32 +170,40 @@ namespace WipifiDock.Data
                     if (Directory.Exists(selectedProject.Path))
                     {
                         var msr = MessageBox.Show(
-                            $"После подтверждения данного сообщения, все данные проекта {selectedProject.Name} будут удалены.\n\n"
-                            + "Все файлы и каталоги будут удалены из следующего каталога:\n" + selectedProject.Path
-                            + "\n\nПродолжить удаление?",
-                            $"Внимание! Вы собираетесь удалить проект {selectedProject.Name}",
-                            MessageBoxButton.YesNo,
-                            MessageBoxImage.Warning);
+                            "Удалить данные проекта?", "Удалить все данные?",
+                            MessageBoxButton.YesNo, MessageBoxImage.Question);
 
                         if (msr == MessageBoxResult.Yes)
                         {
-                            // удалить каталог
-                            //Directory.Delete(seleсtedProject.Pаth, true); #error ОПАСНО!
-                            Microsoft.VisualBasic.FileIO.FileSystem.DeleteDirectory(
-                                selectedProject.Path,
-                                Microsoft.VisualBasic.FileIO.UIOption.AllDialogs,
-                                Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin);
+                            msr = MessageBox.Show(
+                                $"После подтверждения данного сообщения, все данные проекта {selectedProject.Name} будут удалены.\n\n"
+                                + "Все файлы и каталоги будут удалены из следующего каталога:\n" + selectedProject.Path
+                                + "\n\nПродолжить удаление?",
+                                $"Внимание! Вы собираетесь удалить проект {selectedProject.Name}",
+                                MessageBoxButton.YesNo,
+                                MessageBoxImage.Warning);
 
-                            if (Directory.Exists(selectedProject.Path))
+                            if (msr == MessageBoxResult.Yes)
                             {
-                                MessageBox.Show($"Каталог \"{selectedProject.Path}\" не был удален.", "Сбой");
-                                return false;
-                            }
+                                // удалить каталог
+                                //Directory.Delete(seleсtedProject.Pаth, true); #error ОПАСНО!
+                                Microsoft.VisualBasic.FileIO.FileSystem.DeleteDirectory(
+                                    selectedProject.Path,
+                                    Microsoft.VisualBasic.FileIO.UIOption.AllDialogs,
+                                    Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin);
 
-                            projects.Remove(name);
-                            MessageBox.Show($"Все данные в каталоге \"{selectedProject.Path}\" были удалены.", "Готово");
-                            return true;
+                                if (Directory.Exists(selectedProject.Path))
+                                {
+                                    MessageBox.Show($"Каталог \"{selectedProject.Path}\" не был удален.", "Сбой");
+                                    return false;
+                                }
+
+                                projects.Remove(name);
+                                MessageBox.Show($"Все данные в каталоге \"{selectedProject.Path}\" были удалены.", "Готово");
+                                return true;
+                            }
                         }
+                        return true;
                     }
                     else
                     {
@@ -215,6 +219,7 @@ namespace WipifiDock.Data
             }
             catch (Exception ex)
             {
+                Log.Write(ex.ToString(), Log.MessageType.ERROR);
                 MessageBox.Show(ex.ToString(), ex.Message, MessageBoxButton.OK, MessageBoxImage.Error);
             }
             return false;
@@ -223,6 +228,7 @@ namespace WipifiDock.Data
         /// <summary> Сохранить проекты в конфиг файл. </summary>
         public static void SaveProjects()
         {
+            Log.Write("Save Projects");
             if (projects.Count > 0)
             {
                 var sb = new StringBuilder();

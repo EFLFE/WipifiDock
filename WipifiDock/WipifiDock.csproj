@@ -102,6 +102,10 @@
     <Compile Include="Forms\InsertTextForm.xaml.cs">
       <DependentUpon>InsertTextForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\LoggerForm.xaml.cs">
+      <DependentUpon>LoggerForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Log.cs" />
     <Compile Include="Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -120,10 +124,14 @@
     <Compile Include="Data\ProjectData.cs" />
     <Compile Include="Data\ProjectDataManager.cs" />
     <Compile Include="Controls\TreeViewData.cs" />
-    <Compile Include="Controls\WebTab.xaml.cs">
-      <DependentUpon>WebTab.xaml</DependentUpon>
+    <Compile Include="Controls\MDTabEditor.xaml.cs">
+      <DependentUpon>MDTabEditor.xaml</DependentUpon>
     </Compile>
     <Page Include="Forms\InsertTextForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\LoggerForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -151,7 +159,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\WebTab.xaml">
+    <Page Include="Controls\MDTabEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -189,18 +197,14 @@
     <Content Include="Blanks\MainBlank.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\Tools\addExistProj.png" />
+    <Resource Include="Resources\Tools\addProj.png" />
+    <Resource Include="Resources\Tools\deleteProj.png" />
     <Resource Include="Resources\Tools\X.png" />
     <Resource Include="Resources\TreeIcons\styleFile.png" />
-    <Resource Include="Resources\Tools\Tree\rename.png" />
     <Resource Include="Resources\Tools\Global\config.png" />
     <Resource Include="Resources\Tools\Global\openProjectFolder.png" />
     <Resource Include="Resources\Tools\Global\projectToWeb.png" />
-    <Resource Include="Resources\Tools\Tree\addDock.png" />
-    <Resource Include="Resources\Tools\Tree\addFolder.png" />
-    <Resource Include="Resources\Tools\Tree\collapse.png" />
-    <Resource Include="Resources\Tools\Tree\delete.png" />
-    <Resource Include="Resources\Tools\Tree\expand.png" />
-    <Resource Include="Resources\Tools\Tree\removeFolder.png" />
     <Resource Include="Resources\TreeIcons\textFile.png" />
     <Resource Include="Resources\favicon.ico" />
     <Resource Include="Resources\TreeIcons\htmlFile.png" />

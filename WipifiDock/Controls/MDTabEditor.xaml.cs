@@ -11,11 +11,22 @@ using WipifiDock.Forms;
 
 namespace WipifiDock.Controls
 {
-    /// <summary> Элемент с браузером и текстовый редактором. </summary>
-    public sealed partial class WebTab : UserControl
+    /// <summary> Элемент с браузером и текстовый редактором для открытия md файлов. </summary>
+    public sealed partial class MDTabEditor : UserControl
     {
         /// <summary> Ссылка на вкладки. </summary>
         public TabItem OwnerTab; // (не проще ли сюда перенести этот элемент?)
+
+        private string workFileName;
+
+        private object _lock_ = new object();
+        private bool poolEnable;
+        private int timeToUpdate = -1;
+
+        public string GetWorkFileName
+        {
+            get { return workFileName; }
+        }
 
         /// <summary> Заголовок страницы. </summary>
         public string Title { get; private set; }
@@ -23,21 +34,16 @@ namespace WipifiDock.Controls
         /// <summary> Страница загружена. </summary>
         public bool Navigated { get; private set; }
 
-        private string workFileName;
-        private string workPath;
-
-        private bool poolEnable;
-        private int timeToUpdate = 10;
-
         public delegate void DelOnNavigated(string title, object sender, NavigationEventArgs e);
 
         /// <summary> Событие после навигации. </summary>
         public event DelOnNavigated OnNavigated;
 
-        public WebTab(TabItem ownerTab)
+        public MDTabEditor(TabItem ownerTab)
         {
             InitializeComponent();
             grid.IsEnabled = false;
+            menu.IsEnabled = false;
             OwnerTab = ownerTab;
 
             webBrowser.Navigated += WebBrowser_Navigated;
@@ -46,6 +52,7 @@ namespace WipifiDock.Controls
             ThreadPool.QueueUserWorkItem(poolToHtml, null);
         }
 
+        // задаёт таймер обновления страницы после изменения текста (только .md)
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             // start time to update
@@ -59,7 +66,7 @@ namespace WipifiDock.Controls
             var title = doc.title;
 
             Title = title;
-            setTitle(title);
+            //setTitle(title);
             OnNavigated?.Invoke(title, sender, e);
 
             Navigated = true;
@@ -70,64 +77,102 @@ namespace WipifiDock.Controls
             ((OwnerTab.Header as StackPanel).Children[0] as TextBlock).Text = title;
         }
 
+        // пул поток для автообновления страницы
         private void poolToHtml(object _)
         {
             while (true)
             {
                 Thread.Sleep(100);
-                if (poolEnable && timeToUpdate > 0 && Navigated)
+                lock (_lock_)
                 {
-                    if (--timeToUpdate == 0)
+                    if (poolEnable && timeToUpdate > 0 && Navigated)
                     {
-                        Dispatcher.Invoke(() =>
+                        if (--timeToUpdate == 0)
                         {
-                            navigateToHtml();
-                        });
+                            Dispatcher.Invoke(() =>
+                            {
+                                navigateToHtml();
+                            });
+                        }
                     }
                 }
             }
         }
 
+        // конвертировать md в html и открыть
         private void navigateToHtml()
         {
             var html = Markdig.Markdown.ToHtml(textBox.Text);
             html = BlankGenerator.HTML(Title, null, new[] { html });
 
-            string htmlPath = workFileName.Replace(FileManager.WEB_EXT, ".html");
-
+            string htmlPath = workFileName.Replace(".md", ".html");
             File.WriteAllText(htmlPath, html, Encoding.UTF8);
+            Thread.Sleep(0);
+
             webBrowser.Navigate(new Uri(htmlPath));
         }
 
         /// <summary> Открыть файл проекта. </summary>
         /// <param name="file"> Имя файла. Путь строится от корневого. </param>
         /// <param name="projectFileFormatType"> Тип файла. </param>
-        public void OpenFile(string file, FileManager.ProjectFileFormatType projectFileFormatType)
+        public void OpenFile(string file, FileManager.FileFormatType fileType)
         {
-            workFileName = file;
+            setTitle(Path.GetFileName(file));
 
-            switch (projectFileFormatType)
+            switch (fileType)
             {
-            case FileManager.ProjectFileFormatType.Web:
-                textBox.Text = FileManager.GetTextFromMagnetProjectFile(file, ".md");
-
-                //Title = Path.GetFileNameWithoutExtension(file);
-                //(OwnerTab.Header as TextBlock).Text = Title;
-
-                navigateToHtml();
-                poolEnable = true;
-                grid.IsEnabled = true;
+            case FileManager.FileFormatType.MD:
+                openMD(file);
                 break;
 
-            case FileManager.ProjectFileFormatType.Style:
-            case FileManager.ProjectFileFormatType.Content:
-            case FileManager.ProjectFileFormatType.Unknown:
+            case FileManager.FileFormatType.HTML:
+            case FileManager.FileFormatType.CSS:
+            case FileManager.FileFormatType.TXT:
+                openText(file);
+                break;
+
+            case FileManager.FileFormatType.IMAGE:
+            case FileManager.FileFormatType.Unknown:
             default:
-                poolEnable = false;
-                webBrowser.NavigateToString(
-                    BlankGenerator.Error("Ошибка", "Формат файла \"" + Path.GetFileName(file) + "\" не поддерживается."));
                 break;
             }
+        }
+
+        private void openMD(string file)
+        {
+            showWebBrowser();
+            workFileName = file;
+            textBox.Text = File.ReadAllText(file);
+            menu.IsEnabled = true;
+            timeToUpdate = -1;
+
+            navigateToHtml();
+
+            poolEnable = true;
+            grid.IsEnabled = true;
+        }
+
+        private void openText(string file)
+        {
+            hideWebBrowser();
+            workFileName = file;
+            textBox.Text = File.ReadAllText(file);
+            grid.IsEnabled = true;
+        }
+
+        /// <summary> Закрыть файл. </summary>
+        public void Close()
+        {
+            grid.IsEnabled = false;
+            lock (_lock_)
+            {
+                poolEnable = false;
+                timeToUpdate = -1;
+            }
+            webBrowser.Navigate("");
+            textBox.Text = string.Empty;
+            workFileName = string.Empty;
+            menu.IsEnabled = false;
         }
 
         /// <summary> Обновить страницу. </summary>
@@ -141,6 +186,21 @@ namespace WipifiDock.Controls
             var newCaret = textBox.CaretIndex + text.Length + offset;
             textBox.Text = textBox.Text.Insert(textBox.CaretIndex, text);
             textBox.CaretIndex = newCaret;
+        }
+
+        private void showWebBrowser()
+        {
+            gridColumnDefinition.Width = new GridLength(1.0, GridUnitType.Star);
+            //gridColumnDefinition.Width = new GridLength(contentGrid.ActualWidth / 2.0, GridUnitType.Pixel);
+            webBrowser.Visibility = Visibility.Visible;
+            gridSplitter.Visibility = Visibility.Visible;
+        }
+
+        private void hideWebBrowser()
+        {
+            gridColumnDefinition.Width = new GridLength(0.0, GridUnitType.Pixel);
+            webBrowser.Visibility = Visibility.Hidden;
+            gridSplitter.Visibility = Visibility.Hidden;
         }
 
         #region MD INSERT MENU

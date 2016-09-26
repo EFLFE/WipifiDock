@@ -1,10 +1,10 @@
 ﻿<Page x:Class="WipifiDock.Pages.ProjectListPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:WipifiDock"
-      mc:Ignorable="d" 
+      mc:Ignorable="d"
       WindowHeight="320" WindowWidth="520" d:DesignWidth="520" d:DesignHeight="320">
 
     <Grid x:Name="grid" Background="White">
@@ -15,7 +15,7 @@
                     <GradientStop Color="#FF615BA0"/>
                 </RadialGradientBrush>
             </Button.Background>
-            <Image Source="{StaticResource addDock}" />
+            <Image Source="{StaticResource addProj}" />
         </Button>
         <Button x:Name="openProject" IsEnabled="false" ToolTip="Открыть выбранный проект" Click="openProject_Click" Margin="35,36,0,0" Height="32" VerticalAlignment="Top" HorizontalAlignment="Left" Width="20" TabIndex="3">
             <Button.Background>
@@ -33,7 +33,7 @@
                     <GradientStop Color="#FF73FFF9"/>
                 </RadialGradientBrush>
             </Button.Background>
-            <Image Source="{StaticResource addFolder}" />
+            <Image Source="{StaticResource addExistProj}" />
         </Button>
         <Button x:Name="deleteSelectedProject" IsEnabled="false" ToolTip="Удалить выбранный проект" Click="deleteSelectedProject_Click" HorizontalAlignment="Left" Margin="191,36,0,0" Width="20" Height="32" VerticalAlignment="Top" TabIndex="9">
             <Button.Background>
@@ -42,7 +42,7 @@
                     <GradientStop Color="#FFB82F2F"/>
                 </RadialGradientBrush>
             </Button.Background>
-            <Image Source="{StaticResource delete}" />
+            <Image Source="{StaticResource deleteProj}" />
         </Button>
 
         <TextBlock Margin="10,10,0,0" TextWrapping="Wrap" Text="Проекты" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Left" Width="201"/>
@@ -51,15 +51,11 @@
 
         <TextBlock Margin="216,38,10,0" TextWrapping="Wrap" Text="Имя проекта:" VerticalAlignment="Top" FontWeight="Bold"/>
         <TextBlock Margin="216,75,10,0" TextWrapping="Wrap" Text="Каталог:" VerticalAlignment="Top" FontWeight="Bold"/>
-        <TextBlock Margin="216,186,10,0" TextWrapping="Wrap" Text="Описание:" VerticalAlignment="Top" FontWeight="Bold"/>
-        <TextBlock Margin="216,112,10,0" TextWrapping="Wrap" Text="Автор:" VerticalAlignment="Top" FontWeight="Bold"/>
-        <TextBlock Margin="216,149,10,0" TextWrapping="Wrap" Text="Время последнего изменения:" VerticalAlignment="Top" FontWeight="Bold"/>
+        <TextBlock Margin="216,112,10,0" TextWrapping="Wrap" Text="Время последнего изменения:" VerticalAlignment="Top" FontWeight="Bold"/>
 
         <TextBlock x:Name="nameText" Margin="216,54,10,0" TextWrapping="NoWrap" FontSize="11" Height="16" VerticalAlignment="Top"/>
         <TextBlock x:Name="dirText" Margin="216,91,10,0" TextWrapping="NoWrap" FontSize="11" Height="16" VerticalAlignment="Top"/>
-        <TextBlock x:Name="authorText" Margin="216,128,10,0" TextWrapping="NoWrap" FontSize="11" Height="16" VerticalAlignment="Top"/>
-        <TextBlock x:Name="lastDateText" Margin="216,165,10,0" TextWrapping="NoWrap" FontSize="11" Height="16" VerticalAlignment="Top"/>
-        <TextBlock x:Name="descText" Margin="216,202,10,10" TextWrapping="Wrap" FontSize="11"/>
+        <TextBlock x:Name="lastDateText" Margin="216,128,10,0" TextWrapping="NoWrap" FontSize="11" Height="16" VerticalAlignment="Top"/>
 
     </Grid>
 </Page>
