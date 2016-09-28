@@ -8,6 +8,7 @@ using System.Windows.Media.Imaging;
 using WipifiDock.Controls;
 using WipifiDock.Controls.TreeViewData;
 using WipifiDock.Data;
+using System.Windows.Media;
 
 namespace WipifiDock.Pages
 {
@@ -15,12 +16,12 @@ namespace WipifiDock.Pages
     {
         private ProjectData projectData;
         private MDTabEditor selectedTab;
+        private FileSystemWatcher treeWatcher;
 
         public ProjectPage()
         {
             InitializeComponent();
             treeView.SelectedItemChanged += TreeView_SelectedItemChanged;
-            treeView.MouseDoubleClick += TreeView_MouseDoubleClick;
         }
 
         // on load (navigate to this page)
@@ -32,6 +33,95 @@ namespace WipifiDock.Pages
             BlankGenerator.InitBlankGenerator();
             clear();
             loadTree();
+
+            treeWatcher = new FileSystemWatcher(FileManager.RootPath)
+            {
+                IncludeSubdirectories = true,
+                Filter = "*",
+                NotifyFilter = NotifyFilters.DirectoryName | NotifyFilters.FileName | NotifyFilters.LastAccess
+            };
+            treeWatcher.Created += TreeWatcher_Created;
+            treeWatcher.Deleted += TreeWatcher_Deleted;
+            treeWatcher.Renamed += TreeWatcher_Renamed;
+            treeWatcher.EnableRaisingEvents = true;
+        }
+
+        #region Tree view watcher
+
+        private void TreeWatcher_Renamed(object sender, RenamedEventArgs e)
+        {
+        }
+
+        private void TreeWatcher_Deleted(object sender, FileSystemEventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                findTreePatern(e.FullPath.ToID());
+            });
+        }
+
+        private void TreeWatcher_Created(object sender, FileSystemEventArgs e)
+        {
+        }
+
+        #endregion
+
+        private void findTreePatern(int id)
+        {
+            TreeViewItem node = null;
+
+            for (int i = 0; i < treeView.Items.Count; i++)
+            {
+                var iti = treeView.Items[i] as ITreeViewData;
+                if (iti.IsFolder)
+                {
+                    node = findSubTreeItem(iti, id);
+                }
+                else
+                {
+                    if (iti.ID == id)
+                    {
+                        node = treeView.Items[i] as TreeViewItem;
+                        break;
+                    }
+                }
+            }
+
+            if (node == null)
+                return;
+
+            DependencyObject parent = VisualTreeHelper.GetParent(node);
+
+            while (!(parent is TreeViewItem || parent is TreeView))
+            {
+                parent = VisualTreeHelper.GetParent(parent);
+            }
+
+            // delete
+            if (parent is ITreeViewData)
+            {
+                (parent as ITreeViewData).Items.Remove(node);
+            }
+        }
+
+        private TreeViewItem findSubTreeItem(ITreeViewData itree, int id)
+        {
+            for (int i = 0; i < itree.Items.Count; i++)
+            {
+                ITreeViewData isubtree = itree.Items[i] as ITreeViewData;
+                if (isubtree == null)
+                    continue;
+
+                if (isubtree.IsFolder)
+                {
+                    return findSubTreeItem(isubtree, id);
+                }
+                else if (isubtree.ID == id)
+                {
+                    return itree.Items[i] as TreeViewItem;
+                }
+            }
+            return null;
         }
 
         private void clear()
@@ -44,8 +134,8 @@ namespace WipifiDock.Pages
         private void loadTree()
         {
             int i;
-            string[] rootFiles = FileManager.GetProjectFiles("");
-            string[] rootDirs = FileManager.GetProjectDirs("");
+            string[] rootFiles = Directory.GetFiles(FileManager.RootPath, "*", SearchOption.TopDirectoryOnly);
+            string[] rootDirs = Directory.GetDirectories(FileManager.RootPath, "*", SearchOption.TopDirectoryOnly);
 
             // root files
             for (i = 0; i < rootFiles.Length; i++)
@@ -77,9 +167,9 @@ namespace WipifiDock.Pages
                 item.Items.Clear();
 
                 int i;
-                string path = projectData.Path + "\\" + item.FolderName;
-                string[] files = FileManager.GetProjectFiles("\\" + item.FolderName);
-                string[] dirs = FileManager.GetProjectDirs("\\" + item.FolderName);
+                string path = $"{item.Path}\\{item.FolderName}";
+                string[] files = Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly);
+                string[] dirs = Directory.GetDirectories(path, "*", SearchOption.TopDirectoryOnly);
 
                 for (i = 0; i < files.Length; i++)
                 {
@@ -101,18 +191,12 @@ namespace WipifiDock.Pages
             }
         }
 
-        // двойной клик по TreeView (что бы выбрать выделенный элемент)
-        private void TreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            TreeView_SelectedItemChanged(sender, null);
-        }
-
         // при выборе элемента в TreeView, открыть выбранный элемент
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             if (treeView.SelectedItem == null)
                 return;
-
+            // TODO: проверить наличия файла
             object item = treeView.SelectedItem;
             if (item != null)
             {
@@ -197,6 +281,14 @@ namespace WipifiDock.Pages
 
         private void treeCreateFile(object sender, RoutedEventArgs e)
         {
+            var tf = treeView.SelectedItem;
+            if (tf == null)
+            {
+                // root folder
+            }
+            else
+            {
+            }
         }
 
         private void treeCreateDir(object sender, RoutedEventArgs e)

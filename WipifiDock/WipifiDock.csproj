@@ -99,6 +99,7 @@
     </ApplicationDefinition>
     <Compile Include="Data\BlankGenerator.cs" />
     <Compile Include="Data\FileManager.cs" />
+    <Compile Include="EX.cs" />
     <Compile Include="Forms\InsertTextForm.xaml.cs">
       <DependentUpon>InsertTextForm.xaml</DependentUpon>
     </Compile>

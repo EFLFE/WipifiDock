@@ -7,15 +7,43 @@ using WipifiDock.Data;
 
 namespace WipifiDock.Controls.TreeViewData
 {
+    /// <summary> Интерфейс для TreeViewDataFolder и TreeViewDataFile. </summary>
+    public interface ITreeViewData
+    {
+        /// <summary> Уникальный номер, с помощью которого ищется данный объект. </summary>
+        int ID { get; }
+        // Иного способа найти объект к дереве деревьев и вассивов TreeView я не знаю. Для меня это пока что сложно.
+
+        /// <summary> true - каталог. false - файл. </summary>
+        bool IsFolder { get; set; }
+
+        /// <summary> Полный путь к файлу/каталогу. </summary>
+        string Path { get; set; }
+
+        /// <summary> Если каталог, то может иметь файлы/каталоги. </summary>
+        ItemCollection Items { get; }
+
+        /// <summary> Получить иконку. </summary>
+        ImageSource GetImage { get; }
+    }
+
     /// <summary> TreeView каталог. </summary>
-    public sealed class TreeViewDataFolder : TreeViewItem
+    public sealed class TreeViewDataFolder : TreeViewItem, ITreeViewData
     {
         private static Image folderImage;
         private int initial;
 
+        public int ID { get; private set; }
+
+        /// <summary> Всегда true. </summary>
+        public bool IsFolder { get; set; } = true;
+
         public string FolderName { get; set; }
 
+        /// <summary> Полный путь к файлу/каталогу. </summary>
         public string Path { get; set; }
+
+        public new ItemCollection Items { get { return base.Items; } }
 
         public string GetItemCountString
         { get { return IsEmpty ? $" ({initial})" : $" ({Items.Count})"; } }
@@ -39,6 +67,8 @@ namespace WipifiDock.Controls.TreeViewData
 
         public TreeViewDataFolder(string folderName, string path)
         {
+            ID = $"{path}\\{folderName}".ToID();
+
             FolderName = folderName;
             Path = path;
             Items.Add(null); // для возможности развернуть
@@ -48,7 +78,7 @@ namespace WipifiDock.Controls.TreeViewData
     }
 
     /// <summary> TreeView файл. </summary>
-    public sealed class TreeViewDataFile : TreeViewItem
+    public sealed class TreeViewDataFile : TreeViewItem, ITreeViewData
     {
         private static Image webFile;
         private static Image styleFile;
@@ -61,11 +91,21 @@ namespace WipifiDock.Controls.TreeViewData
 
         public FileManager.FileFormatType GetProjectFileFormatType => fileFormatType;
 
+        public int ID { get; private set; }
+
+        /// <summary> Всегда false. </summary>
+        public bool IsFolder { get; set; } = false;
+
+        /// <summary> Имя файла. </summary>
         public string FileName { get; set; }
 
+        /// <summary> Имя файла с расширением. </summary>
         public string FullFileName { get; set; }
 
+        /// <summary> Полный путь к файлу/каталогу. </summary>
         public string Path { get; set; }
+
+        public new ItemCollection Items { get { return base.Items; } }
 
         public ImageSource GetImage
         {
@@ -127,6 +167,8 @@ namespace WipifiDock.Controls.TreeViewData
 
         public TreeViewDataFile(string fileName, string path)
         {
+            ID = $"{path}\\{fileName}".ToID();
+
             FullFileName = fileName;
             FileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
             Path = path;

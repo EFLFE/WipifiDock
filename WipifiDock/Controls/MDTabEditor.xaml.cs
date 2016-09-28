@@ -181,13 +181,16 @@ namespace WipifiDock.Controls
         /// <summary> Закрыть файл. </summary>
         public void Close()
         {
+            gridColumnDefinitionLeft.Width = new GridLength(1.0, GridUnitType.Star);
+            gridColumnDefinition.Width = new GridLength(1.0, GridUnitType.Star);
+
             grid.IsEnabled = false;
             lock (_lock_)
             {
                 poolEnable = false;
                 timeToUpdate = -1;
             }
-            webBrowser.Navigate("");
+            webBrowser.NavigateToString(string.Empty);
             textBox.Text = string.Empty;
             workFileName = string.Empty;
             menu.IsEnabled = false;

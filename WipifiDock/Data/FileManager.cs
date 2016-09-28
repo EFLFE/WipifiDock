@@ -114,19 +114,5 @@ namespace WipifiDock.Data
             return text.ToLower();
         }
 
-        /// <summary> Получить файлы проекта. </summary>
-        /// <param name="path"> Поиска начинается с корня проекта. </param>
-        public static string[] GetProjectFiles(string path = "\\")
-        {
-            return Directory.GetFiles(RootPath + path, "*.*", SearchOption.TopDirectoryOnly);
-        }
-
-        /// <summary> Получить каталоги проекта. </summary>
-        /// <param name="path"> Поиска начинается с корня проекта. </param>
-        public static string[] GetProjectDirs(string path = "\\")
-        {
-            return Directory.GetDirectories(RootPath + path, "*", SearchOption.TopDirectoryOnly);
-        }
-
     }
 }
