@@ -1,85 +1,18 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using WipifiDock.Data;
 
-namespace WipifiDock.Controls.TreeViewData
+namespace WipifiDock.Controls
 {
-    /// <summary> Интерфейс для TreeViewDataFolder и TreeViewDataFile. </summary>
-    public interface ITreeViewData
+    /// <summary> TreeViewData. </summary>
+    [DebuggerDisplay("Name = {FullName}, Type = {fileFormatType}, Items = {Items.Count}")]
+    public sealed class TreeViewData : TreeViewItem
     {
-        /// <summary> Уникальный номер, с помощью которого ищется данный объект. </summary>
-        int ID { get; }
-        // Иного способа найти объект к дереве деревьев и вассивов TreeView я не знаю. Для меня это пока что сложно.
-
-        /// <summary> true - каталог. false - файл. </summary>
-        bool IsFolder { get; set; }
-
-        /// <summary> Полный путь к файлу/каталогу. </summary>
-        string Path { get; set; }
-
-        /// <summary> Если каталог, то может иметь файлы/каталоги. </summary>
-        ItemCollection Items { get; }
-
-        /// <summary> Получить иконку. </summary>
-        ImageSource GetImage { get; }
-    }
-
-    /// <summary> TreeView каталог. </summary>
-    public sealed class TreeViewDataFolder : TreeViewItem, ITreeViewData
-    {
-        private static Image folderImage;
-        private int initial;
-
-        public int ID { get; private set; }
-
-        /// <summary> Всегда true. </summary>
-        public bool IsFolder { get; set; } = true;
-
-        public string FolderName { get; set; }
-
-        /// <summary> Полный путь к файлу/каталогу. </summary>
-        public string Path { get; set; }
-
-        public new ItemCollection Items { get { return base.Items; } }
-
-        public string GetItemCountString
-        { get { return IsEmpty ? $" ({initial})" : $" ({Items.Count})"; } }
-
-        public bool IsEmpty
-        { get { return Items.Count == 0 || (Items.Count == 1 && Items[0] == null); } }
-
-        /// <summary> Получить иконфу папки. </summary>
-        public ImageSource GetImage
-        {
-            get
-            {
-                if (folderImage == null)
-                {
-                    folderImage = new Image();
-                    folderImage.Source = FindResource("miniFolder") as BitmapImage;
-                }
-                return folderImage.Source;
-            }
-        }
-
-        public TreeViewDataFolder(string folderName, string path)
-        {
-            ID = $"{path}\\{folderName}".ToID();
-
-            FolderName = folderName;
-            Path = path;
-            Items.Add(null); // для возможности развернуть
-            initial = Directory.GetDirectories($"{path}\\{folderName}", "*", SearchOption.TopDirectoryOnly).Length
-                    + Directory.GetFiles($"{path}\\{folderName}", "*.*", SearchOption.TopDirectoryOnly).Length;
-        }
-    }
-
-    /// <summary> TreeView файл. </summary>
-    public sealed class TreeViewDataFile : TreeViewItem, ITreeViewData
-    {
+        private static Image folderFile;
         private static Image webFile;
         private static Image styleFile;
         private static Image imageFile;
@@ -89,23 +22,35 @@ namespace WipifiDock.Controls.TreeViewData
 
         private FileManager.FileFormatType fileFormatType;
 
-        public FileManager.FileFormatType GetProjectFileFormatType => fileFormatType;
+        public FileManager.FileFormatType GetFileFormatType => fileFormatType;
 
+        /// <summary> Уникальный номер для поиска. </summary>
         public int ID { get; private set; }
 
-        /// <summary> Всегда false. </summary>
-        public bool IsFolder { get; set; } = false;
+        /// <summary> Это дикертория? </summary>
+        public bool IsFolder { get; set; }
 
-        /// <summary> Имя файла. </summary>
+        /// <summary> Имя файла/каталога. </summary>
         public string FileName { get; set; }
 
         /// <summary> Имя файла с расширением. </summary>
-        public string FullFileName { get; set; }
+        public string FullName { get; set; }
+
+        //public string GetItemCountString
+        //{ get { return IsEmpty ? $" ({initial})" : $" ({Items.Count})"; } }
+
+        public bool IsEmpty
+        {
+            get
+            {
+                return Items.Count == 0 || (Items.Count == 1 && Items[0] == null);
+            }
+        }
 
         /// <summary> Полный путь к файлу/каталогу. </summary>
         public string Path { get; set; }
 
-        public new ItemCollection Items { get { return base.Items; } }
+        //public new ItemCollection Items { get { return base.Items; } }
 
         public ImageSource GetImage
         {
@@ -113,6 +58,14 @@ namespace WipifiDock.Controls.TreeViewData
             {
                 switch (fileFormatType)
                 {
+                case FileManager.FileFormatType.Folder:
+                    if (folderFile == null)
+                    {
+                        folderFile = new Image();
+                        folderFile.Source = FindResource("miniFolder") as BitmapImage;
+                    }
+                    return folderFile.Source;
+
                 case FileManager.FileFormatType.HTML:
                     if (webFile == null)
                     {
@@ -165,14 +118,26 @@ namespace WipifiDock.Controls.TreeViewData
             }
         }
 
-        public TreeViewDataFile(string fileName, string path)
+        public TreeViewData(string fileOrDirName, string path, bool isFolder)
         {
-            ID = $"{path}\\{fileName}".ToID();
+            ID = $"{path}\\{fileOrDirName}".ToID();
 
-            FullFileName = fileName;
-            FileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
+            FullName = fileOrDirName;
+            FileName = System.IO.Path.GetFileNameWithoutExtension(fileOrDirName);
             Path = path;
-            fileFormatType = FileManager.DetectFileFormatType(fileName);
+
+            if (isFolder)
+            {
+                fileFormatType = FileManager.FileFormatType.Folder;
+                IsFolder = true;
+                Items.Add(null); // для возможности развернуть
+                //initial = Directory.GetDirectories($"{path}\\{folderName}", "*", SearchOption.TopDirectoryOnly).Length
+                //        + Directory.GetFiles($"{path}\\{folderName}", "*.*", SearchOption.TopDirectoryOnly).Length;
+            }
+            else
+            {
+                fileFormatType = FileManager.DetectFileFormatType(fileOrDirName);
+            }
         }
     }
 }

@@ -6,9 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using WipifiDock.Controls;
-using WipifiDock.Controls.TreeViewData;
 using WipifiDock.Data;
-using System.Windows.Media;
 
 namespace WipifiDock.Pages
 {
@@ -54,10 +52,9 @@ namespace WipifiDock.Pages
 
         private void TreeWatcher_Deleted(object sender, FileSystemEventArgs e)
         {
-            Dispatcher.Invoke(() =>
-            {
-                findTreePatern(e.FullPath.ToID());
-            });
+            //Dispatcher.Invoke(() =>
+            //{
+            //});
         }
 
         private void TreeWatcher_Created(object sender, FileSystemEventArgs e)
@@ -65,64 +62,6 @@ namespace WipifiDock.Pages
         }
 
         #endregion
-
-        private void findTreePatern(int id)
-        {
-            TreeViewItem node = null;
-
-            for (int i = 0; i < treeView.Items.Count; i++)
-            {
-                var iti = treeView.Items[i] as ITreeViewData;
-                if (iti.IsFolder)
-                {
-                    node = findSubTreeItem(iti, id);
-                }
-                else
-                {
-                    if (iti.ID == id)
-                    {
-                        node = treeView.Items[i] as TreeViewItem;
-                        break;
-                    }
-                }
-            }
-
-            if (node == null)
-                return;
-
-            DependencyObject parent = VisualTreeHelper.GetParent(node);
-
-            while (!(parent is TreeViewItem || parent is TreeView))
-            {
-                parent = VisualTreeHelper.GetParent(parent);
-            }
-
-            // delete
-            if (parent is ITreeViewData)
-            {
-                (parent as ITreeViewData).Items.Remove(node);
-            }
-        }
-
-        private TreeViewItem findSubTreeItem(ITreeViewData itree, int id)
-        {
-            for (int i = 0; i < itree.Items.Count; i++)
-            {
-                ITreeViewData isubtree = itree.Items[i] as ITreeViewData;
-                if (isubtree == null)
-                    continue;
-
-                if (isubtree.IsFolder)
-                {
-                    return findSubTreeItem(isubtree, id);
-                }
-                else if (isubtree.ID == id)
-                {
-                    return itree.Items[i] as TreeViewItem;
-                }
-            }
-            return null;
-        }
 
         private void clear()
         {
@@ -140,20 +79,22 @@ namespace WipifiDock.Pages
             // root files
             for (i = 0; i < rootFiles.Length; i++)
             {
-                var treeFile = new TreeViewDataFile(
+                var treeFile = new TreeViewData(
                     Path.GetFileName(rootFiles[i]),
-                    projectData.Path);
+                    projectData.Path,
+                    false);
 
                 treeView.Items.Add(treeFile);
             }
             // root dirs
             for (i = 0; i < rootDirs.Length; i++)
             {
-                var treeFolder = new TreeViewDataFolder(
+                var treeFolder = new TreeViewData(
                     Path.GetFileName(rootDirs[i]),
-                    projectData.Path);
+                    projectData.Path,
+                    true);
 
-                treeFolder.Expanded += TreeFolder_Expanded;
+                //treeFolder.Expanded += TreeFolder_Expanded;
                 treeView.Items.Add(treeFolder);
             }
         }
@@ -161,31 +102,34 @@ namespace WipifiDock.Pages
         // load expanded tree
         private void TreeFolder_Expanded(object sender, RoutedEventArgs e)
         {
-            var item = sender as TreeViewDataFolder;
-            if (item.Items.Count == 0 || (item.Items.Count == 1 && item.Items[0] == null))
+            var item = e.Source as TreeViewData;
+
+            if (item.IsFolder)
             {
                 item.Items.Clear();
 
                 int i;
-                string path = $"{item.Path}\\{item.FolderName}";
+                string path = $"{item.Path}\\{item.FullName}";
                 string[] files = Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly);
                 string[] dirs = Directory.GetDirectories(path, "*", SearchOption.TopDirectoryOnly);
 
                 for (i = 0; i < files.Length; i++)
                 {
-                    var treeFile = new TreeViewDataFile(
+                    var treeFile = new TreeViewData(
                         Path.GetFileName(files[i]),
-                        path);
+                        path,
+                        false);
 
                     item.Items.Add(treeFile);
                 }
                 for (i = 0; i < dirs.Length; i++)
                 {
-                    var treeFolder = new TreeViewDataFolder(
+                    var treeFolder = new TreeViewData(
                         Path.GetFileName(dirs[i]),
-                        path);
+                        path,
+                        true);
 
-                    treeFolder.Expanded += TreeFolder_Expanded;
+                    //treeFolder.Expanded += TreeFolder_Expanded;
                     item.Items.Add(treeFolder);
                 }
             }
@@ -196,34 +140,39 @@ namespace WipifiDock.Pages
         {
             if (treeView.SelectedItem == null)
                 return;
-            // TODO: проверить наличия файла
-            object item = treeView.SelectedItem;
-            if (item != null)
+
+            var item = treeView.SelectedItem as TreeViewData;
+
+            if (!item.IsFolder)
             {
-                if (item is TreeViewDataFile)
+                var path = item.Path + "\\" + item.FullName;
+
+                // проверить наличия файла
+                if (!File.Exists(path))
                 {
-                    var tt = item as TreeViewDataFile;
-                    var path = tt.Path + "\\" + tt.FullFileName;
-
-                    // проверить наличие открытой вкладки для файла
-                    for (int i = 0; i < tabControl.Items.Count; i++)
-                    {
-                        var mdTab = ((tabControl.Items[i] as TabItem).Content as Grid).Children[0] as MDTabEditor;
-
-                        if (path.Equals(mdTab.GetWorkFileName, StringComparison.OrdinalIgnoreCase))
-                        {
-                            tabControl.SelectedIndex = i;
-                            return;
-                        }
-                    }
-
-                    // запрет на открытия файлов шаблонных в .md формате
-                    if (FileManager.CheckFileIsConflict(tt.FullFileName, true))
-                        return;
-
-                    addWebItem();
-                    selectedTab?.OpenFile(path, tt.GetProjectFileFormatType);
+                    MessageBox.Show("Файл \"" + path + "\" не найден.", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    // todo: delete
+                    return;
                 }
+
+                // проверить наличие открытой вкладки для файла
+                for (int i = 0; i < tabControl.Items.Count; i++)
+                {
+                    var mdTab = ((tabControl.Items[i] as TabItem).Content as Grid).Children[0] as MDTabEditor;
+
+                    if (path.Equals(mdTab.GetWorkFileName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        tabControl.SelectedIndex = i;
+                        return;
+                    }
+                }
+
+                // запрет на открытия файлов шаблонных в .md формате
+                if (FileManager.CheckFileIsConflict(item.FullName, true))
+                    return;
+
+                addWebItem();
+                selectedTab?.OpenFile(path, item.GetFileFormatType);
             }
         }
 

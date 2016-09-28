@@ -25,6 +25,7 @@ namespace WipifiDock.Data
         public enum FileFormatType
         {
             Unknown,
+            Folder,
             HTML,
             MD,
             CSS,

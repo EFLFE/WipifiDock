@@ -4,7 +4,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:local="clr-namespace:WipifiDock.Pages"
-      xmlns:q="clr-namespace:WipifiDock.Controls.TreeViewData"
+      xmlns:q="clr-namespace:WipifiDock.Controls"
       mc:Ignorable="d"
       Loaded="Page_Loaded"
       WindowHeight="320" WindowWidth="520" d:DesignWidth="520" d:DesignHeight="320"
@@ -42,7 +42,7 @@
 
             <TabControl x:Name="tabControl" SelectionChanged="tabControl_SelectionChanged" Grid.Column="1"/>
 
-            <TreeView x:Name="treeView" Margin="0,0,4,0">
+            <TreeView x:Name="treeView" Margin="0,0,4,0" TreeViewItem.Expanded="TreeFolder_Expanded">
 
                 <TreeView.ContextMenu>
                     <ContextMenu>
@@ -56,7 +56,7 @@
 
                 <TreeView.Resources>
                     <!-- Folders -->
-                    <Style TargetType="{x:Type q:TreeViewDataFolder}">
+                    <Style TargetType="{x:Type q:TreeViewData}">
                         <Setter Property="HeaderTemplate">
                             <Setter.Value>
                                 <DataTemplate>
@@ -64,31 +64,13 @@
 
                                         <!-- Великий и ужасный Binding -->
                                         <Image Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
-                                            AncestorType={x:Type q:TreeViewDataFolder}}, Path=GetImage}" Width="16" Height="16" Margin="0,0,5,0" />
+                                            AncestorType={x:Type q:TreeViewData}}, Path=GetImage}" Width="16" Height="16" Margin="0,0,5,2" />
 
                                         <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
-                                            AncestorType={x:Type q:TreeViewDataFolder}}, Path=FolderName}" />
+                                            AncestorType={x:Type q:TreeViewData}}, Path=FullName}" />
 
-                                        <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
-                                            AncestorType={x:Type q:TreeViewDataFolder}}, Path=GetItemCountString}" Foreground="Gray"/>
-
-                                    </StackPanel>
-                                </DataTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                    <!-- Files -->
-                    <Style TargetType="{x:Type q:TreeViewDataFile}">
-                        <Setter Property="HeaderTemplate">
-                            <Setter.Value>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-
-                                        <Image Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
-                                            AncestorType={x:Type q:TreeViewDataFile}}, Path=GetImage}" Width="16" Height="16" Margin="0,0,5,0" />
-
-                                        <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
-                                            AncestorType={x:Type q:TreeViewDataFile}}, Path=FullFileName}" />
+                                        <!--<TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
+                                            AncestorType={x:Type q:TreeViewData}}, Path=GetItemCountString}" Foreground="Gray"/>-->
 
                                     </StackPanel>
                                 </DataTemplate>
