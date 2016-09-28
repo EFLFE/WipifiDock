@@ -42,7 +42,7 @@
 
         <Grid x:Name="contentGrid" Margin="0,21,0,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
+                <ColumnDefinition x:Name="gridColumnDefinitionLeft"/>
                 <ColumnDefinition x:Name="gridColumnDefinition"/>
             </Grid.ColumnDefinitions>
 

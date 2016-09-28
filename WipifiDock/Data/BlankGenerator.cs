@@ -188,5 +188,15 @@ namespace WipifiDock.Data
             return sb.ToString();
         }
 
+        public static string IMAGE(string file)
+        {
+            createHtml(
+                Path.GetFileName(file),
+                null,
+                new[] { $"<img src=\"file:\\\\\\{file}\" alt=\"{Path.GetFileName(file)}\">" }
+                );
+            return sb.ToString();
+        }
+
     }
 }

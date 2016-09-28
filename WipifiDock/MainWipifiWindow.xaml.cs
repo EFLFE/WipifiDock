@@ -29,7 +29,7 @@ namespace WipifiDock
         // animation
         private bool                        _allowDirectNavigation = false;
         private NavigatingCancelEventArgs   _navArgs = null;
-        private Duration                    _duration = new Duration(TimeSpan.FromSeconds(0.2));
+        private Duration                    _duration = new Duration(TimeSpan.FromSeconds(0.1));
 
         public MainWipifiWindow()
         {

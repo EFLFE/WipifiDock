@@ -15,13 +15,16 @@
         <!--#region ToolBar-->
         <StackPanel Orientation="Horizontal" x:Name="gridPanel" Height="{StaticResource bigTooBarSize}" VerticalAlignment="Top" Margin="1,0,-1,0">
 
-            <Button x:Name="configProjectButton" MaxWidth="{StaticResource bigTooBarSize}" MaxHeight="{StaticResource bigTooBarSize}" Click="configProjectButton_Click" ToolTip="Настройки проекта" Style="{StaticResource imageButtonStyle}">
+            <Button x:Name="configProjectButton" MaxWidth="{StaticResource bigTooBarSize}" MaxHeight="{StaticResource bigTooBarSize}"
+                    ToolTip="Настройки проекта" Style="{StaticResource imageButtonStyle}">
                 <Image Source="{StaticResource config}" />
             </Button>
-            <Button x:Name="openProjectFolderButton" MaxWidth="{StaticResource bigTooBarSize}" MaxHeight="{StaticResource bigTooBarSize}" Click="openProjectFolderButton_Click" ToolTip="Открыть каталог проекта" Style="{StaticResource imageButtonStyle}" Margin="2">
+            <Button x:Name="openProjectFolderButton" MaxWidth="{StaticResource bigTooBarSize}" MaxHeight="{StaticResource bigTooBarSize}"
+                    ToolTip="Открыть каталог проекта" Style="{StaticResource imageButtonStyle}" Margin="2">
                 <Image Source="{StaticResource openProjectFolder}" />
             </Button>
-            <Button x:Name="projectToWebButton" MaxWidth="{StaticResource bigTooBarSize}" MaxHeight="{StaticResource bigTooBarSize}" Click="projectToWebButton_Click" ToolTip="Конвертировать проект в Web формат" Style="{StaticResource imageButtonStyle}" BorderThickness="0" Margin="2">
+            <Button x:Name="projectToWebButton" MaxWidth="{StaticResource bigTooBarSize}" MaxHeight="{StaticResource bigTooBarSize}"
+                    ToolTip="Конвертировать проект в Web формат" Style="{StaticResource imageButtonStyle}" BorderThickness="0" Margin="2">
                 <Image Source="{StaticResource projectToWeb}" />
             </Button>
 
@@ -40,6 +43,17 @@
             <TabControl x:Name="tabControl" SelectionChanged="tabControl_SelectionChanged" Grid.Column="1"/>
 
             <TreeView x:Name="treeView" Margin="0,0,4,0">
+
+                <TreeView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Создать файл" Click="treeCreateFile"/>
+                        <MenuItem Header="Создать каталог" Click="treeCreateDir"/>
+                        <Separator/>
+                        <MenuItem Header="Переименовать" Click="treeRenameNode"/>
+                        <MenuItem Header="Удалить" Click="treeDeleteNode"/>
+                    </ContextMenu>
+                </TreeView.ContextMenu>
+
                 <TreeView.Resources>
                     <!-- Folders -->
                     <Style TargetType="{x:Type q:TreeViewDataFolder}">
@@ -74,7 +88,7 @@
                                             AncestorType={x:Type q:TreeViewDataFile}}, Path=GetImage}" Width="16" Height="16" Margin="0,0,5,0" />
 
                                         <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
-                                            AncestorType={x:Type q:TreeViewDataFile}}, Path=FileName}" />
+                                            AncestorType={x:Type q:TreeViewDataFile}}, Path=FullFileName}" />
 
                                     </StackPanel>
                                 </DataTemplate>

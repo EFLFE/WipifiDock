@@ -136,6 +136,9 @@ namespace WipifiDock.Controls
                 break;
 
             case FileManager.FileFormatType.IMAGE:
+                openImage(file);
+                break;
+
             case FileManager.FileFormatType.Unknown:
             default:
                 break;
@@ -144,7 +147,7 @@ namespace WipifiDock.Controls
 
         private void openMD(string file)
         {
-            showWebBrowser();
+            showTextBoxAndWebBrowser();
             workFileName = file;
             textBox.Text = File.ReadAllText(file);
             menu.IsEnabled = true;
@@ -159,11 +162,20 @@ namespace WipifiDock.Controls
 
         private void openText(string file)
         {
-            hideWebBrowser();
+            showOnlyTextBox();
             workFileName = file;
             textBox.Text = File.ReadAllText(file);
             grid.IsEnabled = true;
             mdMenuItem.Visibility = Visibility.Hidden;
+        }
+
+        private void openImage(string file)
+        {
+            showOnlyWebBrowser();
+            workFileName = file;
+            grid.IsEnabled = true;
+            mdMenuItem.Visibility = Visibility.Hidden;
+            webBrowser.NavigateToString(BlankGenerator.IMAGE(file));
         }
 
         /// <summary> Закрыть файл. </summary>
@@ -194,19 +206,29 @@ namespace WipifiDock.Controls
             textBox.CaretIndex = newCaret;
         }
 
-        private void showWebBrowser()
+        private void showTextBoxAndWebBrowser()
         {
             gridColumnDefinition.Width = new GridLength(1.0, GridUnitType.Star);
             //gridColumnDefinition.Width = new GridLength(contentGrid.ActualWidth / 2.0, GridUnitType.Pixel);
             webBrowser.Visibility = Visibility.Visible;
             gridSplitter.Visibility = Visibility.Visible;
+            textBox.Visibility = Visibility.Visible;
         }
 
-        private void hideWebBrowser()
+        private void showOnlyTextBox()
         {
             gridColumnDefinition.Width = new GridLength(0.0, GridUnitType.Pixel);
             webBrowser.Visibility = Visibility.Hidden;
             gridSplitter.Visibility = Visibility.Hidden;
+            textBox.Visibility = Visibility.Visible;
+        }
+
+        private void showOnlyWebBrowser()
+        {
+            gridColumnDefinitionLeft.Width = new GridLength(0.0, GridUnitType.Star);
+            webBrowser.Visibility = Visibility.Visible;
+            gridSplitter.Visibility = Visibility.Hidden;
+            textBox.Visibility = Visibility.Hidden;
         }
 
         #region MD INSERT MENU

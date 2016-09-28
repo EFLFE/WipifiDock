@@ -35,31 +35,34 @@ namespace WipifiDock.Data
         /// <summary> Возвращает true, если файл конфликтует с шаблонными для вставки файлами. </summary>
         /// <param name="file"> полное имя файла. </param>
         /// <returns> конфликтует? </returns>
-        public static bool CheckFileIsConflict(string file)
+        public static bool CheckFileIsConflict(string file, bool showMessageBox)
         {
             string mess = "Файл {0} является вставочным шаблоном и может быть открыт только в .html формате.";
 
             if (file.Contains(HEAD_FILE_WE) && file.EndsWith(".md", StringComparison.OrdinalIgnoreCase))
             {
-                MessageBox.Show( string.Format(mess, HEAD_FILE_WE), "Внимание",  MessageBoxButton.OK, MessageBoxImage.Warning);
+                if (showMessageBox)
+                    MessageBox.Show(string.Format(mess, HEAD_FILE_WE), "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return true;
             }
             if (file.Contains(BODY_FILE_WE) && file.EndsWith(".md", StringComparison.OrdinalIgnoreCase))
             {
-                MessageBox.Show(string.Format(mess, BODY_FILE_WE), "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
+                if (showMessageBox)
+                    MessageBox.Show(string.Format(mess, BODY_FILE_WE), "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return true;
             }
             if (file.Contains(FOOTER_FILE_WE) && file.EndsWith(".md", StringComparison.OrdinalIgnoreCase))
             {
-                MessageBox.Show(string.Format(mess, FOOTER_FILE_WE), "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
+                if (showMessageBox)
+                    MessageBox.Show(string.Format(mess, FOOTER_FILE_WE), "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return true;
             }
             return false;
         }
 
-        /// <summary> Получить тип проект-файла. </summary>
+        /// <summary> Определить поддерживаемый тип файла. </summary>
         /// <param name="fileNameOrPathToFileOrHalfPathToFile"> Имя файла или путь к нему. </param>
-        public static FileFormatType DetectProjectFileFormatType(string fileNameOrPathToFileOrHalfPathToFile)
+        public static FileFormatType DetectFileFormatType(string fileNameOrPathToFileOrHalfPathToFile)
         {
             switch (getExt(fileNameOrPathToFileOrHalfPathToFile))
             {
@@ -69,13 +72,22 @@ namespace WipifiDock.Data
 
             case ".css": return FileFormatType.CSS;
 
-            case ".txt": return FileFormatType.TXT;
+            case ".txt":
+            case ".js":
+            case ".cs":
+            case ".log":
+            case ".cfg":
+                return FileFormatType.TXT;
 
             case ".png":
             case ".jpeg":
             case ".jpg":
             case ".tga":
             case ".gif":
+            // то, что поддерживает chromium
+            case ".gifv":
+            case ".xbm":
+            case ".webp":
                 return FileFormatType.IMAGE;
 
             default: return FileFormatType.Unknown;
@@ -106,14 +118,14 @@ namespace WipifiDock.Data
         /// <param name="path"> Поиска начинается с корня проекта. </param>
         public static string[] GetProjectFiles(string path = "\\")
         {
-            return Directory.EnumerateFiles(RootPath + path, "*.*", SearchOption.TopDirectoryOnly).ToArray();
+            return Directory.GetFiles(RootPath + path, "*.*", SearchOption.TopDirectoryOnly);
         }
 
         /// <summary> Получить каталоги проекта. </summary>
         /// <param name="path"> Поиска начинается с корня проекта. </param>
         public static string[] GetProjectDirs(string path = "\\")
         {
-            return Directory.EnumerateDirectories(RootPath + path, "*", SearchOption.TopDirectoryOnly).ToArray();
+            return Directory.GetDirectories(RootPath + path, "*", SearchOption.TopDirectoryOnly);
         }
 
     }

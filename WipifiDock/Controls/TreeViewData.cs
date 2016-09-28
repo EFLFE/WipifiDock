@@ -52,7 +52,9 @@ namespace WipifiDock.Controls.TreeViewData
     {
         private static Image webFile;
         private static Image styleFile;
-        private static Image contentFile;
+        private static Image imageFile;
+        private static Image mdFile;
+        private static Image txtFile;
         private static Image unknownFile;
 
         private FileManager.FileFormatType fileFormatType;
@@ -88,28 +90,28 @@ namespace WipifiDock.Controls.TreeViewData
                     return styleFile.Source;
 
                 case FileManager.FileFormatType.IMAGE:
-                    if (contentFile == null)
+                    if (imageFile == null)
                     {
-                        contentFile = new Image();
-                        contentFile.Source = FindResource("imageFile") as BitmapImage;
+                        imageFile = new Image();
+                        imageFile.Source = FindResource("imageFile") as BitmapImage;
                     }
-                    return contentFile.Source;
+                    return imageFile.Source;
 
                 case FileManager.FileFormatType.MD:
-                    if (contentFile == null)
+                    if (mdFile == null)
                     {
-                        contentFile = new Image();
-                        contentFile.Source = FindResource("mdFile") as BitmapImage;
+                        mdFile = new Image();
+                        mdFile.Source = FindResource("mdFile") as BitmapImage;
                     }
-                    return contentFile.Source;
+                    return mdFile.Source;
 
                 case FileManager.FileFormatType.TXT:
-                    if (contentFile == null)
+                    if (txtFile == null)
                     {
-                        contentFile = new Image();
-                        contentFile.Source = FindResource("textFile") as BitmapImage;
+                        txtFile = new Image();
+                        txtFile.Source = FindResource("textFile") as BitmapImage;
                     }
-                    return contentFile.Source;
+                    return txtFile.Source;
 
                 case FileManager.FileFormatType.Unknown:
                 default:
@@ -128,7 +130,7 @@ namespace WipifiDock.Controls.TreeViewData
             FullFileName = fileName;
             FileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
             Path = path;
-            fileFormatType = FileManager.DetectProjectFileFormatType(fileName);
+            fileFormatType = FileManager.DetectFileFormatType(fileName);
         }
     }
 }

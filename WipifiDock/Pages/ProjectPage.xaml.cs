@@ -1,10 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.IO;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using WipifiDock.Controls;
 using WipifiDock.Controls.TreeViewData;
@@ -38,6 +37,7 @@ namespace WipifiDock.Pages
         private void clear()
         {
             treeView.Items.Clear();
+            tabControl.Items.Clear();
         }
 
         // load root files and dirs
@@ -77,9 +77,9 @@ namespace WipifiDock.Pages
                 item.Items.Clear();
 
                 int i;
-                string path = "\\" + item.FolderName;
-                string[] files = FileManager.GetProjectFiles(path);
-                string[] dirs = FileManager.GetProjectDirs(path);
+                string path = projectData.Path + "\\" + item.FolderName;
+                string[] files = FileManager.GetProjectFiles("\\" + item.FolderName);
+                string[] dirs = FileManager.GetProjectDirs("\\" + item.FolderName);
 
                 for (i = 0; i < files.Length; i++)
                 {
@@ -134,7 +134,7 @@ namespace WipifiDock.Pages
                     }
 
                     // запрет на открытия файлов шаблонных в .md формате
-                    if (FileManager.CheckFileIsConflict(tt.FullFileName))
+                    if (FileManager.CheckFileIsConflict(tt.FullFileName, true))
                         return;
 
                     addWebItem();
@@ -143,8 +143,7 @@ namespace WipifiDock.Pages
             }
         }
 
-        /// <summary> Добавить tab в tabControl. </summary>
-        /// <param name="suspedAddTabButton"> Заморозить кнопку + таба на короткое время. </param>
+        // Добавить tab в tabControl.
         private void addWebItem()
         {
             Log.Write("Add tab");
@@ -183,7 +182,7 @@ namespace WipifiDock.Pages
             tabControl.SelectedIndex = tabControl.Items.Count - 1;
         }
 
-        // когда выбрана вкладка
+        // когда была выбрана вкладка
         private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Log.Write("Tab selected: " + tabControl.SelectedIndex);
@@ -194,61 +193,24 @@ namespace WipifiDock.Pages
             selectedTab = ((tabControl.SelectedItem as TabItem).Content as Grid).Children[0] as MDTabEditor;
         }
 
-        #region Click Events
+        #region TreeView ContextMenu
 
-        private void configProjectButton_Click(object sender, RoutedEventArgs e)
+        private void treeCreateFile(object sender, RoutedEventArgs e)
         {
         }
 
-        private void openProjectFolderButton_Click(object sender, RoutedEventArgs e)
+        private void treeCreateDir(object sender, RoutedEventArgs e)
         {
         }
 
-        private void projectToWebButton_Click(object sender, RoutedEventArgs e)
+        private void treeRenameNode(object sender, RoutedEventArgs e)
         {
         }
 
-        private void renderButton_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void mdButton_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void htmlButton_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void addDockButton_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void addFolderButton_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void deleteDockButton_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void deleteFolderButton_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void collapseButton_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void expandButton_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void renameButton_Click(object sender, RoutedEventArgs e)
+        private void treeDeleteNode(object sender, RoutedEventArgs e)
         {
         }
 
         #endregion
-
     }
 }
