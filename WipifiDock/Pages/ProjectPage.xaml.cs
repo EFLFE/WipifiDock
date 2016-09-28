@@ -52,16 +52,84 @@ namespace WipifiDock.Pages
 
         private void TreeWatcher_Deleted(object sender, FileSystemEventArgs e)
         {
-            //Dispatcher.Invoke(() =>
-            //{
-            //});
+            Dispatcher.Invoke(() =>
+            {
+                removeTreeNode(e.FullPath.ToID());
+            });
         }
 
         private void TreeWatcher_Created(object sender, FileSystemEventArgs e)
         {
+            Dispatcher.Invoke(() =>
+            {
+                addTreeNode(e.FullPath);
+            });
         }
 
         #endregion
+
+        private void addTreeNode(string fullPath)
+        {
+        }
+
+        // удалить объект из TreeView
+        private void removeTreeNode(int id)
+        {
+            Log.Write("Remove tree node " + id);
+            for (int i = 0; i < treeView.Items.Count; i++)
+            {
+                var item = treeView.Items[i] as TreeViewData;
+                if (item == null)
+                    continue;
+
+                if (item.ID == id)
+                {
+                    Log.Write("Node was found - " + i);
+                    treeView.Items.RemoveAt(i);
+                    return;
+                }
+                if (item.IsFolder)
+                {
+                    item = findTreeViewData(id, item);
+                    if (item != null)
+                    {
+                        Log.Write("Node was found - " + i);
+                        if (item.Parent is TreeViewData)
+                        {
+                            Log.Write("Node as TreeViewData was found - " + i);
+                            (item.Parent as TreeViewData).Items.Remove(item);
+                        }
+                        else if (item.Parent is TreeView)
+                        {
+                            Log.Write("Node as TreeView was found - " + i);
+                            (item.Parent as TreeView).Items.Remove(item);
+                        }
+                    }
+                }
+            }
+        }
+
+        private TreeViewData findTreeViewData(int id, TreeViewData tree)
+        {
+            Log.Write("Find tree node in " + tree.FileName);
+
+            for (int i = 0; i < tree.Items.Count; i++)
+            {
+                var item = tree.Items[i] as TreeViewData;
+                if (item == null)
+                    continue;
+
+                if (item.ID == id)
+                {
+                    return item;
+                }
+                if (item.IsFolder)
+                {
+                    findTreeViewData(id, item);
+                }
+            }
+            return null;
+        }
 
         private void clear()
         {
@@ -151,7 +219,11 @@ namespace WipifiDock.Pages
                 if (!File.Exists(path))
                 {
                     MessageBox.Show("Файл \"" + path + "\" не найден.", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    // todo: delete
+                    // delete node
+                    if (item.Parent is TreeViewData)
+                    {
+                        (item.Parent as TreeViewData).Items.Remove(item);
+                    }
                     return;
                 }
 
