@@ -59,6 +59,22 @@ namespace WipifiDock.Pages
             {
                 selectedProject = ProjectManager.SelectAndLoadProject(name);
 
+                if (!Directory.Exists(selectedProject.Path))
+                {
+                    var mes = MessageBox.Show(
+                        "Каталог проекта \"" + selectedProject.Path + "\" не найден.\nУдалить \"" + selectedProject.Name + "\" из списка?",
+                        "Ошибка",
+                        MessageBoxButton.YesNo, MessageBoxImage.Error);
+
+                    openProject.IsEnabled = false;
+                    deleteSelectedProject.IsEnabled = false;
+
+                    if (mes == MessageBoxResult.Yes)
+                        deleteSelectedProject_Click(null, null);
+
+                    return;
+                }
+
                 nameText.Text = selectedProject.Name;
                 dirText.Text = selectedProject.Path;
 
