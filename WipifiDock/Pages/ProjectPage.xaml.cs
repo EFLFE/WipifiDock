@@ -20,6 +20,7 @@ namespace WipifiDock.Pages
         {
             InitializeComponent();
             treeView.SelectedItemChanged += TreeView_SelectedItemChanged;
+            treeView.MouseDoubleClick += TreeView_MouseDoubleClick;
         }
 
         // on load (navigate to this page)
@@ -309,6 +310,12 @@ namespace WipifiDock.Pages
             }
         }
 
+        private void TreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            // что бы можнобыло открыть один единственный объект в TreeView
+            TreeView_SelectedItemChanged(null, null);
+        }
+
         // Добавить tab в tabControl.
         private void addWebItem()
         {
@@ -401,6 +408,29 @@ namespace WipifiDock.Pages
             {
                 return;
             }
+        }
+
+        #endregion
+
+        #region Top tools
+
+        private void configProjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            // todo: config window
+            MessageBox.Show("По сути, настраивать то и нечего.", "=(", MessageBoxButton.OK, MessageBoxImage.Stop);
+            configProjectButton.IsEnabled = false;
+        }
+
+        private void openProjectFolderButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(FileManager.RootPath);
+        }
+
+        private void projectToWebButton_Click(object sender, RoutedEventArgs e)
+        {
+            // todo: export to html
+            MessageBox.Show("Данная функция не реализованна.", "=(", MessageBoxButton.OK, MessageBoxImage.Stop);
+            projectToWebButton.IsEnabled = false;
         }
 
         #endregion

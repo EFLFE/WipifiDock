@@ -43,7 +43,7 @@ namespace WipifiDock.Controls
         {
             InitializeComponent();
             grid.IsEnabled = false;
-            menu.IsEnabled = false;
+            styleMenu.IsEnabled = false;
             OwnerTab = ownerTab;
 
             webBrowser.Navigated += WebBrowser_Navigated;
@@ -93,7 +93,6 @@ namespace WipifiDock.Controls
                             {
                                 Dispatcher.Invoke(() =>
                                 {
-                                    File.WriteAllText(workFileName, textBox.Text);
                                     navigateToHtml();
                                 });
                             }
@@ -150,7 +149,8 @@ namespace WipifiDock.Controls
             showTextBoxAndWebBrowser();
             workFileName = file;
             textBox.Text = File.ReadAllText(file);
-            menu.IsEnabled = true;
+            styleMenu.IsEnabled = true;
+            fileMenu.IsEnabled = true;
             timeToUpdate = -1;
 
             navigateToHtml();
@@ -167,6 +167,7 @@ namespace WipifiDock.Controls
             textBox.Text = File.ReadAllText(file);
             grid.IsEnabled = true;
             mdMenuItem.Visibility = Visibility.Hidden;
+            fileMenu.IsEnabled = true;
         }
 
         private void openImage(string file)
@@ -193,7 +194,8 @@ namespace WipifiDock.Controls
             webBrowser.NavigateToString(string.Empty);
             textBox.Text = string.Empty;
             workFileName = string.Empty;
-            menu.IsEnabled = false;
+            styleMenu.IsEnabled = false;
+            fileMenu.IsEnabled = false;
         }
 
         /// <summary> Обновить страницу. </summary>
@@ -324,5 +326,10 @@ namespace WipifiDock.Controls
             insertMD("``````", -3);
         }
         #endregion
+
+        private void saveText_Click(object sender, RoutedEventArgs e)
+        {
+            File.WriteAllText(workFileName, textBox.Text);
+        }
     }
 }

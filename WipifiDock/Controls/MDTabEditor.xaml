@@ -5,10 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:WipifiDock"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="600">
     <Grid x:Name="grid" Background="White">
 
-        <Menu x:Name="menu" VerticalAlignment="Top">
+        <Menu x:Name="fileMenu" VerticalAlignment="Top" HorizontalAlignment="Left" Width="194">
+            <MenuItem Header="Save" Click="saveText_Click" ToolTip="Сохранить текст в файл"/>
+        </Menu>
+
+        <Menu x:Name="styleMenu" VerticalAlignment="Top" Margin="199,0,0,0">
 
             <MenuItem Header="MarkDown" x:Name="mdMenuItem">
                 <MenuItem Header="Заголовки">

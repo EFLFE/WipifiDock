@@ -15,15 +15,15 @@
         <!--#region ToolBar-->
         <StackPanel Orientation="Horizontal" x:Name="gridPanel" Height="{StaticResource bigTooBarSize}" VerticalAlignment="Top" Margin="1,0,-1,0">
 
-            <Button x:Name="configProjectButton" MaxWidth="{StaticResource bigTooBarSize}" MaxHeight="{StaticResource bigTooBarSize}"
+            <Button x:Name="configProjectButton" Click="configProjectButton_Click" MaxWidth="{StaticResource bigTooBarSize}" MaxHeight="{StaticResource bigTooBarSize}"
                     ToolTip="Настройки проекта" Style="{StaticResource imageButtonStyle}">
                 <Image Source="{StaticResource config}" />
             </Button>
-            <Button x:Name="openProjectFolderButton" MaxWidth="{StaticResource bigTooBarSize}" MaxHeight="{StaticResource bigTooBarSize}"
+            <Button x:Name="openProjectFolderButton" Click="openProjectFolderButton_Click" MaxWidth="{StaticResource bigTooBarSize}" MaxHeight="{StaticResource bigTooBarSize}"
                     ToolTip="Открыть каталог проекта" Style="{StaticResource imageButtonStyle}" Margin="2">
                 <Image Source="{StaticResource openProjectFolder}" />
             </Button>
-            <Button x:Name="projectToWebButton" MaxWidth="{StaticResource bigTooBarSize}" MaxHeight="{StaticResource bigTooBarSize}"
+            <Button x:Name="projectToWebButton" Click="projectToWebButton_Click" MaxWidth="{StaticResource bigTooBarSize}" MaxHeight="{StaticResource bigTooBarSize}"
                     ToolTip="Конвертировать проект в Web формат" Style="{StaticResource imageButtonStyle}" BorderThickness="0" Margin="2">
                 <Image Source="{StaticResource projectToWeb}" />
             </Button>
@@ -64,7 +64,7 @@
 
                                         <!-- Великий и ужасный Binding -->
                                         <Image Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
-                                            AncestorType={x:Type q:TreeViewData}}, Path=GetImage}" Width="16" Height="16" Margin="0,0,5,2" />
+                                            AncestorType={x:Type q:TreeViewData}}, Path=GetImage}" Width="16" Height="16" Margin="0,1,5,1" />
 
                                         <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
                                             AncestorType={x:Type q:TreeViewData}}, Path=FullName}" />
