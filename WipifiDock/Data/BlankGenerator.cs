@@ -48,6 +48,16 @@ namespace WipifiDock.Data
                 blankLines = File.ReadAllLines(BLANK_FILE);
 
                 fileWatcher.EnableRaisingEvents = true;
+
+                // read
+                if (File.Exists(FileManager.RootPath + "\\" + FileManager.HEAD_FILE))
+                    headText = File.ReadAllText(FileManager.RootPath + "\\" + FileManager.HEAD_FILE);
+
+                if (File.Exists(FileManager.RootPath + "\\" + FileManager.BODY_FILE))
+                    bodyText = File.ReadAllText(FileManager.RootPath + "\\" + FileManager.BODY_FILE);
+
+                if (File.Exists(FileManager.RootPath + "\\" + FileManager.FOOTER_FILE))
+                    footerText = File.ReadAllText(FileManager.RootPath + "\\" + FileManager.FOOTER_FILE);
             }
             catch (Exception ex)
             {
@@ -170,6 +180,9 @@ namespace WipifiDock.Data
                 {
                     // FOOTER (end of body)
                     sb.AppendLine(footerText);
+                }
+                else if (blankLines[i].Contains(MD_LINE))
+                {
                 }
                 else
                 {

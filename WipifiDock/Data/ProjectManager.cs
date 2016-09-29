@@ -81,7 +81,7 @@ namespace WipifiDock.Data
                 File.WriteAllText(
                     $"{path}\\{FileManager.HEAD_FILE}",
                     "<!-- Вставочный шаблон в тег head -->\n" +
-                    "<link rel=\"styleshee\t\" type=\"text / css\" href=\"" + cssFileName + "\">\n" +
+                    "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + cssFileName + "\">\n" +
                     "<META charset=\"utf - 8\">\n");
 
                 File.WriteAllText(
