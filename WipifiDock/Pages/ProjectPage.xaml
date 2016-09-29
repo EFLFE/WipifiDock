@@ -28,7 +28,7 @@
                 <Image Source="{StaticResource projectToWeb}" />
             </Button>
             <Button x:Name="openLogFormButton" Click="openLogFormButton_Click" MaxWidth="{StaticResource bigTooBarSize}" MaxHeight="{StaticResource bigTooBarSize}"
-                    ToolTip="Конвертировать проект в Web формат" Style="{StaticResource imageButtonStyle}" BorderThickness="0" Margin="2">
+                    ToolTip="Открыть лог" Style="{StaticResource imageButtonStyle}" BorderThickness="0" Margin="2">
                 <Image Source="{StaticResource logForm}" />
             </Button>
 
@@ -55,6 +55,8 @@
                         <Separator/>
                         <MenuItem Header="Переименовать" Click="treeRenameNode"/>
                         <MenuItem Header="Удалить" Click="treeDeleteNode"/>
+                        <Separator/>
+                        <MenuItem Header="Свернуть все" Click="treeCollapse"/>
                     </ContextMenu>
                 </TreeView.ContextMenu>
 

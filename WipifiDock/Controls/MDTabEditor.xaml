@@ -8,11 +8,13 @@
              d:DesignHeight="300" d:DesignWidth="600">
     <Grid x:Name="grid" Background="White">
 
-        <Menu x:Name="fileMenu" VerticalAlignment="Top" HorizontalAlignment="Left" Width="194">
-            <MenuItem Header="Save" Click="saveText_Click" ToolTip="Сохранить текст в файл"/>
+        <Menu x:Name="fileMenu" VerticalAlignment="Top" HorizontalAlignment="Left" Width="38">
+            <MenuItem Header="File">
+                <MenuItem Header="Save" Click="saveText_Click" ToolTip="Сохранить текст в файл"/>
+            </MenuItem>
         </Menu>
 
-        <Menu x:Name="styleMenu" VerticalAlignment="Top" Margin="199,0,0,0">
+        <Menu x:Name="styleMenu" VerticalAlignment="Top" Margin="38,0,0,0">
 
             <MenuItem Header="MarkDown" x:Name="mdMenuItem">
                 <MenuItem Header="Заголовки">
@@ -42,6 +44,7 @@
                 <MenuItem Header="Встроенный код" Click="mdInsertCode"/>
                 <MenuItem Header="Блок кода" Click="mdInsertCodeBlock"/>
             </MenuItem>
+
         </Menu>
 
         <Grid x:Name="contentGrid" Margin="0,21,0,0">
@@ -53,7 +56,7 @@
             <GridSplitter x:Name="gridSplitter" Width="4" VerticalAlignment="Stretch"
                       HorizontalAlignment="Left" ResizeDirection="Columns" Background="#FFC3C3C3" Grid.Column="1"/>
 
-            <TextBox x:Name="textBox" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" AcceptsReturn="True"/>
+            <TextBox x:Name="textBox" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" AcceptsReturn="True" FontFamily="Consolas"/>
             <WebBrowser x:Name="webBrowser" Grid.Column="1" Margin="4,0,0,0"/>
         </Grid>
     </Grid>

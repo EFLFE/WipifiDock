@@ -57,6 +57,8 @@ namespace WipifiDock.Controls
         {
             // start time to update
             timeToUpdate = 05;
+            if (grid.IsEnabled)
+                setTitle(Title + "*");
         }
 
         // после успешной навигации
@@ -65,7 +67,7 @@ namespace WipifiDock.Controls
             var doc = webBrowser.Document as HTMLDocument;
             var title = doc.title;
 
-            Title = title;
+            //Title = title;
             //setTitle(title);
             OnNavigated?.Invoke(title, sender, e);
 
@@ -105,8 +107,8 @@ namespace WipifiDock.Controls
         // конвертировать md в html и открыть
         private void navigateToHtml()
         {
-            var html = Markdig.Markdown.ToHtml(textBox.Text);
-            html = BlankGenerator.HTML(Title, null, new[] { html });
+            //var html = Markdig.Markdown.ToHtml(textBox.Text);
+            var html = BlankGenerator.MD(Title, textBox.Text);
 
             string htmlPath = workFileName.Replace(".md", ".html");
             File.WriteAllText(htmlPath, html, Encoding.UTF8);
@@ -120,6 +122,7 @@ namespace WipifiDock.Controls
         /// <param name="projectFileFormatType"> Тип файла. </param>
         public void OpenFile(string file, FileManager.FileFormatType fileType)
         {
+            Title = Path.GetFileName(file);
             setTitle(Path.GetFileName(file));
 
             switch (fileType)
@@ -330,6 +333,8 @@ namespace WipifiDock.Controls
         private void saveText_Click(object sender, RoutedEventArgs e)
         {
             File.WriteAllText(workFileName, textBox.Text);
+            setTitle(Title);
         }
+
     }
 }

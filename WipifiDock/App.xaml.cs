@@ -44,13 +44,13 @@ namespace WipifiDock
                     Log.Write(ex.ToString(), Log.MessageType.ERROR);
 
                     var savelog = MessageBox.Show(
-                        $"{ex.Message}\n{ex.ToString()}\n\nСохранить лог?",
+                        $"{ex.Message}\n\nСохранить лог?",
                         "Сбой программы!",
                         MessageBoxButton.YesNo, MessageBoxImage.Error);
 
                     if (savelog == MessageBoxResult.Yes)
                     {
-                        Process.Start(Log.SaveLog("logs"));
+                        Process.Start(Log.SaveLog("log"));
                     }
                 }
             }

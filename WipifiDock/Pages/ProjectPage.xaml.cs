@@ -412,6 +412,37 @@ namespace WipifiDock.Pages
             }
         }
 
+        private void treeCollapse(object sender, RoutedEventArgs e)
+        {
+            for (int i = 0; i < treeView.Items.Count; i++)
+            {
+                var item = treeView.Items[i] as TreeViewData;
+                if (item == null || !item.IsFolder || !item.IsExpanded)
+                    continue;
+
+                item.IsExpanded = false;
+                if (item.Items.Count > 0)
+                {
+                    subTreeCollapse(item);
+                }
+            }
+        }
+        private void subTreeCollapse(TreeViewData subTree)
+        {
+            for (int i = 0; i < subTree.Items.Count; i++)
+            {
+                var item = treeView.Items[i] as TreeViewData;
+                if (item == null || !item.IsFolder || !item.IsExpanded)
+                    continue;
+
+                item.IsExpanded = false;
+                if (item.Items.Count > 0)
+                {
+                    subTreeCollapse(item);
+                }
+            }
+        }
+
         #endregion
 
         #region Top tools
@@ -441,5 +472,6 @@ namespace WipifiDock.Pages
         }
 
         #endregion
+
     }
 }

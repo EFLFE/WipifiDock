@@ -2,8 +2,9 @@
 using System.Linq;
 using System.IO;
 using System.Text;
-using System.Windows;
 using System.Security.Permissions;
+using Markdig;
+using Markdig.Extensions;
 
 namespace WipifiDock.Data
 {
@@ -21,6 +22,8 @@ namespace WipifiDock.Data
         private static string headText, bodyText, footerText;
         private static FileSystemWatcher fileWatcher;
         private static StringBuilder sb = new StringBuilder();
+
+        private static MarkdownPipeline pipeline;
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public static void InitBlankGenerator()
@@ -198,6 +201,19 @@ namespace WipifiDock.Data
         public static string HTML(string title, string[] head, string[] body)
         {
             createHtml(title, head, body);
+            return sb.ToString();
+        }
+
+        /// <summary> Сгенерировать HTML из MarkDown. </summary>
+        /// <param name="title"> Текст заголовка страницы. </param>
+        /// <param name="markDownText"> MarkDown текст. </param>
+        public static string MD(string title, string markDownText)
+        {
+            if (pipeline == null)
+                pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+            markDownText = Markdown.ToHtml(markDownText, pipeline);
+
+            createHtml(title, null, new[] { markDownText });
             return sb.ToString();
         }
 
