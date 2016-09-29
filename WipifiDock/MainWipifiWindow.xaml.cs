@@ -39,22 +39,37 @@ namespace WipifiDock
             mainPage = new MainPage(this);
             projectListPage = new ProjectListPage(this);
             createNewProjectPage = new CreateNewProjectPage(this);
-            projectPage = new ProjectPage();
+            projectPage = new ProjectPage(this);
 
             frame.NavigationUIVisibility = NavigationUIVisibility.Hidden;
             frame.Navigating += frame_Navigating;
+
+            Closed += MainWipifiWindow_Closed;
+        }
+
+        private void MainWipifiWindow_Closed(object sender, EventArgs e)
+        {
+            loggerForm.CanClosed = true;
+            loggerForm.Close();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             frame.Navigate(mainPage);
+#if DEBUG
             loggerForm.Show();
+#endif
         }
 
         protected override void OnClosed(EventArgs e)
         {
             loggerForm.Close();
             base.OnClosed(e);
+        }
+
+        public void ShowLogForm()
+        {
+            loggerForm.Show();
         }
 
         public void FrameNavigate(PageType pageType)

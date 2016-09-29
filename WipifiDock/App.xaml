@@ -105,7 +105,7 @@
         <BitmapImage x:Key="styleFile"   UriSource="/WipifiDock;component/Resources/TreeIcons/styleFile.png" />
         <BitmapImage x:Key="unknownFile" UriSource="/WipifiDock;component/Resources/TreeIcons/unknownFile.png" />
         <BitmapImage x:Key="textFile"    UriSource="/WipifiDock;component/Resources/TreeIcons/textFile.png" />
-        <BitmapImage x:Key="binaryFile"    UriSource="/WipifiDock;component/Resources/TreeIcons/binaryFile.png" />
+        <BitmapImage x:Key="binaryFile"  UriSource="/WipifiDock;component/Resources/TreeIcons/binaryFile.png" />
 
         <!-- Tools -->
 
@@ -117,6 +117,7 @@
         <BitmapImage x:Key="config"            UriSource="/WipifiDock;component/Resources/Tools/Global/config.png" />
         <BitmapImage x:Key="openProjectFolder" UriSource="/WipifiDock;component/Resources/Tools/Global/openProjectFolder.png" />
         <BitmapImage x:Key="projectToWeb"      UriSource="/WipifiDock;component/Resources/Tools/Global/projectToWeb.png" />
+        <BitmapImage x:Key="logForm"           UriSource="/WipifiDock;component/Resources/Tools/Global/logForm.png" />
 
         <!--#endregion-->
 

@@ -22,19 +22,49 @@ namespace WipifiDock
         {
             base.OnStartup(e);
 
+            bool _try_ =
 #if DEBUG
-            Log.EnableTrace = true;
-
-            var mainWindow = new MainWipifiWindow();
-            InsertTextForm.Instance = new InsertTextForm();
-
-            mainWindow.ShowDialog();
-
-            InsertTextForm.Instance.Close();
+                !Debugger.IsAttached;
 #else
-#error TRY RELEASE!!!!!!!
+                true;
 #endif
+            if (_try_)
+            {
+                try
+                {
+                    var mainWindow = new MainWipifiWindow();
+                    InsertTextForm.Instance = new InsertTextForm();
 
+                    mainWindow.ShowDialog();
+
+                    InsertTextForm.Instance.Close();
+                }
+                catch (Exception ex)
+                {
+                    Log.Write(ex.ToString(), Log.MessageType.ERROR);
+
+                    var savelog = MessageBox.Show(
+                        $"{ex.Message}\n{ex.ToString()}\n\nСохранить лог?",
+                        "Сбой программы!",
+                        MessageBoxButton.YesNo, MessageBoxImage.Error);
+
+                    if (savelog == MessageBoxResult.Yes)
+                    {
+                        Process.Start(Log.SaveLog("logs"));
+                    }
+                }
+            }
+            else
+            {
+                Log.EnableTrace = true;
+
+                var mainWindow = new MainWipifiWindow();
+                InsertTextForm.Instance = new InsertTextForm();
+
+                mainWindow.ShowDialog();
+
+                InsertTextForm.Instance.Close();
+            }
         }
 
         protected override void OnExit(ExitEventArgs e)

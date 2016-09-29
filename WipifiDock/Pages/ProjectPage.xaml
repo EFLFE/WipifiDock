@@ -27,6 +27,10 @@
                     ToolTip="Конвертировать проект в Web формат" Style="{StaticResource imageButtonStyle}" BorderThickness="0" Margin="2">
                 <Image Source="{StaticResource projectToWeb}" />
             </Button>
+            <Button x:Name="openLogFormButton" Click="openLogFormButton_Click" MaxWidth="{StaticResource bigTooBarSize}" MaxHeight="{StaticResource bigTooBarSize}"
+                    ToolTip="Конвертировать проект в Web формат" Style="{StaticResource imageButtonStyle}" BorderThickness="0" Margin="2">
+                <Image Source="{StaticResource logForm}" />
+            </Button>
 
         </StackPanel>
         <!--#endregion-->

@@ -12,13 +12,15 @@ namespace WipifiDock.Pages
 {
     public sealed partial class ProjectPage : Page
     {
+        private MainWipifiWindow owner;
         private ProjectData projectData;
         private MDTabEditor selectedTab;
         private FileSystemWatcher treeWatcher;
 
-        public ProjectPage()
+        public ProjectPage(MainWipifiWindow ownerWindow)
         {
             InitializeComponent();
+            owner = ownerWindow;
             treeView.SelectedItemChanged += TreeView_SelectedItemChanged;
             treeView.MouseDoubleClick += TreeView_MouseDoubleClick;
         }
@@ -431,6 +433,11 @@ namespace WipifiDock.Pages
             // todo: export to html
             MessageBox.Show("Данная функция не реализованна.", "=(", MessageBoxButton.OK, MessageBoxImage.Stop);
             projectToWebButton.IsEnabled = false;
+        }
+
+        private void openLogFormButton_Click(object sender, RoutedEventArgs e)
+        {
+            owner.ShowLogForm();
         }
 
         #endregion

@@ -10,11 +10,23 @@ namespace WipifiDock.Forms
     {
         private static int threadID;
 
+        public bool CanClosed;
+
         public LoggerForm()
         {
             InitializeComponent();
             Loaded += LoggerForm_Loaded;
             threadID = Thread.CurrentThread.ManagedThreadId;
+            Closing += LoggerForm_Closing;
+        }
+
+        private void LoggerForm_Closing(object sender, CancelEventArgs e)
+        {
+            if (!CanClosed)
+            {
+                e.Cancel = true;
+                Hide();
+            }
         }
 
         private void LoggerForm_Loaded(object sender, RoutedEventArgs e)
