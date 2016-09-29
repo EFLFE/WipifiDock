@@ -30,6 +30,7 @@ namespace WipifiDock.Data
             MD,
             CSS,
             TXT,
+            Binary,
             IMAGE
         }
 
@@ -78,6 +79,8 @@ namespace WipifiDock.Data
             case ".cs":
             case ".log":
             case ".cfg":
+            case ".xml":
+            case ".xaml":
                 return FileFormatType.TXT;
 
             case ".png":
@@ -90,6 +93,12 @@ namespace WipifiDock.Data
             case ".xbm":
             case ".webp":
                 return FileFormatType.IMAGE;
+
+            case ".exe":
+            case ".lib":
+            case ".bin":
+            case ".dll":
+                return FileFormatType.Binary;
 
             default: return FileFormatType.Unknown;
             }

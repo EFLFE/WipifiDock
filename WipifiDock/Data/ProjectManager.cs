@@ -82,7 +82,7 @@ namespace WipifiDock.Data
                     $"{path}\\{FileManager.HEAD_FILE}",
                     "<!-- Вставочный шаблон в тег head -->\n" +
                     "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + cssFileName + "\">\n" +
-                    "<META charset=\"utf - 8\">\n");
+                    "<META charset=\"utf-8\">\n");
 
                 File.WriteAllText(
                     $"{path}\\{FileManager.BODY_FILE}",

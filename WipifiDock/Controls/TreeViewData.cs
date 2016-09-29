@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -18,6 +19,7 @@ namespace WipifiDock.Controls
         private static Image imageFile;
         private static Image mdFile;
         private static Image txtFile;
+        private static Image binaryFile;
         private static Image unknownFile;
 
         private FileManager.FileFormatType fileFormatType;
@@ -105,6 +107,14 @@ namespace WipifiDock.Controls
                         txtFile.Source = FindResource("textFile") as BitmapImage;
                     }
                     return txtFile.Source;
+
+                case FileManager.FileFormatType.Binary:
+                    if (binaryFile == null)
+                    {
+                        binaryFile = new Image();
+                        binaryFile.Source = FindResource("binaryFile") as BitmapImage;
+                    }
+                    return binaryFile.Source;
 
                 case FileManager.FileFormatType.Unknown:
                 default:

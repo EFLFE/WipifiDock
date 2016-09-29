@@ -198,6 +198,7 @@
     <Content Include="Blanks\MainBlank.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\TreeIcons\binaryFile.png" />
     <Resource Include="Resources\Tools\addExistProj.png" />
     <Resource Include="Resources\Tools\addProj.png" />
     <Resource Include="Resources\Tools\deleteProj.png" />

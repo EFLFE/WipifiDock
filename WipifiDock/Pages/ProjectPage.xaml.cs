@@ -48,6 +48,12 @@ namespace WipifiDock.Pages
 
         private void TreeWatcher_Renamed(object sender, RenamedEventArgs e)
         {
+            // delete and add
+            Dispatcher.Invoke(() =>
+            {
+                removeTreeNode(e.FullPath.ToID());
+                addTreeNode(e.FullPath);
+            });
         }
 
         private void TreeWatcher_Deleted(object sender, FileSystemEventArgs e)
@@ -70,6 +76,59 @@ namespace WipifiDock.Pages
 
         private void addTreeNode(string fullPath)
         {
+            int id = fullPath.ToID();
+            string pathTo = fullPath.Remove(fullPath.LastIndexOf('\\'));
+            bool isDir = File.GetAttributes(fullPath).HasFlag(FileAttributes.Directory);
+
+            Log.Write("Add tree node " + id + " as " + (isDir ? "dir" : "file"));
+
+            if (pathTo.Equals(FileManager.RootPath))
+            {
+                Log.Write("Root node was found - ");
+                // root
+                if (isDir)
+                    treeView.Items.Add(new TreeViewData(Path.GetFileName(fullPath), fullPath, true));
+                else
+                    treeView.Items.Add(new TreeViewData(Path.GetFileName(fullPath), fullPath, false));
+                return;
+            }
+
+            for (int i = 0; i < treeView.Items.Count; i++)
+            {
+                // ищем директорию, в котором создан файл/каталог
+                var item = treeView.Items[i] as TreeViewData;
+                if (item == null)
+                    continue;
+
+                if (item.IsFolder && item.IsExpanded)
+                {
+                    if (item.ID == id)
+                    {
+                        item.Items.Add(new TreeViewData(Path.GetFileName(fullPath), fullPath, isDir));
+                        return;
+                    }
+                    else
+                    {
+                        // поиск в каталоге
+                        item = findTreeViewData(pathTo.ToID(), item);
+
+                        if (item != null)
+                        {
+                            Log.Write("Node was found - " + i);
+                            if (item.Parent is TreeViewData)
+                            {
+                                Log.Write("Node as TreeViewData was found - " + i);
+                                (item.Parent as TreeViewData).Items.Add(new TreeViewData(Path.GetFileName(fullPath), fullPath, isDir));
+                            }
+                            else if (item.Parent is TreeView)
+                            {
+                                Log.Write("Node as TreeView was found - " + i);
+                                (item.Parent as TreeView).Items.Add(new TreeViewData(Path.GetFileName(fullPath), fullPath, isDir));
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         // удалить объект из TreeView
@@ -90,7 +149,9 @@ namespace WipifiDock.Pages
                 }
                 if (item.IsFolder)
                 {
+                    // поиск в каталоге
                     item = findTreeViewData(id, item);
+
                     if (item != null)
                     {
                         Log.Write("Node was found - " + i);
@@ -125,7 +186,7 @@ namespace WipifiDock.Pages
                 }
                 if (item.IsFolder)
                 {
-                    findTreeViewData(id, item);
+                    findTreeViewData(id, item); // рекурсия
                 }
             }
             return null;
@@ -314,14 +375,32 @@ namespace WipifiDock.Pages
 
         private void treeCreateDir(object sender, RoutedEventArgs e)
         {
+            var tf = treeView.SelectedItem;
+            if (tf == null)
+            {
+                // root folder
+            }
+            else
+            {
+            }
         }
 
         private void treeRenameNode(object sender, RoutedEventArgs e)
         {
+            var tf = treeView.SelectedItem;
+            if (tf == null)
+            {
+                return;
+            }
         }
 
         private void treeDeleteNode(object sender, RoutedEventArgs e)
         {
+            var tf = treeView.SelectedItem;
+            if (tf == null)
+            {
+                return;
+            }
         }
 
         #endregion
