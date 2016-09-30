@@ -4,13 +4,14 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using WipifiDock.Forms;
 
 namespace WipifiDock.Pages
 {
     public partial class MainPage : Page
     {
         private MainWipifiWindow ownerMainWindow;
-        
+
         public MainPage(MainWipifiWindow _ownerMainWindow)
         {
             ownerMainWindow = _ownerMainWindow;
@@ -38,9 +39,9 @@ namespace WipifiDock.Pages
             ownerMainWindow.FrameNavigate(MainWipifiWindow.PageType.ProjectListPage);
         }
 
-        private async void buttonCheckUpdate_Click(object sender, RoutedEventArgs e)
+        private void buttonCheckUpdate_Click(object sender, RoutedEventArgs e)
         {
-            await Update.Check();
+            new UpdateForm().ShowDialog();
         }
 
         private void buttonExit_Click(object sender, RoutedEventArgs e)

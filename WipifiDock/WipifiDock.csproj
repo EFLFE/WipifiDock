@@ -115,6 +115,10 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WpfAnimatedGif, Version=1.4.14.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WpfAnimatedGif.1.4.14\lib\net\WpfAnimatedGif.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -132,6 +136,9 @@
     </Compile>
     <Compile Include="Forms\LoggerForm.xaml.cs">
       <DependentUpon>LoggerForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UpdateForm.xaml.cs">
+      <DependentUpon>UpdateForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="Log.cs" />
     <Compile Include="Pages\MainPage.xaml.cs">
@@ -155,7 +162,6 @@
     <Compile Include="Controls\MDTabEditor.xaml.cs">
       <DependentUpon>MDTabEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Update.cs" />
     <Page Include="Forms\ConfigForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -165,6 +171,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\LoggerForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\UpdateForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -230,6 +240,7 @@
     <Content Include="Blanks\MainBlank.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\waiting.gif" />
     <Resource Include="Resources\Tools\Global\logForm.png" />
     <Resource Include="Resources\TreeIcons\binaryFile.png" />
     <Resource Include="Resources\Tools\addExistProj.png" />

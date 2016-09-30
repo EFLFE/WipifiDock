@@ -9,14 +9,16 @@ namespace WipifiDock
 {
     public partial class App : Application
     {
-        public static string Version { get; private set; }
+        public const string Version = "0.1.0";
 
-        public App()
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-            Version = fvi.FileVersion;
-        }
+        //public static string FullVersion { get; private set; }
+
+        //public App()
+        //{
+        //    var assembly = Assembly.GetExecutingAssembly();
+        //    var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+        //    FullVersion = fvi.FileVersion;
+        //}
 
         protected override void OnStartup(StartupEventArgs e)
         {
