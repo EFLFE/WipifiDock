@@ -38,9 +38,9 @@ namespace WipifiDock.Pages
             ownerMainWindow.FrameNavigate(MainWipifiWindow.PageType.ProjectListPage);
         }
 
-        private void buttonCheckUpdate_Click(object sender, RoutedEventArgs e)
+        private async void buttonCheckUpdate_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: update project NotImplementedException
+            await Update.Check();
         }
 
         private void buttonExit_Click(object sender, RoutedEventArgs e)

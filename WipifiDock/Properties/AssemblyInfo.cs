@@ -9,7 +9,7 @@ using System.Windows;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("0.7.0.*")]
+[assembly: AssemblyVersion("0.1.0.*")]
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
