@@ -4,15 +4,15 @@ using System.Windows;
 namespace WipifiDock.Forms
 {
     /// <summary> Окно генерации вставки текстового шаблона. </summary>
-    public sealed partial class InsertTextForm : Window
+    public sealed partial class InsertMDTextForm : Window
     {
         /// <summary> Статический this. </summary>
-        public static InsertTextForm Instance;
+        public static InsertMDTextForm Instance;
 
         /// <summary> Готовый текст для вставки. </summary>
         public static string GetInsertText;
 
-        public InsertTextForm()
+        public InsertMDTextForm()
         {
             InitializeComponent();
         }

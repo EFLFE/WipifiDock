@@ -28,6 +28,7 @@ namespace WipifiDock.Pages
         // on load (navigate to this page)
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            // todo: возможность открыть другой проект
             projectData = ProjectManager.GetSelectedProjectData();
             Title = "Проект - " + projectData.Name;
             FileManager.RootPath = projectData.Path;
@@ -87,7 +88,7 @@ namespace WipifiDock.Pages
 
             if (pathTo.Equals(FileManager.RootPath))
             {
-                Log.Write("Root node was found - ");
+                Log.Write("Root node was found");
                 // root
                 if (isDir)
                     treeView.Items.Add(new TreeViewData(Path.GetFileName(fullPath), fullPath, true));
@@ -375,7 +376,7 @@ namespace WipifiDock.Pages
             var tf = treeView.SelectedItem;
             if (tf == null)
             {
-                // root folder
+                // root directory
             }
             else
             {
@@ -387,7 +388,7 @@ namespace WipifiDock.Pages
             var tf = treeView.SelectedItem;
             if (tf == null)
             {
-                // root folder
+                // root directory
             }
             else
             {

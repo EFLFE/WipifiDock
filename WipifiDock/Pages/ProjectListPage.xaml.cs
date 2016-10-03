@@ -16,11 +16,11 @@ namespace WipifiDock.Pages
         public ProjectListPage(MainWipifiWindow ownerMainWindow)
         {
             OwnerMainWindow = ownerMainWindow;
-            Loaded += ProjectListPage_Loaded;
 
             InitializeComponent();
             grid.Background = Brushes.Transparent;
             projectListBox.SelectionChanged += ProjectListBox_SelectionChanged;
+            projectListBox.MouseDoubleClick += ProjectListBox_MouseDoubleClick;
 
             // загрузить и заполнить список проектов
             var p = ProjectManager.LoadProjectConfig();
@@ -33,8 +33,10 @@ namespace WipifiDock.Pages
             }
         }
 
-        private void ProjectListPage_Loaded(object sender, RoutedEventArgs e)
+        // открыть выбранный проект двойным нажатием
+        private void ProjectListBox_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            openProject_Click(null, null);
         }
 
         /// <summary> Добавить имя проекта в ListBox. </summary>

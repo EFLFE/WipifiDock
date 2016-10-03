@@ -56,7 +56,9 @@
             <GridSplitter x:Name="gridSplitter" Width="4" VerticalAlignment="Stretch"
                       HorizontalAlignment="Left" ResizeDirection="Columns" Background="#FFC3C3C3" Grid.Column="1"/>
 
-            <TextBox x:Name="textBox" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" AcceptsReturn="True" FontFamily="Consolas"/>
+            <TextBox x:Name="textBox" TextWrapping="Wrap" KeyDown="textBox_KeyDown"
+                     VerticalScrollBarVisibility="Visible" AcceptsReturn="True" FontFamily="Consolas"/>
+
             <WebBrowser x:Name="webBrowser" Grid.Column="1" Margin="4,0,0,0"/>
         </Grid>
     </Grid>

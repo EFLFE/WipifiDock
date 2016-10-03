@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace WipifiDock
+﻿namespace WipifiDock
 {
-    public static class EX
+    public static class EXT
     {
         public static int ToID(this string text)
         {

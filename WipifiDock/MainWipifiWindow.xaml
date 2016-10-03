@@ -9,7 +9,6 @@
         Title="WipifiDock: Проекты"
         Height="360" Width="520" MinWidth="520" MinHeight="360"
         WindowStartupLocation="CenterScreen" Icon="Resources/icon1.png">
-
     <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="SplashScreen.png" Opacity="0.1" Stretch="UniformToFill"/>

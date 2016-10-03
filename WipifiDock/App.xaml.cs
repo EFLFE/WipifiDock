@@ -35,11 +35,11 @@ namespace WipifiDock
                 try
                 {
                     var mainWindow = new MainWipifiWindow();
-                    InsertTextForm.Instance = new InsertTextForm();
+                    InsertMDTextForm.Instance = new InsertMDTextForm();
 
                     mainWindow.ShowDialog();
 
-                    InsertTextForm.Instance.Close();
+                    InsertMDTextForm.Instance.Close();
                 }
                 catch (Exception ex)
                 {
@@ -61,11 +61,11 @@ namespace WipifiDock
                 Log.EnableTrace = true;
 
                 var mainWindow = new MainWipifiWindow();
-                InsertTextForm.Instance = new InsertTextForm();
+                InsertMDTextForm.Instance = new InsertMDTextForm();
 
                 mainWindow.ShowDialog();
 
-                InsertTextForm.Instance.Close();
+                InsertMDTextForm.Instance.Close();
             }
         }
 

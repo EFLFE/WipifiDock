@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Navigation;
 using mshtml;
 using WipifiDock.Data;
@@ -18,6 +19,7 @@ namespace WipifiDock.Controls
         public TabItem OwnerTab; // (не проще ли сюда перенести этот элемент?)
 
         private string workFileName;
+        private bool textWasChanged;
 
         private object _lock_ = new object();
         private bool poolEnable;
@@ -57,8 +59,11 @@ namespace WipifiDock.Controls
         {
             // start time to update
             timeToUpdate = 05;
-            if (grid.IsEnabled)
+            if (!textWasChanged && grid.IsEnabled)
+            {
                 setTitle(Title + "*");
+                textWasChanged = true;
+            }
         }
 
         // после успешной навигации
@@ -302,16 +307,16 @@ namespace WipifiDock.Controls
 
         private void mdInsertImage(object sender, RoutedEventArgs e)
         {
-            InsertTextForm.Instance.SelectTab(0);
-            InsertTextForm.Instance.ShowDialog();
-            insertMD(InsertTextForm.GetInsertText);
+            InsertMDTextForm.Instance.SelectTab(0);
+            InsertMDTextForm.Instance.ShowDialog();
+            insertMD(InsertMDTextForm.GetInsertText);
         }
 
         private void mdInsertUrl(object sender, RoutedEventArgs e)
         {
-            InsertTextForm.Instance.SelectTab(1);
-            InsertTextForm.Instance.ShowDialog();
-            insertMD(InsertTextForm.GetInsertText);
+            InsertMDTextForm.Instance.SelectTab(1);
+            InsertMDTextForm.Instance.ShowDialog();
+            insertMD(InsertMDTextForm.GetInsertText);
         }
 
         private void mdInsertQuote(object sender, RoutedEventArgs e)
@@ -332,9 +337,25 @@ namespace WipifiDock.Controls
 
         private void saveText_Click(object sender, RoutedEventArgs e)
         {
-            File.WriteAllText(workFileName, textBox.Text);
-            setTitle(Title);
+            saveText();
         }
 
+        private void textBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.S && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                saveText();
+            }
+        }
+
+        private void saveText()
+        {
+            if (textWasChanged)
+            {
+                File.WriteAllText(workFileName, textBox.Text);
+                setTitle(Title);
+                textWasChanged = false;
+            }
+        }
     }
 }

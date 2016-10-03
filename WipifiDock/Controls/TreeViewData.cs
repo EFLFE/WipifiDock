@@ -128,8 +128,18 @@ namespace WipifiDock.Controls
             }
         }
 
+        /// <summary> Создать объект для TreeView, который хранит тип и путь к файлу. </summary>
+        /// <param name="fileOrDirName"> Имя каталога или файла. </param>
+        /// <param name="path"> Полный путь. </param>
+        /// <param name="isFolder"> Является директорией? </param>
         public TreeViewData(string fileOrDirName, string path, bool isFolder)
         {
+            // fix
+            if (path.EndsWith(fileOrDirName, StringComparison.OrdinalIgnoreCase))
+            {
+                path = path.Remove(path.Length - fileOrDirName.Length - 1);
+            }
+
             ID = $"{path}\\{fileOrDirName}".ToID();
 
             FullName = fileOrDirName;

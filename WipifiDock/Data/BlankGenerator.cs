@@ -144,7 +144,7 @@ namespace WipifiDock.Data
         /// <param name="body"> Вставочный код блок BODY. </param>
         private static void createHtml(string title, string[] head, string[] body)
         {
-            Log.Write("Create HTML " + title);
+            //Log.Write("Create HTML " + title);
 
             sb.Clear();
 

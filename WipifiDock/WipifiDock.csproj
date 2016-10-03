@@ -127,12 +127,12 @@
     </ApplicationDefinition>
     <Compile Include="Data\BlankGenerator.cs" />
     <Compile Include="Data\FileManager.cs" />
-    <Compile Include="EX.cs" />
+    <Compile Include="EXT.cs" />
     <Compile Include="Forms\ConfigForm.xaml.cs">
       <DependentUpon>ConfigForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\InsertTextForm.xaml.cs">
-      <DependentUpon>InsertTextForm.xaml</DependentUpon>
+    <Compile Include="Forms\InsertMDTextForm.xaml.cs">
+      <DependentUpon>InsertMDTextForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\LoggerForm.xaml.cs">
       <DependentUpon>LoggerForm.xaml</DependentUpon>
@@ -166,7 +166,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\InsertTextForm.xaml">
+    <Page Include="Forms\InsertMDTextForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
