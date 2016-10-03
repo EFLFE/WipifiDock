@@ -335,11 +335,13 @@ namespace WipifiDock.Controls
         }
         #endregion
 
+        // from Menu->Save
         private void saveText_Click(object sender, RoutedEventArgs e)
         {
             saveText();
         }
 
+        // custom hotkeys
         private void textBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.S && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)

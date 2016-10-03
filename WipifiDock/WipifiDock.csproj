@@ -131,6 +131,9 @@
     <Compile Include="Forms\ConfigForm.xaml.cs">
       <DependentUpon>ConfigForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\EnterTextForm.xaml.cs">
+      <DependentUpon>EnterTextForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\InsertMDTextForm.xaml.cs">
       <DependentUpon>InsertMDTextForm.xaml</DependentUpon>
     </Compile>
@@ -163,6 +166,10 @@
       <DependentUpon>MDTabEditor.xaml</DependentUpon>
     </Compile>
     <Page Include="Forms\ConfigForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\EnterTextForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -19,9 +19,6 @@ namespace WipifiDock
         {
             logs = new List<string>();
             typeLogCount = new int[4];
-#if DEBUG
-            EnableOutWrite = true;
-#endif
         }
 
         /// <summary> Последняя ошибка. </summary>

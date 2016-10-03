@@ -11,6 +11,7 @@ namespace WipifiDock.Forms
         private static int threadID;
 
         public bool CanClosed;
+        private bool wasClosed;
 
         public LoggerForm()
         {
@@ -62,11 +63,15 @@ namespace WipifiDock.Forms
             Topmost = false;
         }
 
-        protected override void OnClosing(CancelEventArgs e)
+        protected override void OnClosed(EventArgs e)
         {
-            Log.OnAddLog -= Log_OnAddLog;
-            Log.Write("LoggerForm monitor stoped.");
-            base.OnClosing(e);
+            if (!wasClosed)
+            {
+                wasClosed = true;
+                Log.Write("LoggerForm monitor stoped.");
+                Log.OnAddLog -= Log_OnAddLog;
+                base.OnClosed(e);
+            }
         }
 
     }

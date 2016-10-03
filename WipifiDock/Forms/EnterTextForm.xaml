@@ -1,0 +1,21 @@
+﻿<Window x:Class="WipifiDock.Forms.EnterTextForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WipifiDock.Forms"
+        mc:Ignorable="d"
+        Title="Ввод текста"
+        Height="138"
+        Width="320"
+        Icon="/WipifiDock;component/Resources/TreeIcons/htmlFile.png"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+    <Grid>
+        <Label Content="Введите имя:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="okButton" Content="OK" HorizontalAlignment="Left" Margin="10,69,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="cancelButton" Content="Отмена" HorizontalAlignment="Right" Margin="0,69,10,0" VerticalAlignment="Top" Width="75"/>
+        <TextBox x:Name="textBox" FontFamily="Consolas" Height="23" Margin="10,41,10,0" TextWrapping="NoWrap" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>

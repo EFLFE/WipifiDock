@@ -30,7 +30,7 @@ namespace WipifiDock.Controls
         public int ID { get; private set; }
 
         /// <summary> Это дикертория? </summary>
-        public bool IsFolder { get; set; }
+        public bool IsDir { get; set; }
 
         /// <summary> Имя файла/каталога. </summary>
         public string FileName { get; set; }
@@ -149,7 +149,7 @@ namespace WipifiDock.Controls
             if (isFolder)
             {
                 fileFormatType = FileManager.FileFormatType.Folder;
-                IsFolder = true;
+                IsDir = true;
                 Items.Add(null); // для возможности развернуть
                 //initial = Directory.GetDirectories($"{path}\\{folderName}", "*", SearchOption.TopDirectoryOnly).Length
                 //        + Directory.GetFiles($"{path}\\{folderName}", "*.*", SearchOption.TopDirectoryOnly).Length;

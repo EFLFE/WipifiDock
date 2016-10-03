@@ -7,6 +7,8 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using WipifiDock.Controls;
 using WipifiDock.Data;
+using WipifiDock.Forms;
+using System.Threading;
 
 namespace WipifiDock.Pages
 {
@@ -80,6 +82,7 @@ namespace WipifiDock.Pages
 
         private void addTreeNode(string fullPath)
         {
+            // всё очень пло.. сложно
             int id = fullPath.ToID();
             string pathTo = fullPath.Remove(fullPath.LastIndexOf('\\'));
             bool isDir = File.GetAttributes(fullPath).HasFlag(FileAttributes.Directory);
@@ -104,7 +107,7 @@ namespace WipifiDock.Pages
                 if (item == null)
                     continue;
 
-                if (item.IsFolder && item.IsExpanded)
+                if (item.IsDir && item.IsExpanded)
                 {
                     if (item.ID == id)
                     {
@@ -119,16 +122,22 @@ namespace WipifiDock.Pages
                         if (item != null)
                         {
                             Log.Write("Node was found - " + i);
-                            if (item.Parent is TreeViewData)
+                            if (item.IsDir)
                             {
-                                Log.Write("Node as TreeViewData was found - " + i);
-                                (item.Parent as TreeViewData).Items.Add(new TreeViewData(Path.GetFileName(fullPath), fullPath, isDir));
+                                item.Items.Add(new TreeViewData(Path.GetFileName(fullPath), fullPath, isDir));
                             }
-                            else if (item.Parent is TreeView)
+                            else
                             {
-                                Log.Write("Node as TreeView was found - " + i);
-                                (item.Parent as TreeView).Items.Add(new TreeViewData(Path.GetFileName(fullPath), fullPath, isDir));
+                                if (item.Parent is TreeViewData)
+                                {
+                                    (item.Parent as TreeViewData).Items.Add(new TreeViewData(Path.GetFileName(fullPath), fullPath, isDir));
+                                }
+                                else if (item.Parent is TreeView)
+                                {
+                                    (item.Parent as TreeView).Items.Add(new TreeViewData(Path.GetFileName(fullPath), fullPath, isDir));
+                                }
                             }
+                            return;
                         }
                     }
                 }
@@ -151,7 +160,7 @@ namespace WipifiDock.Pages
                     treeView.Items.RemoveAt(i);
                     return;
                 }
-                if (item.IsFolder)
+                if (item.IsDir)
                 {
                     // поиск в каталоге
                     item = findTreeViewData(id, item);
@@ -188,7 +197,7 @@ namespace WipifiDock.Pages
                 {
                     return item;
                 }
-                if (item.IsFolder)
+                if (item.IsDir)
                 {
                     findTreeViewData(id, item); // рекурсия
                 }
@@ -237,7 +246,7 @@ namespace WipifiDock.Pages
         {
             var item = e.Source as TreeViewData;
 
-            if (item.IsFolder)
+            if (item.IsDir)
             {
                 item.Items.Clear();
 
@@ -276,7 +285,7 @@ namespace WipifiDock.Pages
 
             var item = treeView.SelectedItem as TreeViewData;
 
-            if (!item.IsFolder)
+            if (!item.IsDir)
             {
                 var path = item.Path + "\\" + item.FullName;
 
@@ -369,29 +378,90 @@ namespace WipifiDock.Pages
             selectedTab = ((tabControl.SelectedItem as TabItem).Content as Grid).Children[0] as MDTabEditor;
         }
 
+        private string enterText()
+        {
+            var enterTextForm = new EnterTextForm();
+            enterTextForm.ShowDialog();
+            return enterTextForm.GetEnteredText;
+        }
+
         #region TreeView ContextMenu
 
         private void treeCreateFile(object sender, RoutedEventArgs e)
         {
-            var tf = treeView.SelectedItem;
+            string name = enterText();
+            if (string.IsNullOrWhiteSpace(name))
+                return;
+
+            var tf = treeView.SelectedItem as TreeViewData;
+            string filePath = null;
             if (tf == null)
             {
                 // root directory
+                filePath = FileManager.RootPath + "\\" + name;
             }
             else
             {
+                if (tf.IsDir)
+                    filePath = $"{tf.Path}\\{tf.FullName}\\{name}";
+                else
+                    filePath = $"{tf.Path}\\{name}";
+            }
+
+            if (filePath != null)
+            {
+                if (File.Exists(filePath))
+                {
+                    MessageBox.Show(
+                        "Файл \"" + Path.GetFileName(filePath) + "\" уже существует.", "Внимание",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                if (!Directory.Exists(Path.GetDirectoryName(filePath)))
+                {
+                    MessageBox.Show(
+                        "Каталог для файла \"" + Path.GetFileName(filePath) + "\" уже создан.", "Ошибка",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                File.CreateText(filePath).Close();
             }
         }
 
         private void treeCreateDir(object sender, RoutedEventArgs e)
         {
-            var tf = treeView.SelectedItem;
+            // Копипаст. Да, я знаю.
+            string name = enterText();
+            if (string.IsNullOrWhiteSpace(name))
+                return;
+
+            var tf = treeView.SelectedItem as TreeViewData;
+            string dirPath = null;
             if (tf == null)
             {
                 // root directory
+                dirPath = FileManager.RootPath + "\\" + name;
             }
             else
             {
+                if (tf.IsDir)
+                    dirPath = $"{tf.Path}\\{tf.FullName}\\{name}";
+                else
+                    dirPath = $"{tf.Path}\\{name}";
+            }
+
+            if (dirPath != null)
+            {
+                if (Directory.Exists(dirPath))
+                {
+                    MessageBox.Show(
+                        "Каталог \"" + Path.GetFileName(dirPath) + "\" уже существует.", "Внимание",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                Directory.CreateDirectory(dirPath);
             }
         }
 
@@ -418,7 +488,7 @@ namespace WipifiDock.Pages
             for (int i = 0; i < treeView.Items.Count; i++)
             {
                 var item = treeView.Items[i] as TreeViewData;
-                if (item == null || !item.IsFolder || !item.IsExpanded)
+                if (item == null || !item.IsDir || !item.IsExpanded)
                     continue;
 
                 item.IsExpanded = false;
@@ -433,7 +503,7 @@ namespace WipifiDock.Pages
             for (int i = 0; i < subTree.Items.Count; i++)
             {
                 var item = treeView.Items[i] as TreeViewData;
-                if (item == null || !item.IsFolder || !item.IsExpanded)
+                if (item == null || !item.IsDir || !item.IsExpanded)
                     continue;
 
                 item.IsExpanded = false;
