@@ -57,8 +57,9 @@ namespace WipifiDock.Pages
             // delete and add
             Dispatcher.Invoke(() =>
             {
-                removeTreeNode(e.FullPath.ToID());
-                addTreeNode(e.FullPath);
+                renameTreeNode(e.OldFullPath.ToID(), e.Name);
+                //removeTreeNode(e.FullPath.ToID());
+                //addTreeNode(e.FullPath);
             });
         }
 
@@ -83,8 +84,8 @@ namespace WipifiDock.Pages
         private void addTreeNode(string fullPath)
         {
             // всё очень пло.. сложно
-            int id = fullPath.ToID();
             string pathTo = fullPath.Remove(fullPath.LastIndexOf('\\'));
+            int id = pathTo.ToID();
             bool isDir = File.GetAttributes(fullPath).HasFlag(FileAttributes.Directory);
 
             Log.Write("Add tree node " + id + " as " + (isDir ? "dir" : "file"));
@@ -117,7 +118,7 @@ namespace WipifiDock.Pages
                     else
                     {
                         // поиск в каталоге
-                        item = findTreeViewData(pathTo.ToID(), item);
+                        item = findTreeViewData(id, item);
 
                         if (item != null)
                         {
@@ -142,6 +143,7 @@ namespace WipifiDock.Pages
                     }
                 }
             }
+            Log.Write("Fail to add tree node", Log.MessageType.WARNING);
         }
 
         // удалить объект из TreeView
@@ -178,9 +180,42 @@ namespace WipifiDock.Pages
                             Log.Write("Node as TreeView was found - " + i);
                             (item.Parent as TreeView).Items.Remove(item);
                         }
+                        return;
                     }
                 }
             }
+            Log.Write("Tree node not found", Log.MessageType.WARNING);
+        }
+
+        private void renameTreeNode(int id, string newName)
+        {
+            Log.Write("Rename tree node " + id);
+            for (int i = 0; i < treeView.Items.Count; i++)
+            {
+                var item = treeView.Items[i] as TreeViewData;
+                if (item == null)
+                    continue;
+
+                if (item.ID == id)
+                {
+                    Log.Write("Node was found - " + i);
+                    item.Rename(newName);
+                    return;
+                }
+                if (item.IsDir)
+                {
+                    // поиск в каталоге
+                    item = findTreeViewData(id, item);
+
+                    if (item != null)
+                    {
+                        Log.Write("Node was found - " + i);
+                        item.Rename(newName);
+                        return;
+                    }
+                }
+            }
+            Log.Write("Tree node not found", Log.MessageType.WARNING);
         }
 
         private TreeViewData findTreeViewData(int id, TreeViewData tree)
@@ -378,9 +413,9 @@ namespace WipifiDock.Pages
             selectedTab = ((tabControl.SelectedItem as TabItem).Content as Grid).Children[0] as MDTabEditor;
         }
 
-        private string enterText()
+        private string enterText(string initialText = "")
         {
-            var enterTextForm = new EnterTextForm();
+            var enterTextForm = new EnterTextForm(initialText);
             enterTextForm.ShowDialog();
             return enterTextForm.GetEnteredText;
         }
@@ -393,19 +428,19 @@ namespace WipifiDock.Pages
             if (string.IsNullOrWhiteSpace(name))
                 return;
 
-            var tf = treeView.SelectedItem as TreeViewData;
+            var tv = treeView.SelectedItem as TreeViewData;
             string filePath = null;
-            if (tf == null)
+            if (tv == null)
             {
                 // root directory
                 filePath = FileManager.RootPath + "\\" + name;
             }
             else
             {
-                if (tf.IsDir)
-                    filePath = $"{tf.Path}\\{tf.FullName}\\{name}";
+                if (tv.IsDir)
+                    filePath = $"{tv.Path}\\{tv.FullName}\\{name}";
                 else
-                    filePath = $"{tf.Path}\\{name}";
+                    filePath = $"{tv.Path}\\{name}";
             }
 
             if (filePath != null)
@@ -436,19 +471,19 @@ namespace WipifiDock.Pages
             if (string.IsNullOrWhiteSpace(name))
                 return;
 
-            var tf = treeView.SelectedItem as TreeViewData;
+            var tv = treeView.SelectedItem as TreeViewData;
             string dirPath = null;
-            if (tf == null)
+            if (tv == null)
             {
                 // root directory
                 dirPath = FileManager.RootPath + "\\" + name;
             }
             else
             {
-                if (tf.IsDir)
-                    dirPath = $"{tf.Path}\\{tf.FullName}\\{name}";
+                if (tv.IsDir)
+                    dirPath = $"{tv.Path}\\{tv.FullName}\\{name}";
                 else
-                    dirPath = $"{tf.Path}\\{name}";
+                    dirPath = $"{tv.Path}\\{name}";
             }
 
             if (dirPath != null)
@@ -467,17 +502,32 @@ namespace WipifiDock.Pages
 
         private void treeRenameNode(object sender, RoutedEventArgs e)
         {
-            var tf = treeView.SelectedItem;
-            if (tf == null)
+            var tv = treeView.SelectedItem as TreeViewData;
+            if (tv == null)
+                return;
+
+            string newName = enterText(tv.FullName);
+            if (string.IsNullOrWhiteSpace(newName) || newName.Equals(tv.FullName))
+                return;
+
+            string oldPath = $"{tv.Path}\\{tv.FullName}";
+            string newPath = $"{tv.Path}\\{newName}";
+
+            if (File.Exists(newPath))
             {
+                MessageBox.Show(
+                    "Файл \"" + Path.GetFileName(newName) + "\" уже существует.", "Внимание",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+
+            File.Move(oldPath, newPath);
         }
 
         private void treeDeleteNode(object sender, RoutedEventArgs e)
         {
-            var tf = treeView.SelectedItem;
-            if (tf == null)
+            var tv = treeView.SelectedItem;
+            if (tv == null)
             {
                 return;
             }

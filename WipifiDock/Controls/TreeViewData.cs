@@ -30,7 +30,7 @@ namespace WipifiDock.Controls
         public int ID { get; private set; }
 
         /// <summary> Это дикертория? </summary>
-        public bool IsDir { get; set; }
+        public bool IsDir { get; private set; }
 
         /// <summary> Имя файла/каталога. </summary>
         public string FileName { get; set; }
@@ -50,7 +50,7 @@ namespace WipifiDock.Controls
         }
 
         /// <summary> Полный путь к файлу/каталогу. </summary>
-        public string Path { get; set; }
+        public string Path { get; private set; }
 
         //public new ItemCollection Items { get { return base.Items; } }
 
@@ -126,6 +126,7 @@ namespace WipifiDock.Controls
                     return unknownFile.Source;
                 }
             }
+            set { }
         }
 
         /// <summary> Создать объект для TreeView, который хранит тип и путь к файлу. </summary>
@@ -159,5 +160,12 @@ namespace WipifiDock.Controls
                 fileFormatType = FileManager.DetectFileFormatType(fileOrDirName);
             }
         }
+
+        public void Rename(string newName)
+        {
+            FullName = newName;
+            FileName = System.IO.Path.GetFileNameWithoutExtension(newName);
+        }
+
     }
 }

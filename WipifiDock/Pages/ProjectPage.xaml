@@ -69,12 +69,14 @@
                                     <StackPanel Orientation="Horizontal">
 
                                         <!-- Великий и ужасный Binding -->
-                                        <Image Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
-                                            AncestorType={x:Type q:TreeViewData}}, Path=GetImage}" Width="16" Height="16" Margin="0,1,5,1" />
+                                        <Image Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type q:TreeViewData}},
+                                            Path=GetImage}"
+                                               Width="16" Height="16" Margin="0,1,5,1" />
 
-                                        <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
-                                            AncestorType={x:Type q:TreeViewData}}, Path=FullName}" />
+                                        <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type q:TreeViewData}},
+                                            Path=FullName}" />
 
+                                        <!--Mode=TwoWay, UpdateSourceTrigger=PropertyChanged-->
                                         <!--<TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
                                             AncestorType={x:Type q:TreeViewData}}, Path=GetItemCountString}" Foreground="Gray"/>-->
 
