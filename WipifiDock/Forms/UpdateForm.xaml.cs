@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Controls;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Animation;
@@ -19,6 +18,7 @@ namespace WipifiDock.Forms
             InitializeComponent();
             contentGrid.Opacity = 0.0;
             loadImage.Opacity = 0.0;
+            successImage.Opacity = 0.0;
             Loaded += UpdateForm_Loaded;
         }
 
@@ -29,8 +29,8 @@ namespace WipifiDock.Forms
 
             Tuple<string, Release> release = await getLatestRelease();
 
-            da = new DoubleAnimation(loadImage.Opacity, 0.0, new Duration(TimeSpan.FromSeconds(0.2)));
-            loadImage.BeginAnimation(OpacityProperty, da);
+            var da2 = new DoubleAnimation(loadImage.Opacity, 0.0, new Duration(TimeSpan.FromSeconds(0.2)));
+            loadImage.BeginAnimation(OpacityProperty, da2);
 
             if (release.Item1 == null)
             {
@@ -38,13 +38,17 @@ namespace WipifiDock.Forms
                 if (!isNewVersion(release.Item2.TagName))
                 {
                     headText.Text = "У вас последняя версия программы.";
+
+                    var da3 = new DoubleAnimation(0.0, 1.0, new Duration(TimeSpan.FromSeconds(0.2)));
+                    successImage.BeginAnimation(OpacityProperty, da3);
+
                     return;
                 }
 
                 Log.Write("Found the latest version");
                 showContentGrid();
 
-                headText.Text = "О боже мой! Новая версия! " + release.Item2.TagName;
+                headText.Text = "Найдена новая версия! " + release.Item2.TagName;
                 titleText.Text = release.Item2.Name;
                 descText.Text = release.Item2.Body;
 

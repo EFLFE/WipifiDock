@@ -254,6 +254,7 @@
     <Content Include="Blanks\MainBlank.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\success.png" />
     <Resource Include="Resources\waiting.gif" />
     <Resource Include="Resources\Tools\Global\logForm.png" />
     <Resource Include="Resources\TreeIcons\binaryFile.png" />
