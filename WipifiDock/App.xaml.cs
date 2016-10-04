@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Reflection;
 using System.Windows;
 using WipifiDock.Data;
 using WipifiDock.Forms;
@@ -9,7 +8,7 @@ namespace WipifiDock
 {
     public partial class App : Application
     {
-        public const string Version = "0.1.0";
+        public const string Version = "0.2.0";
 
         //public static string FullVersion { get; private set; }
 
@@ -32,14 +31,13 @@ namespace WipifiDock
 #endif
             if (_try_)
             {
+                MainWipifiWindow mainWindow = null;
                 try
                 {
-                    var mainWindow = new MainWipifiWindow();
+                    mainWindow = new MainWipifiWindow();
                     InsertMDTextForm.Instance = new InsertMDTextForm();
 
                     mainWindow.ShowDialog();
-
-                    InsertMDTextForm.Instance.Close();
                 }
                 catch (Exception ex)
                 {
@@ -54,7 +52,10 @@ namespace WipifiDock
                     {
                         Process.Start(Log.SaveLog("log"));
                     }
+
+                    mainWindow?.Close();
                 }
+                InsertMDTextForm.Instance.Close();
             }
             else
             {

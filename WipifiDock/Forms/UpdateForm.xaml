@@ -24,9 +24,9 @@
             <TextBox x:Name="descText" IsReadOnly="True" Margin="10,48,10,67" TextWrapping="NoWrap"
                      FontSize="12" VerticalScrollBarVisibility="auto" HorizontalScrollBarVisibility="Auto"/>
 
-            <TextBlock x:Name="exeUrl" MouseDown="exeUrl_MouseDown" Text="Asset[0]"             Margin="10,0,0,48" Height="14" VerticalAlignment="Bottom" FontFamily="Consolas" Foreground="#FF003CA2" Cursor="Hand" HorizontalAlignment="Left" Width="auto"/>
-            <TextBlock x:Name="zipUrl" MouseDown="zipUrl_MouseDown" Text="Source code (zip)"    Margin="10,0,0,29" Height="14" VerticalAlignment="Bottom" FontFamily="Consolas" Foreground="#FF003CA2" Cursor="Hand" HorizontalAlignment="Left" Width="auto"/>
-            <TextBlock x:Name="tarUrl" MouseDown="tarUrl_MouseDown" Text="Source code (tar.gz)" Margin="10,0,0,10" Height="14" VerticalAlignment="Bottom" FontFamily="Consolas" Foreground="#FF003CA2" Cursor="Hand" HorizontalAlignment="Left" Width="auto"/>
+            <TextBlock x:Name="exeUrl" MouseDown="exeUrl_MouseDown" Text="Asset[0]"             Margin="10,0,0,48" Height="14" VerticalAlignment="Bottom" FontFamily="Consolas" Foreground="#FF003CA2" Cursor="Hand" HorizontalAlignment="Left" Width="auto" TextDecorations="Underline"/>
+            <TextBlock x:Name="zipUrl" MouseDown="zipUrl_MouseDown" Text="Source code (zip)"    Margin="10,0,0,29" Height="14" VerticalAlignment="Bottom" FontFamily="Consolas" Foreground="#FF003CA2" Cursor="Hand" HorizontalAlignment="Left" Width="auto" TextDecorations="Underline"/>
+            <TextBlock x:Name="tarUrl" MouseDown="tarUrl_MouseDown" Text="Source code (tar.gz)" Margin="10,0,0,10" Height="14" VerticalAlignment="Bottom" FontFamily="Consolas" Foreground="#FF003CA2" Cursor="Hand" HorizontalAlignment="Left" Width="auto" TextDecorations="Underline"/>
 
         </Grid>
 
