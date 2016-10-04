@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:WipifiDock"
              xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+             xmlns:sci="clr-namespace:ScintillaNET;assembly=ScintillaNET"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="400">
     <Grid x:Name="grid" Background="White">
@@ -57,8 +58,9 @@
             <GridSplitter x:Name="gridSplitter" Width="4" VerticalAlignment="Stretch"
                       HorizontalAlignment="Left" ResizeDirection="Columns" Background="#FFC3C3C3" Grid.Column="1"/>
 
-            <TextBox x:Name="textBox" TextWrapping="Wrap" KeyDown="textBox_KeyDown"
-                     VerticalScrollBarVisibility="Visible" AcceptsReturn="True" FontFamily="Consolas"/>
+            <WindowsFormsHost>
+                <sci:Scintilla x:Name="textBox"/>
+            </WindowsFormsHost>
 
             <cefSharp:ChromiumWebBrowser x:Name="webBrowser" Grid.Column="1" Margin="4,0,0,0"/>
         </Grid>

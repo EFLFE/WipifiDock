@@ -5,8 +5,6 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Navigation;
-using mshtml;
 using WipifiDock.Data;
 using WipifiDock.Forms;
 
@@ -36,11 +34,14 @@ namespace WipifiDock.Controls
         /// <summary> Страница загружена. </summary>
         public bool Navigated { get; private set; }
 
-        //!public delegate void DelOnNavigated(string title, object sender, NavigationEventArgs e);
-        //!
-        //!/// <summary> Событие после навигации. </summary>
-        //!public event DelOnNavigated OnNavigated;
+        /*
+        public delegate void DelOnNavigated(string title, object sender, NavigationEventArgs e);
 
+        /// <summary> Событие после навигации. </summary>
+        public event DelOnNavigated OnNavigated;
+        */
+
+        // ctor //
         public MDTabEditor(TabItem ownerTab)
         {
             InitializeComponent();
@@ -48,11 +49,114 @@ namespace WipifiDock.Controls
             styleMenu.IsEnabled = false;
             OwnerTab = ownerTab;
 
+            webBrowser.Loaded += delegate { Log.Write("Chromium loaded", Log.MessageType.NOTE); };
+
             //!webBrowser.Navigated += WebBrowser_Navigated;
             webBrowser.FrameLoadEnd += WebBrowser_FrameLoadEnd;
             textBox.TextChanged += TextBox_TextChanged;
 
+            // set-up text editor
+            textBox.Margins[0].Width = 32; // line numbers
+            textBox.AssignCmdKey(System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S, ScintillaNET.Command.Null);
+            textBox.KeyDown += textBox_KeyDown;
+
             ThreadPool.QueueUserWorkItem(pool, null);
+        }
+
+        private void setUpLexerStyles(ScintillaNET.Lexer lerex)
+        {
+            // По умолчанию нет никакой подцветки (или я что то не так делаю)
+            if (lerex == ScintillaNET.Lexer.Html)
+            {
+                // HTML
+                textBox.Lexer = lerex;
+                textBox.Styles[ScintillaNET.Style.Html.Default].Font = "Consolas";
+                textBox.Styles[ScintillaNET.Style.Html.Tag].ForeColor = System.Drawing.Color.Purple;
+                textBox.Styles[ScintillaNET.Style.Html.TagUnknown].ForeColor = System.Drawing.Color.FromArgb(-4194304);
+                textBox.Styles[ScintillaNET.Style.Html.Attribute].ForeColor = System.Drawing.Color.Olive;
+                textBox.Styles[ScintillaNET.Style.Html.AttributeUnknown].ForeColor = System.Drawing.Color.FromArgb(-4194304);
+                textBox.Styles[ScintillaNET.Style.Html.Number].ForeColor = System.Drawing.Color.Teal;
+                textBox.Styles[ScintillaNET.Style.Html.DoubleString].ForeColor = System.Drawing.Color.FromArgb(-4194304);
+                textBox.Styles[ScintillaNET.Style.Html.SingleString].ForeColor = System.Drawing.Color.Red;
+                textBox.Styles[ScintillaNET.Style.Html.Other].ForeColor = System.Drawing.Color.FromArgb(-12566464);
+                textBox.Styles[ScintillaNET.Style.Html.Comment].ForeColor = System.Drawing.Color.Green;
+                textBox.Styles[ScintillaNET.Style.Html.Entity].ForeColor = System.Drawing.Color.Navy;
+                textBox.Styles[ScintillaNET.Style.Html.Script].ForeColor = System.Drawing.Color.FromArgb(-4177920);
+                textBox.Styles[ScintillaNET.Style.Html.CData].ForeColor = System.Drawing.Color.RosyBrown;
+                textBox.Styles[ScintillaNET.Style.Html.Question].ForeColor = System.Drawing.Color.FromArgb(-16728064);
+                textBox.Styles[ScintillaNET.Style.Html.Value].ForeColor = System.Drawing.Color.Purple;
+                textBox.Styles[ScintillaNET.Style.Html.XcComment].ForeColor = System.Drawing.Color.Green;
+            }
+            else if (lerex == ScintillaNET.Lexer.Markdown)
+            {
+                // MarkDown
+                textBox.Lexer = lerex;
+                textBox.Styles[ScintillaNET.Style.Markdown.Default].Font = "Consolas";
+                textBox.Styles[ScintillaNET.Style.Markdown.Strong1].Bold = true;
+                textBox.Styles[ScintillaNET.Style.Markdown.Strong1].Weight = 700;
+                textBox.Styles[ScintillaNET.Style.Markdown.Strong2].Bold = true;
+                textBox.Styles[ScintillaNET.Style.Markdown.Strong2].Weight = 700;
+                textBox.Styles[ScintillaNET.Style.Markdown.Em1].Italic = true;
+                textBox.Styles[ScintillaNET.Style.Markdown.Em2].Italic = true;
+                textBox.Styles[ScintillaNET.Style.Markdown.Header1].Bold = true;
+                textBox.Styles[ScintillaNET.Style.Markdown.Header1].Weight = 700;
+                textBox.Styles[ScintillaNET.Style.Markdown.Header2].Bold = true;
+                textBox.Styles[ScintillaNET.Style.Markdown.Header2].Weight = 700;
+                textBox.Styles[ScintillaNET.Style.Markdown.Header3].Bold = true;
+                textBox.Styles[ScintillaNET.Style.Markdown.Header3].Weight = 700;
+                textBox.Styles[ScintillaNET.Style.Markdown.Header4].Bold = true;
+                textBox.Styles[ScintillaNET.Style.Markdown.Header4].Weight = 700;
+                textBox.Styles[ScintillaNET.Style.Markdown.Header5].Bold = true;
+                textBox.Styles[ScintillaNET.Style.Markdown.Header5].Weight = 700;
+                textBox.Styles[ScintillaNET.Style.Markdown.Header6].Bold = true;
+                textBox.Styles[ScintillaNET.Style.Markdown.Header6].Weight = 700;
+                textBox.Styles[ScintillaNET.Style.Markdown.PreChar].ForeColor = System.Drawing.Color.Purple;
+                textBox.Styles[ScintillaNET.Style.Markdown.OListItem].Bold = true;
+                textBox.Styles[ScintillaNET.Style.Markdown.OListItem].Weight = 700;
+                textBox.Styles[ScintillaNET.Style.Markdown.BlockQuote].BackColor = System.Drawing.Color.FromArgb(-986896);
+                textBox.Styles[ScintillaNET.Style.Markdown.Strikeout].ForeColor = System.Drawing.Color.Maroon;
+                textBox.Styles[ScintillaNET.Style.Markdown.HRule].Bold = true;
+                textBox.Styles[ScintillaNET.Style.Markdown.HRule].Weight = 700;
+                textBox.Styles[ScintillaNET.Style.Markdown.Link].ForeColor = System.Drawing.Color.Navy;
+                textBox.Styles[ScintillaNET.Style.Markdown.Code].BackColor = System.Drawing.Color.WhiteSmoke;
+                textBox.Styles[ScintillaNET.Style.Markdown.Code].ForeColor = System.Drawing.Color.FromArgb(-4177920);
+                textBox.Styles[ScintillaNET.Style.Markdown.Code2].ForeColor = System.Drawing.Color.Maroon;
+                textBox.Styles[ScintillaNET.Style.Markdown.CodeBk].ForeColor = System.Drawing.Color.Olive;
+            }
+            else if (lerex == ScintillaNET.Lexer.Css)
+            {
+                // CSS
+                textBox.Lexer = lerex;
+                textBox.Styles[ScintillaNET.Style.Css.Default].Font = "Consolas";
+                textBox.Styles[ScintillaNET.Style.Css.Tag].Bold = true;
+                textBox.Styles[ScintillaNET.Style.Css.Tag].ForeColor = System.Drawing.Color.FromArgb(-8372224);
+                textBox.Styles[ScintillaNET.Style.Css.Tag].Weight = 700;
+                textBox.Styles[ScintillaNET.Style.Css.Class].Bold = true;
+                textBox.Styles[ScintillaNET.Style.Css.Class].ForeColor = System.Drawing.Color.FromArgb(-8372160);
+                textBox.Styles[ScintillaNET.Style.Css.Class].Weight = 700;
+                textBox.Styles[ScintillaNET.Style.Css.PseudoClass].ForeColor = System.Drawing.Color.FromArgb(-4177920);
+                textBox.Styles[ScintillaNET.Style.Css.UnknownPseudoClass].ForeColor = System.Drawing.Color.FromArgb(-4194304);
+                textBox.Styles[ScintillaNET.Style.Css.Operator].ForeColor = System.Drawing.Color.DarkBlue;
+                textBox.Styles[ScintillaNET.Style.Css.Identifier].ForeColor = System.Drawing.Color.FromArgb(-12566528);
+                textBox.Styles[ScintillaNET.Style.Css.UnknownIdentifier].ForeColor = System.Drawing.Color.FromArgb(-12566528);
+                textBox.Styles[ScintillaNET.Style.Css.Value].ForeColor = System.Drawing.Color.Maroon;
+                textBox.Styles[ScintillaNET.Style.Css.Comment].ForeColor = System.Drawing.Color.Green;
+                textBox.Styles[ScintillaNET.Style.Css.Comment].Italic = true;
+                textBox.Styles[ScintillaNET.Style.Css.Id].ForeColor = System.Drawing.Color.FromArgb(-16760768);
+                textBox.Styles[ScintillaNET.Style.Css.Important].ForeColor = System.Drawing.Color.Red;
+                textBox.Styles[ScintillaNET.Style.Css.Directive].ForeColor = System.Drawing.Color.Blue;
+                textBox.Styles[ScintillaNET.Style.Css.DoubleString].ForeColor = System.Drawing.Color.Maroon;
+                textBox.Styles[ScintillaNET.Style.Css.SingleString].ForeColor = System.Drawing.Color.FromArgb(-4194304);
+                textBox.Styles[ScintillaNET.Style.Css.Identifier2].ForeColor = System.Drawing.Color.FromArgb(-16777024);
+                textBox.Styles[ScintillaNET.Style.Css.Attribute].ForeColor = System.Drawing.Color.Teal;
+                textBox.Styles[ScintillaNET.Style.Css.Identifier3].ForeColor = System.Drawing.Color.Navy;
+                textBox.Styles[ScintillaNET.Style.Css.ExtendedIdentifier].ForeColor = System.Drawing.Color.Olive;
+                textBox.Styles[ScintillaNET.Style.Css.ExtendedPseudoClass].ForeColor = System.Drawing.Color.FromArgb(-8372160);
+                textBox.Styles[ScintillaNET.Style.Css.ExtendedPseudoElement].ForeColor = System.Drawing.Color.FromArgb(-12582848);
+                textBox.Styles[ScintillaNET.Style.Css.Media].ForeColor = System.Drawing.Color.Purple;
+                textBox.Styles[ScintillaNET.Style.Css.Variable].Bold = true;
+                textBox.Styles[ScintillaNET.Style.Css.Variable].Weight = 700;
+            }
         }
 
         // после успешной навигации
@@ -62,7 +166,7 @@ namespace WipifiDock.Controls
         }
 
         // задаёт таймер обновления страницы после изменения текста (только .md)
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void TextBox_TextChanged(object sender, EventArgs e)
         {
             // start time to update
             timeToUpdate = 05;
@@ -144,11 +248,20 @@ namespace WipifiDock.Controls
             switch (fileType)
             {
             case FileManager.FileFormatType.MD:
+                setUpLexerStyles(ScintillaNET.Lexer.Markdown);
                 openMD(file);
                 break;
 
             case FileManager.FileFormatType.HTML:
+                setUpLexerStyles(ScintillaNET.Lexer.Html);
+                openText(file);
+                break;
+
             case FileManager.FileFormatType.CSS:
+                setUpLexerStyles(ScintillaNET.Lexer.Css);
+                openText(file);
+                break;
+
             case FileManager.FileFormatType.TXT:
                 openText(file);
                 break;
@@ -225,9 +338,10 @@ namespace WipifiDock.Controls
 
         private void insertMD(string text, int offset = 0)
         {
-            var newCaret = textBox.CaretIndex + text.Length + offset;
-            textBox.Text = textBox.Text.Insert(textBox.CaretIndex, text);
-            textBox.CaretIndex = newCaret;
+            //var newCaret = textBox.CaretIndex + text.Length + offset;
+            //textBox.Text = textBox.Text.Insert(textBox.CaretIndex, text);
+            //textBox.CaretIndex = newCaret;
+            textBox.InsertText(textBox.CurrentPosition + offset, text);
         }
 
         private void showTextBoxAndWebBrowser()
@@ -236,7 +350,7 @@ namespace WipifiDock.Controls
             //gridColumnDefinition.Width = new GridLength(contentGrid.ActualWidth / 2.0, GridUnitType.Pixel);
             webBrowser.Visibility = Visibility.Visible;
             gridSplitter.Visibility = Visibility.Visible;
-            textBox.Visibility = Visibility.Visible;
+            textBox.Visible = true;
         }
 
         private void showOnlyTextBox()
@@ -244,7 +358,7 @@ namespace WipifiDock.Controls
             gridColumnDefinition.Width = new GridLength(0.0, GridUnitType.Pixel);
             webBrowser.Visibility = Visibility.Hidden;
             gridSplitter.Visibility = Visibility.Hidden;
-            textBox.Visibility = Visibility.Visible;
+            textBox.Visible = true;
         }
 
         private void showOnlyWebBrowser()
@@ -252,7 +366,7 @@ namespace WipifiDock.Controls
             gridColumnDefinitionLeft.Width = new GridLength(0.0, GridUnitType.Star);
             webBrowser.Visibility = Visibility.Visible;
             gridSplitter.Visibility = Visibility.Hidden;
-            textBox.Visibility = Visibility.Hidden;
+            textBox.Visible = false;
         }
 
         #region MD INSERT MENU
@@ -353,9 +467,9 @@ namespace WipifiDock.Controls
         }
 
         // custom hotkeys
-        private void textBox_KeyDown(object sender, KeyEventArgs e)
+        private void textBox_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
-            if (e.Key == Key.S && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            if (e.KeyCode == System.Windows.Forms.Keys.S && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
                 saveText();
             }
