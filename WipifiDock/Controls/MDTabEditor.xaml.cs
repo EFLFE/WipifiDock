@@ -18,7 +18,7 @@ namespace WipifiDock.Controls
         /// <summary> Ссылка на вкладки. </summary>
         public TabItem OwnerTab; // (не проще ли сюда перенести этот элемент?)
 
-        private string workFileName;
+        private string workFileName, workFileFullPath;
         private bool textWasChanged;
 
         private object _lock_ = new object();
@@ -36,10 +36,10 @@ namespace WipifiDock.Controls
         /// <summary> Страница загружена. </summary>
         public bool Navigated { get; private set; }
 
-        public delegate void DelOnNavigated(string title, object sender, NavigationEventArgs e);
-
-        /// <summary> Событие после навигации. </summary>
-        public event DelOnNavigated OnNavigated;
+        //!public delegate void DelOnNavigated(string title, object sender, NavigationEventArgs e);
+        //!
+        //!/// <summary> Событие после навигации. </summary>
+        //!public event DelOnNavigated OnNavigated;
 
         public MDTabEditor(TabItem ownerTab)
         {
@@ -48,10 +48,17 @@ namespace WipifiDock.Controls
             styleMenu.IsEnabled = false;
             OwnerTab = ownerTab;
 
-            webBrowser.Navigated += WebBrowser_Navigated;
+            //!webBrowser.Navigated += WebBrowser_Navigated;
+            webBrowser.FrameLoadEnd += WebBrowser_FrameLoadEnd;
             textBox.TextChanged += TextBox_TextChanged;
 
             ThreadPool.QueueUserWorkItem(pool, null);
+        }
+
+        // после успешной навигации
+        private void WebBrowser_FrameLoadEnd(object sender, CefSharp.FrameLoadEndEventArgs e)
+        {
+            Navigated = true;
         }
 
         // задаёт таймер обновления страницы после изменения текста (только .md)
@@ -66,7 +73,7 @@ namespace WipifiDock.Controls
             }
         }
 
-        // после успешной навигации
+        /*
         private void WebBrowser_Navigated(object sender, NavigationEventArgs e)
         {
             var doc = webBrowser.Document as HTMLDocument;
@@ -78,6 +85,7 @@ namespace WipifiDock.Controls
 
             Navigated = true;
         }
+        */
 
         private void setTitle(string title)
         {
@@ -113,20 +121,23 @@ namespace WipifiDock.Controls
         private void navigateToHtml()
         {
             //var html = Markdig.Markdown.ToHtml(textBox.Text);
-            var html = BlankGenerator.MD(Title, textBox.Text);
+            var html = BlankGenerator.MD(Title, textBox.Text, BlankGenerator.GetPathLevel(workFileFullPath));
 
             string htmlPath = workFileName.Replace(".md", ".html");
             File.WriteAllText(htmlPath, html, Encoding.UTF8);
             Thread.Sleep(0);
 
-            webBrowser.Navigate(new Uri(htmlPath));
+            //webBrowser.Navigate(new Uri(htmlPath));
+            webBrowser.Address = htmlPath;
         }
 
         /// <summary> Открыть файл проекта. </summary>
         /// <param name="file"> Имя файла. Путь строится от корневого. </param>
         /// <param name="projectFileFormatType"> Тип файла. </param>
-        public void OpenFile(string file, FileManager.FileFormatType fileType)
+        public void OpenFile(string file, string fileFullPath, FileManager.FileFormatType fileType)
         {
+            workFileName = file;
+            workFileFullPath = fileFullPath;
             Title = Path.GetFileName(file);
             setTitle(Path.GetFileName(file));
 
@@ -155,7 +166,6 @@ namespace WipifiDock.Controls
         private void openMD(string file)
         {
             showTextBoxAndWebBrowser();
-            workFileName = file;
             textBox.Text = File.ReadAllText(file);
             styleMenu.IsEnabled = true;
             fileMenu.IsEnabled = true;
@@ -171,20 +181,19 @@ namespace WipifiDock.Controls
         private void openText(string file)
         {
             showOnlyTextBox();
-            workFileName = file;
             textBox.Text = File.ReadAllText(file);
             grid.IsEnabled = true;
             mdMenuItem.Visibility = Visibility.Hidden;
             fileMenu.IsEnabled = true;
         }
 
+        [System.Diagnostics.Conditional("DEBUG")] // todo: разве CefSharp может загрузить прямой html код?
         private void openImage(string file)
         {
             showOnlyWebBrowser();
-            workFileName = file;
             grid.IsEnabled = true;
             mdMenuItem.Visibility = Visibility.Hidden;
-            webBrowser.NavigateToString(BlankGenerator.IMAGE(file));
+            webBrowser.Address = (BlankGenerator.IMAGE(file));
         }
 
         /// <summary> Закрыть файл. </summary>
@@ -199,7 +208,8 @@ namespace WipifiDock.Controls
                 poolEnable = false;
                 timeToUpdate = -1;
             }
-            webBrowser.NavigateToString(string.Empty);
+            //webBrowser.NavigateToString(string.Empty);
+            webBrowser.Address = "about:blank";
             textBox.Text = string.Empty;
             workFileName = string.Empty;
             styleMenu.IsEnabled = false;
@@ -209,7 +219,8 @@ namespace WipifiDock.Controls
         /// <summary> Обновить страницу. </summary>
         public void Refresh()
         {
-            webBrowser.Refresh(true);
+            //webBrowser.Refresh(true);
+            webBrowser.Address = webBrowser.Address;
         }
 
         private void insertMD(string text, int offset = 0)

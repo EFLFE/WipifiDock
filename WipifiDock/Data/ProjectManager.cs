@@ -76,11 +76,12 @@ namespace WipifiDock.Data
                 // index* md
                 File.WriteAllText(
                     $"{path}\\index.md",
-                    $"# Проект {name}");
+                    $"# Проект {name}\n");
 
                 File.WriteAllText(
                     $"{path}\\{FileManager.HEAD_FILE}",
                     "<!-- Вставочный шаблон в тег head -->\n" +
+                    BlankGenerator.BASETAG_LINE +
                     "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + cssFileName + "\">\n" +
                     "<META charset=\"utf-8\">\n");
 
@@ -92,7 +93,7 @@ namespace WipifiDock.Data
                     $"{path}\\{FileManager.FOOTER_FILE}",
                     "<!-- Вставочный шаблон в конец тега head -->\n");
 
-                File.WriteAllText(path + "\\" + cssFileName, "/* Стиль для страниц */");
+                File.WriteAllText(path + "\\" + cssFileName, "/* Стиль для страниц */\n");
 
                 return true;
             }

@@ -14,21 +14,23 @@ namespace WipifiDock.Data
 
         public const string TITLE_LINE = "#TITLE#";
         public const string HEAD_LINE = "#HEAD#";
+        public const string BASETAG_LINE = "#BASE#";
         public const string BODY_LINE = "#BODY#";
         public const string FOOTER_LINE = "#FOOTER#";
-        public const string MD_LINE = "#MD#";
+        //public const string MD_LINE = "#MD#";
 
         private static string[] blankLines;
         private static string headText, bodyText, footerText;
         private static FileSystemWatcher fileWatcher;
         private static StringBuilder sb = new StringBuilder();
-
+        private static string projectPath;
         private static MarkdownPipeline pipeline;
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
-        public static void InitBlankGenerator()
+        public static void InitBlankGenerator(string _projectPath)
         {
             Log.Write("Init BlankGenerator");
+            projectPath = _projectPath;
 
             try
             {
@@ -142,9 +144,19 @@ namespace WipifiDock.Data
         /// <param name="title"> Текст заголовка страницы. </param>
         /// <param name="head"> Вставочный код блок HEAD. </param>
         /// <param name="body"> Вставочный код блок BODY. </param>
-        private static void createHtml(string title, string[] head, string[] body)
+        private static void createHtml(string title, string[] head, string[] body, int pathlevel)
         {
             //Log.Write("Create HTML " + title);
+
+            // тэг base
+            string baseText = string.Empty;
+            if (pathlevel > 0)
+            {
+                for (int i = 0; i < pathlevel; i++)
+                {
+                    baseText += "../";
+                }
+            }
 
             sb.Clear();
 
@@ -158,7 +170,8 @@ namespace WipifiDock.Data
                 else if (blankLines[i].Contains(HEAD_LINE))
                 {
                     // HEAD
-                    sb.AppendLine(headText);
+                    sb.AppendLine(headText.Replace(BASETAG_LINE, $"<base href=\"{baseText}\" target=\"_blank\">\n"));
+
                     if (head != null && head.Length > 0)
                     {
                         for (int j = 0; j < head.Length; j++)
@@ -184,9 +197,9 @@ namespace WipifiDock.Data
                     // FOOTER (end of body)
                     sb.AppendLine(footerText);
                 }
-                else if (blankLines[i].Contains(MD_LINE))
-                {
-                }
+                //else if (blankLines[i].Contains(MD_LINE))
+                //{
+                //}
                 else
                 {
                     sb.AppendLine(blankLines[i]);
@@ -198,22 +211,22 @@ namespace WipifiDock.Data
         /// <param name="title"> Текст заголовка страницы. </param>
         /// <param name="head"> Вставочный код блок HEAD. </param>
         /// <param name="body"> Вставочный код блок BODY. </param>
-        public static string HTML(string title, string[] head, string[] body)
+        public static string HTML(string title, string[] head, string[] body, int pathlevel)
         {
-            createHtml(title, head, body);
+            createHtml(title, head, body, pathlevel);
             return sb.ToString();
         }
 
         /// <summary> Сгенерировать HTML из MarkDown. </summary>
         /// <param name="title"> Текст заголовка страницы. </param>
         /// <param name="markDownText"> MarkDown текст. </param>
-        public static string MD(string title, string markDownText)
+        public static string MD(string title, string markDownText, int pathlevel)
         {
             if (pipeline == null)
                 pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
             markDownText = Markdown.ToHtml(markDownText, pipeline);
 
-            createHtml(title, null, new[] { markDownText });
+            createHtml(title, null, new[] { markDownText }, pathlevel);
             return sb.ToString();
         }
 
@@ -222,9 +235,17 @@ namespace WipifiDock.Data
             createHtml(
                 Path.GetFileName(file),
                 null,
-                new[] { $"<img src=\"file:\\\\\\{file}\" alt=\"{Path.GetFileName(file)}\">" }
-                );
+                new[] { $"<img src=\"file:\\\\\\{file}\" alt=\"{Path.GetFileName(file)}\">" },
+                0);
             return sb.ToString();
+        }
+
+        public static int GetPathLevel(string path)
+        {
+            //    0       1    2
+            // ..\project\dir1\dir2
+            path = path.Remove(0, projectPath.Length + 1);
+            return path.Count(c => c == '\\');
         }
 
     }

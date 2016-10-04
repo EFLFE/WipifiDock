@@ -34,7 +34,7 @@ namespace WipifiDock.Pages
             projectData = ProjectManager.GetSelectedProjectData();
             Title = "Проект - " + projectData.Name;
             FileManager.RootPath = projectData.Path;
-            BlankGenerator.InitBlankGenerator();
+            BlankGenerator.InitBlankGenerator(projectData.Path);
             clear();
             loadTree();
 
@@ -353,7 +353,7 @@ namespace WipifiDock.Pages
                     return;
 
                 addWebItem();
-                selectedTab?.OpenFile(path, item.GetFileFormatType);
+                selectedTab?.OpenFile(path, item.Path + "\\" + item.FullName, item.GetFileFormatType);
             }
         }
 

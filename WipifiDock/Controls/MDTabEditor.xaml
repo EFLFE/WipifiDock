@@ -4,8 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:WipifiDock"
+             xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="600">
+             d:DesignHeight="300" d:DesignWidth="400">
     <Grid x:Name="grid" Background="White">
 
         <Menu x:Name="fileMenu" VerticalAlignment="Top" HorizontalAlignment="Left" Width="38">
@@ -59,7 +60,7 @@
             <TextBox x:Name="textBox" TextWrapping="Wrap" KeyDown="textBox_KeyDown"
                      VerticalScrollBarVisibility="Visible" AcceptsReturn="True" FontFamily="Consolas"/>
 
-            <WebBrowser x:Name="webBrowser" Grid.Column="1" Margin="4,0,0,0"/>
+            <cefSharp:ChromiumWebBrowser x:Name="webBrowser" Grid.Column="1" Margin="4,0,0,0"/>
         </Grid>
     </Grid>
 </UserControl>
