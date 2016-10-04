@@ -24,11 +24,13 @@ namespace WipifiDock.Forms
 
         private async void UpdateForm_Loaded(object sender, RoutedEventArgs e)
         {
+            // show loadImage
             var da = new DoubleAnimation(0.0, 1.0, new Duration(TimeSpan.FromSeconds(0.5)));
             loadImage.BeginAnimation(OpacityProperty, da);
 
             Tuple<string, Release> release = await getLatestRelease();
 
+            // hide loadImage
             var da2 = new DoubleAnimation(loadImage.Opacity, 0.0, new Duration(TimeSpan.FromSeconds(0.2)));
             loadImage.BeginAnimation(OpacityProperty, da2);
 
@@ -39,6 +41,7 @@ namespace WipifiDock.Forms
                 {
                     headText.Text = "У вас последняя версия программы.";
 
+                    // show successImage
                     var da3 = new DoubleAnimation(0.0, 1.0, new Duration(TimeSpan.FromSeconds(0.2)));
                     successImage.BeginAnimation(OpacityProperty, da3);
 
@@ -46,7 +49,9 @@ namespace WipifiDock.Forms
                 }
 
                 Log.Write("Found the latest version");
-                showContentGrid();
+                var gridAnim = new DoubleAnimation(0.0, 1.0,new Duration(TimeSpan.FromSeconds(0.2)));
+                gridAnim.BeginTime = TimeSpan.FromSeconds(0.2);
+                contentGrid.BeginAnimation(OpacityProperty, gridAnim);
 
                 headText.Text = "Найдена новая версия! " + release.Item2.TagName;
                 titleText.Text = release.Item2.Name;
@@ -70,15 +75,6 @@ namespace WipifiDock.Forms
                 download_zipUri = null;
                 download_tarUri = null;
             }
-        }
-
-        private void showContentGrid()
-        {
-            const double TIME = 0.2;
-
-            var gridAnim = new DoubleAnimation(0.0, 1.0,new Duration(TimeSpan.FromSeconds(TIME)));
-            gridAnim.BeginTime = TimeSpan.FromSeconds(TIME);
-            contentGrid.BeginAnimation(OpacityProperty, gridAnim);
         }
 
         private bool isNewVersion(string ver)

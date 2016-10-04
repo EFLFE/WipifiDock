@@ -92,9 +92,6 @@
       <HintPath>..\packages\Markdig.0.8.5\lib\net40\Markdig.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Octokit, Version=0.22.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Octokit.0.22.0\lib\net45\Octokit.dll</HintPath>
@@ -135,6 +132,9 @@
     <Compile Include="Data\BlankGenerator.cs" />
     <Compile Include="Data\FileManager.cs" />
     <Compile Include="EXT.cs" />
+    <Compile Include="Forms\AboutForm.xaml.cs">
+      <DependentUpon>AboutForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ConfigForm.xaml.cs">
       <DependentUpon>ConfigForm.xaml</DependentUpon>
     </Compile>
@@ -172,6 +172,10 @@
     <Compile Include="Controls\MDTabEditor.xaml.cs">
       <DependentUpon>MDTabEditor.xaml</DependentUpon>
     </Compile>
+    <Page Include="Forms\AboutForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\ConfigForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -254,6 +258,7 @@
     <Content Include="Blanks\MainBlank.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\Tools\Global\about.png" />
     <Resource Include="Resources\success.png" />
     <Resource Include="Resources\waiting.gif" />
     <Resource Include="Resources\Tools\Global\logForm.png" />

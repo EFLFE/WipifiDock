@@ -27,6 +27,11 @@
                     ToolTip="Конвертировать проект в Web формат" Style="{StaticResource imageButtonStyle}" BorderThickness="0" Margin="2">
                 <Image Source="{StaticResource projectToWeb}" />
             </Button>
+            <Grid Width="16"/>
+            <Button x:Name="openAboutButton" Click="openAboutButton_Click" MaxWidth="{StaticResource bigTooBarSize}" MaxHeight="{StaticResource bigTooBarSize}"
+                    ToolTip="О программе" Style="{StaticResource imageButtonStyle}" BorderThickness="0" Margin="2">
+                <Image Source="{StaticResource about}" />
+            </Button>
             <Button x:Name="openLogFormButton" Click="openLogFormButton_Click" MaxWidth="{StaticResource bigTooBarSize}" MaxHeight="{StaticResource bigTooBarSize}"
                     ToolTip="Открыть лог" Style="{StaticResource imageButtonStyle}" BorderThickness="0" Margin="2">
                 <Image Source="{StaticResource logForm}" />

@@ -589,12 +589,16 @@ namespace WipifiDock.Pages
             projectToWebButton.IsEnabled = false;
         }
 
+        private void openAboutButton_Click(object sender, RoutedEventArgs e)
+        {
+            new AboutForm().ShowDialog();
+        }
+
         private void openLogFormButton_Click(object sender, RoutedEventArgs e)
         {
             owner.ShowLogForm();
         }
 
         #endregion
-
     }
 }

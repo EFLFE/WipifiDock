@@ -1,0 +1,44 @@
+﻿<Window x:Class="WipifiDock.Forms.AboutForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WipifiDock.Forms"
+        mc:Ignorable="d"
+        Title="AboutForm"
+        MinHeight="320"
+        MinWidth="640"
+        Height="320"
+        Width="640"
+        Icon="/WipifiDock;component/Resources/favicon.ico"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <TabControl Margin="10,47,10,10">
+            <TabItem Header="О программе" Padding="10,0,10,0">
+                <Grid Background="#FFE5E5E5">
+                    <TextBlock Margin="10,10,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="auto" FontSize="14"
+                               Text="WipifiDock - оффлайн программа для написание документации с использованием скрипта MarkDown и последующей конвертации в HTML"/>
+                    <TextBlock Margin="10,66,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="auto" FontSize="14"
+                        Text="Copyright (c) 2016 EFLFE"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Лицензия" Padding="10,0,10,0">
+                <Grid Background="#FFE5E5E5">
+                    <TextBox Margin="10" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" IsReadOnly="True"
+                             Text="The MIT License (MIT)&#xA;Copyright (c) 2016 EFLFE&#xA;&#xA;Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:&#xA;&#xA;The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.&#xA;&#xA;THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Библиотеки" Padding="10,0,10,0">
+                <Grid Background="#FFE5E5E5">
+                    <TextBlock Margin="10,10,10,0" TextWrapping="NoWrap"
+                               Height="auto" VerticalAlignment="Top" FontSize="14"><Run Text="Данная программа использует следующие библиотеки"/><Run Text=" (за что им большое спасибо"/><Run Text=")"/><Run Text=":"/></TextBlock>
+                    <TextBlock x:Name="asms" FontFamily="Consolas" Margin="32,34,10,0" TextWrapping="NoWrap" Height="auto" VerticalAlignment="Top" FontSize="14"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <Image HorizontalAlignment="Left" Height="32" Margin="10,10,0,0" VerticalAlignment="Top" Width="32" Source="/WipifiDock;component/Resources/icon1.png"/>
+        <TextBlock x:Name="nameTextBlock" Margin="47,10,10,0" TextWrapping="NoWrap" Text="WipifiDock v" VerticalAlignment="Top" Height="32" FontWeight="Bold" FontSize="18"/>
+
+    </Grid>
+</Window>
