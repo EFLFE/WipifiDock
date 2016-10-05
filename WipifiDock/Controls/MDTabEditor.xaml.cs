@@ -49,8 +49,6 @@ namespace WipifiDock.Controls
             styleMenu.IsEnabled = false;
             OwnerTab = ownerTab;
 
-            webBrowser.Loaded += delegate { Log.Write("Chromium loaded", Log.MessageType.NOTE); };
-
             //!webBrowser.Navigated += WebBrowser_Navigated;
             webBrowser.FrameLoadEnd += WebBrowser_FrameLoadEnd;
             textBox.TextChanged += TextBox_TextChanged;
@@ -370,6 +368,7 @@ namespace WipifiDock.Controls
         }
 
         #region MD INSERT MENU
+
         private void mdInsertH1(object sender, RoutedEventArgs e)
         {
             insertMD("# ");
@@ -458,6 +457,12 @@ namespace WipifiDock.Controls
         {
             insertMD("``````", -3);
         }
+
+        private void mdInsertCheckBox(object sender, RoutedEventArgs e)
+        {
+            insertMD("- [ ] ");
+        }
+
         #endregion
 
         // from Menu->Save

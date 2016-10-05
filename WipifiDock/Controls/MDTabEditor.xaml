@@ -45,6 +45,7 @@
                 <MenuItem Header="Цитата" Click="mdInsertQuote"/>
                 <MenuItem Header="Встроенный код" Click="mdInsertCode"/>
                 <MenuItem Header="Блок кода" Click="mdInsertCodeBlock"/>
+                <MenuItem Header="Флажок" Click="mdInsertCheckBox"/>
             </MenuItem>
 
         </Menu>

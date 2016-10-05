@@ -49,7 +49,7 @@ namespace WipifiDock.Data
                 fileWatcher.Created += fileSystemWatcher_clearText;
                 fileWatcher.Deleted += fileSystemWatcher_clearText;
                 fileWatcher.Renamed += fileSystemWatcher_renamed;
-                fileWatcher.Changed += fileSystemWatcher_readText;
+                fileWatcher.Changed += fileSystemWatcher_readText; // todo: событие вызывается два раза при сохранении файла и я хз почему
 
                 blankLines = File.ReadAllLines(BLANK_FILE);
 
@@ -75,27 +75,31 @@ namespace WipifiDock.Data
         {
             lock (_lock_)
             {
-                switch (e.Name)
+                Log.Write($"Read {e.Name} ({e.ChangeType})");
+                try
                 {
-                case FileManager.HEAD_FILE:
-                    headText = File.ReadAllText(e.FullPath);
-                    break;
+                    switch (e.Name)
+                    {
+                    case FileManager.HEAD_FILE:
+                        headText = File.ReadAllText(e.FullPath);
+                        break;
 
-                case FileManager.BODY_FILE:
-                    bodyText = File.ReadAllText(e.FullPath);
-                    break;
+                    case FileManager.BODY_FILE:
+                        bodyText = File.ReadAllText(e.FullPath);
+                        break;
 
-                case FileManager.FOOTER_FILE:
-                    footerText = File.ReadAllText(e.FullPath);
-                    break;
+                    case FileManager.FOOTER_FILE:
+                        footerText = File.ReadAllText(e.FullPath);
+                        break;
 
-                default: return;
+                    default: return;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Write(ex.Message, Log.MessageType.ERROR);
                 }
             }
-#if DEBUG
-            Log.Write("FileSystemWatcher: " + e.ChangeType + " " + e.Name);
-#endif
-            Log.Write("Read " + e.Name);
         }
 
         private static void fileSystemWatcher_renamed(object sender, RenamedEventArgs e)
