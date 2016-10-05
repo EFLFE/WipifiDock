@@ -20,18 +20,12 @@ namespace WipifiDock.Pages
             vText.Text += App.Version;
         }
 
-        // click on link
-        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
-        {
-            Process.Start(e.Uri.AbsoluteUri); // абсолютли
-        }
-
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             // такое возможно в XAML?
             // возможно, но тут проще, чем в xaml
-            line1.X2 = WindowWidth - 30.0;
-            line2.X2 = WindowWidth - 30.0;
+            ////line1.X2 = WindowWidth - 30.0;
+            ////line2.X2 = WindowWidth - 30.0;
         }
 
         private void buttonGotoPage1_Click(object sender, RoutedEventArgs e)
@@ -49,5 +43,9 @@ namespace WipifiDock.Pages
             ownerMainWindow.Close();
         }
 
+        private void buttonAbout_Click(object sender, RoutedEventArgs e)
+        {
+            new AboutForm().ShowDialog();
+        }
     }
 }

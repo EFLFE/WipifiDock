@@ -258,6 +258,7 @@
     <Content Include="Blanks\MainBlank.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\Tools\Global\checkUpdate.png" />
     <Resource Include="Resources\Tools\Global\about.png" />
     <Resource Include="Resources\success.png" />
     <Resource Include="Resources\waiting.gif" />

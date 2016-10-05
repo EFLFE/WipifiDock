@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WipifiDock.Forms"
+        Title="About"
         mc:Ignorable="d"
-        Title="AboutForm"
         MinHeight="320"
         MinWidth="640"
         Height="320"
@@ -20,6 +20,31 @@
                                Text="WipifiDock - оффлайн программа для написание документации с использованием скрипта MarkDown и последующей конвертации в HTML"/>
                     <TextBlock Margin="10,66,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="auto" FontSize="14"
                         Text="Copyright (c) 2016 EFLFE"/>
+                    <Image Margin="0,0,10,10" Source="/WipifiDock;component/Resources/icon1.png" HorizontalAlignment="Right" Width="69" Height="69" VerticalAlignment="Bottom"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Справка" Padding="10,0,10,0">
+                <Grid Background="#FFE5E5E5">
+                    <TextBlock Margin="10,10,10,0" Height="auto" VerticalAlignment="Top" FontSize="14">
+                        <Hyperlink NavigateUri="https://daringfireball.net/projects/markdown/syntax" RequestNavigate="Hyperlink_RequestNavigate">
+                            MarkDown Syntax - Синтаксис на официальном сайте
+                        </Hyperlink>
+                    </TextBlock>
+                    <TextBlock Margin="10,34,10,0" Height="auto" VerticalAlignment="Top" FontSize="14">
+                        <Hyperlink NavigateUri="https://guides.github.com/features/mastering-markdown/" RequestNavigate="Hyperlink_RequestNavigate">
+                            Mastering Markdown - Синтаксис от GitHub с дополнительными функциями
+                        </Hyperlink>
+                    </TextBlock>
+                    <TextBlock Margin="10,58,10,0" Height="auto" VerticalAlignment="Top" FontSize="14">
+                        <Hyperlink NavigateUri="https://github.com/EFLFE/WipifiDock" RequestNavigate="Hyperlink_RequestNavigate">
+                            WipifiDock на GitHub
+                        </Hyperlink>
+                    </TextBlock>
+                    <TextBlock Margin="10,82,10,0" Height="auto" VerticalAlignment="Top" FontSize="14">
+                        <Hyperlink NavigateUri="https://github.com/EFLFE/WipifiDock/issues" RequestNavigate="Hyperlink_RequestNavigate">
+                            Сообщить об ошибке или предложить что то новое
+                        </Hyperlink>
+                    </TextBlock>
                 </Grid>
             </TabItem>
             <TabItem Header="Лицензия" Padding="10,0,10,0">

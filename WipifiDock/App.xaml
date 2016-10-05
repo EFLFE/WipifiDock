@@ -119,6 +119,7 @@
         <BitmapImage x:Key="projectToWeb"      UriSource="/WipifiDock;component/Resources/Tools/Global/projectToWeb.png" />
         <BitmapImage x:Key="logForm"           UriSource="/WipifiDock;component/Resources/Tools/Global/logForm.png" />
         <BitmapImage x:Key="about"             UriSource="/WipifiDock;component/Resources/Tools/Global/about.png" />
+        <BitmapImage x:Key="checkUpdate"       UriSource="/WipifiDock;component/Resources/Tools/Global/checkUpdate.png" />
 
         <!--#endregion-->
 

@@ -8,7 +8,6 @@ using System.Windows.Media.Imaging;
 using WipifiDock.Controls;
 using WipifiDock.Data;
 using WipifiDock.Forms;
-using System.Threading;
 
 namespace WipifiDock.Pages
 {
@@ -600,5 +599,10 @@ namespace WipifiDock.Pages
         }
 
         #endregion
+
+        private void checkUpdateButton_Click(object sender, RoutedEventArgs e)
+        {
+            new UpdateForm().ShowDialog();
+        }
     }
 }

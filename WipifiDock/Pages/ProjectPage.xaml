@@ -32,6 +32,10 @@
                     ToolTip="О программе" Style="{StaticResource imageButtonStyle}" BorderThickness="0" Margin="2">
                 <Image Source="{StaticResource about}" />
             </Button>
+            <Button x:Name="checkUpdateButton" Click="checkUpdateButton_Click" MaxWidth="{StaticResource bigTooBarSize}" MaxHeight="{StaticResource bigTooBarSize}"
+                    ToolTip="Проверить обновление" Style="{StaticResource imageButtonStyle}" BorderThickness="0" Margin="2">
+                <Image Source="{StaticResource checkUpdate}" />
+            </Button>
             <Button x:Name="openLogFormButton" Click="openLogFormButton_Click" MaxWidth="{StaticResource bigTooBarSize}" MaxHeight="{StaticResource bigTooBarSize}"
                     ToolTip="Открыть лог" Style="{StaticResource imageButtonStyle}" BorderThickness="0" Margin="2">
                 <Image Source="{StaticResource logForm}" />
@@ -58,7 +62,7 @@
                         <MenuItem Header="Создать файл" Click="treeCreateFile"/>
                         <MenuItem Header="Создать каталог" Click="treeCreateDir"/>
                         <Separator/>
-                        <MenuItem Header="Переименовать" Click="treeRenameNode"/>
+                        <MenuItem Header="Переименовать" IsEnabled="False" Click="treeRenameNode"/>
                         <MenuItem Header="Удалить" Click="treeDeleteNode"/>
                         <Separator/>
                         <MenuItem Header="Свернуть все" Click="treeCollapse"/>

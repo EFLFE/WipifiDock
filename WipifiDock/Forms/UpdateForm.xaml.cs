@@ -4,15 +4,14 @@ using System.Windows;
 using System.Windows.Media.Animation;
 using Octokit;
 using System.Diagnostics;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Navigation;
 
 namespace WipifiDock.Forms
 {
     public partial class UpdateForm : Window
     {
-        private string download_assetUri = null;
-        private string download_zipUri = null;
-        private string download_tarUri = null;
-
         public UpdateForm()
         {
             InitializeComponent();
@@ -49,6 +48,9 @@ namespace WipifiDock.Forms
                 }
 
                 Log.Write("Found the latest version");
+
+                successImage.Visibility = Visibility.Hidden;
+
                 var gridAnim = new DoubleAnimation(0.0, 1.0,new Duration(TimeSpan.FromSeconds(0.2)));
                 gridAnim.BeginTime = TimeSpan.FromSeconds(0.2);
                 contentGrid.BeginAnimation(OpacityProperty, gridAnim);
@@ -57,24 +59,39 @@ namespace WipifiDock.Forms
                 titleText.Text = release.Item2.Name;
                 descText.Text = release.Item2.Body;
 
-                if (release.Item2.Assets.Count > 0)
+                // add url's
+                for (int i = 0; i < release.Item2.Assets.Count; i++)
                 {
-                    exeUrl.Text = release.Item2.Assets[0].Name;
+                    urlList.Children.Add(createHyperTextBlock(release.Item2.Assets[i].Name, release.Item2.Assets[i].BrowserDownloadUrl));
                 }
-
-                download_assetUri = release.Item2.Assets[0].BrowserDownloadUrl;
-                download_zipUri = release.Item2.ZipballUrl;
-                download_tarUri = release.Item2.TarballUrl;
+                urlList.Children.Add(createHyperTextBlock("Source code (zip)", release.Item2.ZipballUrl));
+                urlList.Children.Add(createHyperTextBlock("Source code (tar.gz)", release.Item2.TarballUrl));
             }
             else
             {
                 // error
                 headText.Text = release.Item1;
                 reCheckButton.IsEnabled = true;
-                download_assetUri = null;
-                download_zipUri = null;
-                download_tarUri = null;
             }
+        }
+
+        private TextBlock createHyperTextBlock(string text, string url)
+        {
+            var textBlock = new TextBlock();
+            var hyperlink = new Hyperlink();
+
+            hyperlink.NavigateUri = new Uri(url);
+            hyperlink.RequestNavigate += Hyperlink_RequestNavigate;
+            hyperlink.Inlines.Add(text);
+
+            textBlock.Inlines.Add(hyperlink);
+
+            return textBlock;
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            Process.Start(e.Uri.ToString());
         }
 
         private bool isNewVersion(string ver)
@@ -112,24 +129,6 @@ namespace WipifiDock.Forms
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
-        }
-
-        private void exeUrl_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if (download_assetUri != null)
-                Process.Start(download_assetUri);
-        }
-
-        private void zipUrl_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if (download_zipUri != null)
-                Process.Start(download_zipUri);
-        }
-
-        private void tarUrl_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if (download_tarUri != null)
-                Process.Start(download_tarUri);
         }
 
         private void reCheckButton_Click(object sender, RoutedEventArgs e)

@@ -13,25 +13,26 @@
         Icon="/WipifiDock;component/Resources/favicon.ico">
     <Grid>
         <Image gif:ImageBehavior.AnimatedSource="/WipifiDock;component/Resources/waiting.gif" x:Name="loadImage"
-               Opacity="0.0" Width="200" Height="200" Margin="96,36,96,0" VerticalAlignment="Top" d:IsHidden="True"/>
+               Opacity="0.0" Width="200" Height="200" Margin="96,36,96,0" VerticalAlignment="Top"/>
 
         <TextBlock Text="Поиск новой версии..." x:Name="headText" FontWeight="Bold" FontSize="18"
                    TextAlignment="Center" Height="26" VerticalAlignment="Top" />
 
-        <Grid x:Name="contentGrid" Margin="0,26,0,37" d:IsHidden="True">
+        <Grid x:Name="contentGrid" Margin="0,26,0,37">
             <TextBlock x:Name="titleText" Text="title" Height="24" Margin="10,19,10,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
 
-            <TextBox x:Name="descText" IsReadOnly="True" Margin="10,48,10,67" TextWrapping="NoWrap"
+            <TextBox x:Name="descText" IsReadOnly="True" Margin="10,48,10,89" TextWrapping="NoWrap"
                      FontSize="12" VerticalScrollBarVisibility="auto" HorizontalScrollBarVisibility="Auto"/>
 
-            <TextBlock x:Name="exeUrl" MouseDown="exeUrl_MouseDown" Text="Asset[0]"             Margin="10,0,0,48" Height="14" VerticalAlignment="Bottom" FontFamily="Consolas" Foreground="#FF003CA2" Cursor="Hand" HorizontalAlignment="Left" Width="auto" TextDecorations="Underline"/>
-            <TextBlock x:Name="zipUrl" MouseDown="zipUrl_MouseDown" Text="Source code (zip)"    Margin="10,0,0,29" Height="14" VerticalAlignment="Bottom" FontFamily="Consolas" Foreground="#FF003CA2" Cursor="Hand" HorizontalAlignment="Left" Width="auto" TextDecorations="Underline"/>
-            <TextBlock x:Name="tarUrl" MouseDown="tarUrl_MouseDown" Text="Source code (tar.gz)" Margin="10,0,0,10" Height="14" VerticalAlignment="Bottom" FontFamily="Consolas" Foreground="#FF003CA2" Cursor="Hand" HorizontalAlignment="Left" Width="auto" TextDecorations="Underline"/>
+            <ScrollViewer VerticalScrollBarVisibility="auto" Margin="10,0,10,10" Height="74" VerticalAlignment="Bottom">
+                <StackPanel x:Name="urlList" Orientation="Vertical">
+                </StackPanel>
+            </ScrollViewer>
 
         </Grid>
 
         <Image x:Name="successImage" Opacity="0.0" Width="256" Height="256" Margin="68,36,68,0"
-               VerticalAlignment="Top" Source="/WipifiDock;component/Resources/success.png"></Image>
+               VerticalAlignment="Top" Source="/WipifiDock;component/Resources/success.png" d:IsHidden="True"/>
 
         <Button x:Name="cancelButton" Content="Отмена" Click="cancelButton_Click" Margin="0,0,10,10" HorizontalAlignment="Right" Width="75" Height="22" VerticalAlignment="Bottom"/>
         <Button x:Name="reCheckButton" Content="Повторить" Click="reCheckButton_Click" IsEnabled="false" Margin="10,0,0,10" Height="22" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="111"/>
