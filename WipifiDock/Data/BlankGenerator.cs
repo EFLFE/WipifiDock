@@ -25,6 +25,7 @@ namespace WipifiDock.Data
         private static StringBuilder sb = new StringBuilder();
         private static string projectPath;
         private static MarkdownPipeline pipeline;
+        private static object _lock_ = new object();
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public static void InitBlankGenerator(string _projectPath)
@@ -72,21 +73,24 @@ namespace WipifiDock.Data
 
         private static void fileSystemWatcher_readText(object sender, FileSystemEventArgs e)
         {
-            switch (e.Name)
+            lock (_lock_)
             {
-            case FileManager.HEAD_FILE:
-                headText = File.ReadAllText(e.FullPath);
-                break;
+                switch (e.Name)
+                {
+                case FileManager.HEAD_FILE:
+                    headText = File.ReadAllText(e.FullPath);
+                    break;
 
-            case FileManager.BODY_FILE:
-                bodyText = File.ReadAllText(e.FullPath);
-                break;
+                case FileManager.BODY_FILE:
+                    bodyText = File.ReadAllText(e.FullPath);
+                    break;
 
-            case FileManager.FOOTER_FILE:
-                footerText = File.ReadAllText(e.FullPath);
-                break;
+                case FileManager.FOOTER_FILE:
+                    footerText = File.ReadAllText(e.FullPath);
+                    break;
 
-            default: return;
+                default: return;
+                }
             }
 #if DEBUG
             Log.Write("FileSystemWatcher: " + e.ChangeType + " " + e.Name);
